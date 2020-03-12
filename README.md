@@ -1,10 +1,12 @@
-# WhoLives_CapstoneFinal
+## WhoLives_CapstoneFinal
 
-Team Name - Who Be Drillin
+#Team Name - Who Be Drillin
 
-Motto - We Be Drillin
+#Motto - We Be Drillin
 
-Team Members:
+![Team Logo](https://raw.githubusercontent.com/johnwyke/WhoLives_CapstoneFinal/master/Logo.png)
+
+#Team Members:
 
 Trevor Barker // trevorbarker@mail.weber.edu // Cell 801-644-5795 // Availability: anytime after 4:30 pm except Tuesday and Wednesday
 
