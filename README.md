@@ -10,8 +10,8 @@ Motto - We Be Drillin
 
 Trevor Barker // trevorbarker@mail.weber.edu // Cell 801-644-5795 // Availability: anytime after 4:30 pm except Tuesday and Wednesday
 
-John Wyke // wykejohn@gmail.com // Cell 385-306-0258 // Availability: 
+John Wyke // wykejohn@gmail.com // Cell 385-306-0258 // Availability: Weekdays after 5 except Monday, any day after 9, weekends
 
-Isiah Valdez // isiahvaldez@mail.weber.edu // Cell 801-675-7635 // Availability: 
+Isiah Valdez // isiahvaldez@mail.weber.edu // Cell 801-675-7635 // Availability: M, W, Th after 5:00 pm; T after 1:30 pm; F either after 3 pm or before 5 pm; weekends
 
 Alex Cothran // alexandracothran@mail.weber.edu // Cell 801-678-0639 // Availability: Weekdays after 5 ish and weekends
