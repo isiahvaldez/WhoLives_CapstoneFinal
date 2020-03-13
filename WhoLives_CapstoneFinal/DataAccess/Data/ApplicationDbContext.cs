@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+using WhoLives.Models;
 
 namespace WhoLives.DataAccess
 {
@@ -14,6 +14,7 @@ namespace WhoLives.DataAccess
         {
         }
 
+        public DbSet<Measures> Measures { get; set; }
 
     }
 }
