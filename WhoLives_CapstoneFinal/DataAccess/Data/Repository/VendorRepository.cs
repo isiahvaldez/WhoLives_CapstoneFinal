@@ -26,7 +26,7 @@ namespace WhoLives.DataAccess.Data.Repository
             });
         }
 
-        public void update(Vendor vendor)
+        public void Update(Vendor vendor)
         {
             var objFromDb = _db.Vendor.FirstOrDefault(v => v.VendorID == vendor.VendorID);
 

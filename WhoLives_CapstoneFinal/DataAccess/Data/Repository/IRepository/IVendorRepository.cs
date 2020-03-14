@@ -9,6 +9,6 @@ namespace WhoLives.DataAccess.Data.Repository.IRepository
     public interface IVendorRepository : IRepository<Vendor>
     {
         IEnumerable<SelectListItem> GetVendorListForDropDown();
-        void update(Vendor vendor);
+        void Update(Vendor vendor);
     }
 }
