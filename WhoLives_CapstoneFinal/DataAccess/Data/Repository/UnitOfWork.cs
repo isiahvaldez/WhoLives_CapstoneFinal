@@ -11,10 +11,13 @@ namespace WhoLives.DataAccess.Data.Repository
         private readonly ApplicationDbContext _db;
 
         public IMeasuresRepository Measures { get; private set; } 
+        public IItemRepository Item { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            Measures = new MeasuresRepository(_db); 
+            Measures = new MeasuresRepository(_db);
+            Item = new ItemRepository(_db);
         }
 
         public void Dispose()
