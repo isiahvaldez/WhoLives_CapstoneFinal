@@ -1,0 +1,50 @@
+﻿@page
+@model WhoLives_CapstoneFinal.UpsertModel
+@{
+    ViewData["Title"] = "Upsert";
+}
+    <div class="container">
+        <br />
+        <div class="container">
+            <h1>Upsert</h1>
+            <div style="border: 1px solid #000000;">
+                <!--Radio group-->
+                <input type="radio" id="back" name="status" value="back">
+                <label for="back">Backorder</label><br>
+                <input type="radio" id="ordered" name="status" value="ordered">
+                <label for="ordered">Ordered</label><br>
+                <input type="radio" id="shipping" name="status" value="shipping">
+                <label for="shipping">Shipping</label>
+                <input type="radio" id="received" name="status" value="received">
+                <label for="received">Received</label><br>
+                <input type="radio" id="preceived" name="status" value="preceived">
+                <label for="preceived">Partially Received</label><br>
+                <input type="radio" id="pending" name="status" value="pending">
+                <label for="pending">Pending</label>
+                <input type="radio" id="overdue" name="status" value="overdue">
+                <label for="overdue">Overdue</label>
+            </div>
+            <div style="border: 1px solid #000000;">
+                <!--Date group-->
+                <label asp-for="PurchaseOrder.DateOrdered" class="control-label">Order Date:</label>
+                <input name="DateOrdered" asp-for="PurchaseOrder.DateOrdered" class="form-control" />
+                <span asp-validation-for="PurchaseOrder.DateOrdered" class="text-danger"></span>
+            </div>
+            <div style="border: 1px solid #000000;">
+                <!--PO #-->
+                <label asp-for="PurchaseOrder.VendorPO" class="control-label">Vendor PO:</label>
+                <input name="VendorSKU" asp-for="PurchaseOrder.VendorPO" class="form-control" />
+                <span asp-validation-for="PurchaseOrder.VendorPO" class="text-danger"></span>
+            </div>
+            <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Vendor</th>
+                        <th>PO</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>

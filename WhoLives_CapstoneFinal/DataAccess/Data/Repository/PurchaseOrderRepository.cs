@@ -8,20 +8,20 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository
 {
-    public class PurchaseOrdersRepository : Repository<PurchaseOrders>, IPurchaseOrdersRepository
+    public class PurchaseOrderRepository : Repository<PurchaseOrder>, IPurchaseOrderRepository
     {
         private readonly ApplicationDbContext _appContext;
-        public PurchaseOrdersRepository(ApplicationDbContext context) : base(context)
+        public PurchaseOrderRepository(ApplicationDbContext context) : base(context)
         {
             _appContext = context;
         }
 
-        public void Remove(PurchaseOrders entity)
+        public void Remove(PurchaseOrder entity)
         {
             throw new NotImplementedException();
         }
 
-        public void update(PurchaseOrders purchaseOrders)
+        public void update(PurchaseOrder purchaseOrder)
         {
             throw new NotImplementedException();
         }

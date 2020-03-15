@@ -5,8 +5,8 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository.IRepository
 {
-    public interface IPurchaseOrdersRepository : IRepository<PurchaseOrders>
+    public interface IOrderItemRepository : IRepository<OrderItem>
     {
-        void update(PurchaseOrders purchaseOrders);
+        void update(OrderItem orderItem);
     }
 }

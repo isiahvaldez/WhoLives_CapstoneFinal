@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WhoLives.Models
 {
-    public class PurchaseOrders
+    public class PurchaseOrder
     {
         [Key]
         public int PurchaseOrderID { get; set; }
@@ -28,13 +28,14 @@ namespace WhoLives.Models
 
         public string LastModifiedBy { get; set; }
 
-        public bool Received { get; set; }
+        public string Status { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime LastModifiedDate { get; set; }
 
-        //public List<OrderItem> OrderItems { get; set; }
+        [NotMapped]
+        public List<OrderItem> OrderItems { get; set; }
 
         //public Vendor Vendor { get; set; }
     }
