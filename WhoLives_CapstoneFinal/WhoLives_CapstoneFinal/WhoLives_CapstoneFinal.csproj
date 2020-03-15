@@ -24,6 +24,10 @@
     <ProjectReference Include="..\WhoLives.Utility\WhoLives.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Purchase Orders\" />
+  </ItemGroup>
+
 
 
 </Project>
