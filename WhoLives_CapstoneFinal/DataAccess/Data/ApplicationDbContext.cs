@@ -15,6 +15,7 @@ namespace WhoLives.DataAccess
         }
 
         public DbSet<Measures> Measures { get; set; }
+        public DbSet<Vendor> Vendor { get; set; }
 
     }
 }
