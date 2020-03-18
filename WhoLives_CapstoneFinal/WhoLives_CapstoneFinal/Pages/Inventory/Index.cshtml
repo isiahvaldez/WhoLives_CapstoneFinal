@@ -2,7 +2,301 @@
 @model WhoLives_CapstoneFinal.IndexModel
 @{
     ViewData["Title"] = "Index";
+
+    //var assemblyList = new List<Models.Item>();
+    //var reorderList = new List<Models.Item>();
+
+    //foreach (var i in Model.Item)
+    //{
+    //    if (i.OnhandQty < i.ReorderQty)
+    //    {
+    //        reorderList.Add(i);
+    //    }
+    //    if (i.IsAssembly)
+    //    {
+    //        assemblyList.Add(i);
+    //    }
+    //}
 }
 
-<h1>Index</h1>
+<div class="container">
+    <br />
+    <div class="container">
+        <h3>Inventory</h3>
+        <div class="row">
+            <div class="col-12">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
+                        <a class="nav-item nav-link" id="nav-reorder-tab" data-toggle="tab" href="#nav-reorder" role="tab" aria-controls="nav-reorder" aria-selected="false">To Reorder</a>
+                        <a class="nav-item nav-link" id="nav-assemblies-tab" data-toggle="tab" href="#nav-assemblies" role="tab" aria-controls="nav-assemblies" aria-selected="false">Assemblies</a>
+                    </div>
+                </nav>
+                <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                    @******************ALL ITEMS******************@
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <table id="tempTable" class="table table-striped" style="border:solid;border-width:1px;">
+                            <thead class="thead-dark table-bordered">
+                                <tr class="card-header">
+                                    <th style="position:sticky;top:0">Name</th>
+                                    <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Assemble</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in Model.Item)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-page="/Items/Edit" asp-route-id="@i.ItemID" class="nav-link">@i.ItemName</a>
+                                        </td>
+                                        <td class="text-center">
+                                            @i.OnhandQty
+                                            <a style="margin:7px 0px 0px 0px" data-toggle="modal" data-target="#allItemsModal-@i.ItemID"><i style="cursor:pointer;" class="fa fa-pen"></i></a>
+                                            <div class="modal fade" id="allItemsModal-@i.ItemID" tabindex="-1" role="dialog" aria-labelledby="allItemsModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h3 class="modal-title" id="allItemsModalLabel">Quick Edit: Quantity On Hand</h3>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form method="post" asp-page-handler="QtyOnHand" asp-route-id="@i.ItemID" class="form-container">
+                                                                <input type="hidden" asp-for="@i.ItemID" />
+                                                                <div class="d-inline" style="font-size:20px;"><label>Part:</label> @i.ItemName</div>
+                                                                <br /><br /><br />
+                                                                <div class="form-inline">
+                                                                    <div class="float-left col-6">
+                                                                        <label>Qty On Hand:</label>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="float-left col-6">
+                                                                        <label>Reason/Notes:</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-inline">
+                                                                    <div class="col-6">
+                                                                        <input type="number" class="form-control" name="newQty" value="@i.OnhandQty" style="max-width:80px;" />
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="justify-content-center col-6">
+                                                                        <textarea class="form-control" style="margin-bottom:10px;min-height:100px;max-width:200px;"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row justify-content-center">
+                                                                    <button type="submit" class="btn btn-sm">Save</button>
+                                                                    <button type="button" class="btn btn-sm cancel" data-toggle="modal" data-target="#allItemsModal-@i.ItemID">Close</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @i.ReorderQty
+                                        </td>
+                                        <td class="text-center">
+                                            @if (i.IsAssembly)
+                                            {
+                                                <form method="post">
+                                                    <button input type="submit" asp-page-handler="Assemble" asp-route-id="@i.ItemID" class="btn btn-success">Assemble</button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @******************REORDER ITEMS******************@
+                    <div class="tab-pane fade" id="nav-reorder" role="tabpanel" aria-labelledby="nav-reorder-tab">
+                        @if (reorderList.Count() == 0)
+                        {
+                            <div class="row"><h4 class="col-12 text-center">NOTHING TO REORDER</h4></div>
+                        }
+                        <table id="tempTable1" class="table table-striped" style="border:solid;border-width:1px;">
+                            <thead class="thead-dark table-bordered">
+                                <tr class="card-header">
+                                    <th style="position:sticky;top:0">Name</th>
+                                    <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Reorder</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in reorderList)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-page="/Items/Edit" asp-route-id="@i.ItemID" class="nav-link">@i.ItemName</a>
+                                        </td>
+                                        <td class="text-center">
+                                            @i.OnhandQty
+                                            <a style="margin:7px 0px 0px 0px" data-toggle="modal" data-target="#allItemsModal-@i.ItemID"><i style="cursor:pointer;" class="fa fa-pen"></i></a>
+                                            <div class="modal fade" id="allItemsModal-@i.ItemID" tabindex="-1" role="dialog" aria-labelledby="allItemsModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h3 class="modal-title" id="allItemsModalLabel">Quick Edit: Quantity On Hand</h3>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form method="post" asp-page-handler="QtyOnHand" asp-route-id="@i.ItemID" class="form-container">
+                                                                <input type="hidden" asp-for="@i.ItemID" />
+                                                                <div class="d-inline" style="font-size:20px;"><label>Part:</label> @i.ItemName</div>
+                                                                <br /><br /><br />
+                                                                <div class="form-inline">
+                                                                    <div class="float-left col-6">
+                                                                        <label>Qty On Hand:</label>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="float-left col-6">
+                                                                        <label>Reason/Notes:</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-inline">
+                                                                    <div class="col-6">
+                                                                        <input type="number" class="form-control" name="newQty" value="@i.OnhandQty" style="max-width:80px;" />
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="justify-content-center col-6">
+                                                                        <textarea class="form-control" style="margin-bottom:10px;min-height:100px;max-width:200px;"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row justify-content-center">
+                                                                    <button type="submit" class="btn btn-sm">Save</button>
+                                                                    <button type="button" class="btn btn-sm cancel" data-toggle="modal" data-target="#allItemsModal-@i.ItemID">Close</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @i.ReorderQty
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-primary" asp-page="../Orders/Create" asp-route-id="@i.ItemID">Reorder</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @******************  ASSEMBLIES  ******************@
+                    <div class="tab-pane fade" id="nav-assemblies" role="tabpanel" aria-labelledby="nav-assemblies-tab">
+                        @if (assemblyList.Count() == 0)
+                        {
+                            <div class="row"><h4 class="col-12 text-center">NOTHING TO ASSEMBLE</h4></div>
+                        }
+                        <table id="tempTable2" class="table table-striped" style="border:solid;border-width:1px;">
+                            <thead class="thead-dark table-bordered">
+                                <tr class="card-header">
+                                    <th style="position:sticky;top:0">Name</th>
+                                    <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Assemble</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in assemblyList)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-page="/Items/Edit" asp-route-id="@i.ItemID" class="nav-link">@i.ItemName</a>
+                                        </td>
+                                        <td class="text-center">
+                                            @i.OnhandQty
+                                            <a style="margin:7px 0px 0px 0px" data-toggle="modal" data-target="#allItemsModal-@i.ItemID"><i style="cursor:pointer;" class="fa fa-pen"></i></a>
+                                            <div class="modal fade" id="allItemsModal-@i.ItemID" tabindex="-1" role="dialog" aria-labelledby="allItemsModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h3 class="modal-title" id="allItemsModalLabel">Quick Edit: Quantity On Hand</h3>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form method="post" asp-page-handler="QtyOnHand" asp-route-id="@i.ItemID" class="form-container">
+                                                                <input type="hidden" asp-for="@i.ItemID" />
+                                                                <div class="d-inline" style="font-size:20px;"><label>Part:</label> @i.ItemName</div>
+                                                                <br /><br /><br />
+                                                                <div class="form-inline">
+                                                                    <div class="float-left col-6">
+                                                                        <label>Qty On Hand:</label>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="float-left col-6">
+                                                                        <label>Reason/Notes:</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-inline">
+                                                                    <div class="col-6">
+                                                                        <input type="number" class="form-control" name="newQty" value="@i.OnhandQty" style="max-width:80px;" />
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="justify-content-center col-6">
+                                                                        <textarea class="form-control" style="margin-bottom:10px;min-height:100px;max-width:200px;"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row justify-content-center">
+                                                                    <button type="submit" class="btn btn-sm">Save</button>
+                                                                    <button type="button" class="btn btn-sm cancel" data-toggle="modal" data-target="#allItemsModal-@i.ItemID">Close</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @i.ReorderQty
+                                        </td>
+                                        <td class="text-center">
+                                            <form method="post">
+                                                <button input type="submit" asp-page-handler="Assemble" asp-route-id="@i.ItemID" class="btn btn-success">Assemble</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-11 text-right">
+        <a asp-page="/Items/Create"><i class="fa fa-plus-circle" style="font-size:48px"></i></a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tempTable').dataTable();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#tempTable1').dataTable();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#tempTable2').dataTable();
+    });
+</script>
 
