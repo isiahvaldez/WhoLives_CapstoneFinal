@@ -11,24 +11,23 @@ namespace WhoLives.Models
         [Key]
         public int PurchaseOrderID { get; set; }
 
-        [ForeignKey("Vendor")]
-        public int VendorID { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOrdered { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DateDelivered { get; set; }
+        public DateTime StatusChangeDate { get; set; }
 
-        public decimal TotalOrderPrice { get; set; }
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "money")]
+        public decimal TotalPrice { get; set; }
 
-        public string VendorPO { get; set; }
-
-        public string LastModifiedBy { get; set; }
+        public string PO { get; set; }
 
         public string Status { get; set; }
+
+        public string LastModifiedBy { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
@@ -37,6 +36,7 @@ namespace WhoLives.Models
         [NotMapped]
         public List<OrderItem> OrderItems { get; set; }
 
-        //public Vendor Vendor { get; set; }
+        [NotMapped]
+        public Vendor Vendor { get; set; }
     }
 }

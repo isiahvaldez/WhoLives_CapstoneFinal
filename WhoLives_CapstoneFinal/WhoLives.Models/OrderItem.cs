@@ -17,13 +17,16 @@ namespace WhoLives.Models
         [ForeignKey("PurchaseOrder")]
         public int PurchaseOrderID { get; set; }
 
-        public string VendorSKU { get; set; }
+        [ForeignKey("Vendor")]
+        public int VendorID { get; set; }
+
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
         public int QuantityOrdered { get; set; }
+        public int QuantityReceived { get; set; }
 
         public bool ItemReceived { get; set; }
 
@@ -37,10 +40,10 @@ namespace WhoLives.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime LastModifiedDate { get; set; }
 
+        [NotMapped]
+        public Item Item { get; set; }
 
-
-        //public Item Item { get; set; }
-
+        [NotMapped]
         public PurchaseOrder PurchaseOrder { get; set; }
     }
 }
