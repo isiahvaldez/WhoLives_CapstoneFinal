@@ -36,7 +36,6 @@ namespace WhoLives.Models
         [NotMapped]
         public List<OrderItem> OrderItems { get; set; }
 
-        [NotMapped]
-        public Vendor Vendor { get; set; }
+
     }
 }

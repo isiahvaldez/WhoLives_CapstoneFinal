@@ -20,12 +20,13 @@ namespace WhoLives.Models
         /// The assembly this item belongs to
         /// </summary>
         public InventoryItem Assembly { get; set; }
+        
+        [ForeignKey("Item")]
+        public int ItemID { get; set; }
         /// <summary>
         /// The item used in the assembly
         /// </summary>
         public InventoryItem Item { get; set; }
-        [ForeignKey("Item")]
-        public int ItemID { get; set; }
         /// <summary>
         /// How many of this item are needed for an assembly
         /// </summary>
