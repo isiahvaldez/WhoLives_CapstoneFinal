@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WhoLives.Models
 {
-    public class Measures
+    public class Measure
     {
 
         [Key]

@@ -7,11 +7,11 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository
 {
-    public class ItemRepository : Repository<InventoryItems>, IItemRepository
+    public class InventoryItemRepository : Repository<InventoryItem>, IInventoryItemRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public ItemRepository(ApplicationDbContext db) : base(db)
+        public InventoryItemRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
@@ -20,7 +20,7 @@ namespace WhoLives.DataAccess.Data.Repository
             throw new NotImplementedException();
         }
 
-        public void update(InventoryItems item)
+        public void update(InventoryItem item)
         {
             throw new NotImplementedException();
         }

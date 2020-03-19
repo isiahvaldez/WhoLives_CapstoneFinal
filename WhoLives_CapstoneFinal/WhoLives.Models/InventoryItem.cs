@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WhoLives.Models
 {
-    public class InventoryItems
+    public class InventoryItem
     {
         //Primary key for the Item table
         [Key]
@@ -82,6 +82,6 @@ namespace WhoLives.Models
         //public virtual ICollection<OrderItem> OrderItems { get; set; }
 
         [Display(Name = "Measurement Unit(e.g. pounds")]
-        public virtual Measures Measure { get; set; }
+        public virtual Measure Measure { get; set; }
     }
 }

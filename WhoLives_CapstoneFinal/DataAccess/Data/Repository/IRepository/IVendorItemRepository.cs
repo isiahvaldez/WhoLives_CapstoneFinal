@@ -5,8 +5,8 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository.IRepository
 {
-    public interface IVendorItemRepository : IRepository<VendorItems>
+    public interface IVendorItemRepository : IRepository<VendorItem>
     {
-        void Update(VendorItems vendorItem);
+        void Update(VendorItem vendorItem);
     }
 }

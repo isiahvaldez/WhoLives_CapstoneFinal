@@ -41,7 +41,7 @@ namespace WhoLives.Models
         public DateTime LastModifiedDate { get; set; }
 
         [NotMapped]
-        public Item Item { get; set; }
+        public InventoryItem Item { get; set; }
 
         [NotMapped]
         public PurchaseOrder PurchaseOrder { get; set; }

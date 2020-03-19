@@ -10,23 +10,25 @@ namespace WhoLives.DataAccess.Data.Repository
     {
         private readonly ApplicationDbContext _db;
 
-        public IMeasuresRepository Measures { get; private set; } 
-        public IItemRepository Item { get; private set; }
+        public IAssemblyItemRepository AssemblyItems { get; private set; }
+        public IMeasureRepository Measures { get; private set; } 
+        public IInventoryItemRepository InventoryItems { get; private set; }
 
         public IPurchaseOrderRepository PurchaseOrders { get; private set; }
         public IOrderItemRepository OrderItems { get; private set; }
-        public IVendorRepository Vendor { get; private set; }
+        public IVendorRepository Vendors { get; private set; }
         public IVendorItemRepository VendorItems { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            Measures = new MeasuresRepository(_db);
-            Item = new ItemRepository(_db);
-            Measures = new MeasuresRepository(_db);
+            AssemblyItems = new AssemblyItemRepository(_db);
+            Measures = new MeasureRepository(_db);
+            InventoryItems = new InventoryItemRepository(_db);
+            Measures = new MeasureRepository(_db);
             PurchaseOrders = new PurchaseOrderRepository(_db);
             OrderItems = new OrderItemRepository(_db);
-            Vendor = new VendorRepository(_db);
+            Vendors = new VendorRepository(_db);
             VendorItems = new VendorItemRepository(_db);
         }
 

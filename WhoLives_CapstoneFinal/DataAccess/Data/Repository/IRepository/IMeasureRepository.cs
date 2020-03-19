@@ -6,10 +6,9 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository.IRepository
 {
-    public interface IItemRepository : IRepository<InventoryItems>
+    public interface IMeasureRepository : IRepository<Measure>
     {
-        IEnumerable<SelectListItem> GetItemListForDropDown();
-
-        void update(InventoryItems item);
+        IEnumerable<SelectListItem> GetMeasureListForDropDown();
+        void update(Measure measures); 
     }
 }

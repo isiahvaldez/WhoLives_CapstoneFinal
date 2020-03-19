@@ -7,19 +7,20 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository
 {
-    public class MeasuresRepository : Repository<Measures>, IMeasuresRepository
+    public class AssemblyItemRepository : Repository<AssemblyItem>, IAssemblyItemRepository
     {
-        private readonly ApplicationDbContext _db; 
-        public MeasuresRepository(ApplicationDbContext db): base(db)
+        private readonly ApplicationDbContext _db;
+
+        public AssemblyItemRepository(ApplicationDbContext db) : base(db)
         {
-            _db = db; 
+            _db = db;
         }
-        public IEnumerable<SelectListItem> GetMeasuresListForDropDown()
+        public IEnumerable<SelectListItem> GetItemListForDropDown()
         {
             throw new NotImplementedException();
         }
 
-        public void update(Measures measures)
+        public void update(AssemblyItem assemblyItem)
         {
             throw new NotImplementedException();
         }

@@ -14,11 +14,12 @@ namespace WhoLives.DataAccess
         {
         }
 
-        public DbSet<Measures> Measures { get; set; }
-        public DbSet<InventoryItems> Item { get; set; }
+        public DbSet<AssemblyItem> AssemblyItems { get; set; }
+        public DbSet<Measure> Measures { get; set; }
+        public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<Vendor> Vendor { get; set; }
-        public DbSet<VendorItems> VendorItems{ get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<VendorItem> VendorItems{ get; set; }
     }
 }

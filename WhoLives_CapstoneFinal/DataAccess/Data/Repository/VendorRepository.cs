@@ -19,7 +19,7 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IEnumerable<SelectListItem> GetVendorListForDropDown()
         {
-            return _db.Vendor.Select(i => new SelectListItem()
+            return _db.Vendors.Select(i => new SelectListItem()
             {
                 Text = i.VendorName,
                 Value = i.VendorID.ToString()
@@ -28,7 +28,7 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public void Update(Vendor vendor)
         {
-            var objFromDb = _db.Vendor.FirstOrDefault(v => v.VendorID == vendor.VendorID);
+            var objFromDb = _db.Vendors.FirstOrDefault(v => v.VendorID == vendor.VendorID);
 
             objFromDb.VendorName = vendor.VendorName;
             objFromDb.VendorWebsite = vendor.VendorWebsite;

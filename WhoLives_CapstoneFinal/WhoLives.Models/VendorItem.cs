@@ -5,14 +5,14 @@ using System.Text;
 
 namespace WhoLives.Models
 {
-    public class VendorItems
+    public class VendorItem
     {
 
-        public int InventoryItemsId { get; set; }
-        public int VendorId { get; set; }
+        public int InventoryItemID { get; set; }
+        public int VendorID { get; set; }
 
        
-        public InventoryItems InventoryItems { get; set; }
+        public InventoryItem InventoryItems { get; set; }
      
         public Vendor Vendor { get; set; }
     }

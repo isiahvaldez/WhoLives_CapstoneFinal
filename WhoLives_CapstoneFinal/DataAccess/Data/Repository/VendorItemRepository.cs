@@ -8,7 +8,7 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository
 {
-    public class VendorItemRepository : Repository<VendorItems>, IVendorItemRepository
+    public class VendorItemRepository : Repository<VendorItem>, IVendorItemRepository
     {
         private readonly ApplicationDbContext _db;
 
@@ -19,19 +19,19 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IEnumerable<SelectListItem> GetVendorListForDropDown()
         {
-            return _db.Vendor.Select(i => new SelectListItem()
+            return _db.VendorItems.Select(i => new SelectListItem()
             {
-                Text = i.VendorName,
+                Text = i.Vendor.VendorName,
                 Value = i.VendorID.ToString()
             });
         }
 
-        public void Update(VendorItems vendorItem)
+        public void Update(VendorItem vendorItem)
         {
-            var objFromDb = _db.Vendor.FirstOrDefault(v => v.VendorID == vendorItem.VendorId);
+            var objFromDb = _db.VendorItems.FirstOrDefault(v => v.VendorID == vendorItem.VendorID);
 
-            objFromDb.VendorID = vendorItem.VendorId;
-            objFromDb.InventoryItemsId = vendorItem.InventoryItemsId;
+            objFromDb.VendorID = vendorItem.VendorID;
+            objFromDb.InventoryItemID = vendorItem.InventoryItemID;
 
             _db.SaveChanges();
         }

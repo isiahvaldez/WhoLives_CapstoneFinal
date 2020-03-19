@@ -1,5 +1,5 @@
 ﻿@page
-@model WhoLives_CapstoneFinal.IndexModel
+@model WhoLives_CapstoneFinal.Pages.Inventory.IndexModel
 @{
     ViewData["Title"] = "Index";
 
@@ -45,7 +45,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var i in Model.Item)
+                                @foreach (var i in Model.InventoryItem)
                                 {
                                     <tr>
                                         <td>
@@ -299,4 +299,3 @@
         $('#tempTable2').dataTable();
     });
 </script>
-
