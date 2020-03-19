@@ -12,12 +12,14 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IMeasuresRepository Measures { get; private set; } 
         public IVendorRepository Vendor { get; private set; }
+        public IVendorItemRepository VendorItems { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             Measures = new MeasuresRepository(_db);
             Vendor = new VendorRepository(_db);
+            VendorItems = new VendorItemRepository(_db);
         }
 
         public void Dispose()

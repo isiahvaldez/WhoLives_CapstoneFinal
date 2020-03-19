@@ -8,6 +8,7 @@ namespace WhoLives.DataAccess.Data.Repository.IRepository
     {
         IMeasuresRepository Measures { get; }
         IVendorRepository Vendor { get; }
+        IVendorItemRepository VendorItems { get; }
         void Save();
     }
 }
