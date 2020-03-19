@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WhoLives.DataAccess;
+using WhoLives.DataAccess.Data.Repository;
+using WhoLives.DataAccess.Data.Repository.IRepository;
 
 namespace WhoLives_CapstoneFinal
 {
@@ -26,6 +28,7 @@ namespace WhoLives_CapstoneFinal
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

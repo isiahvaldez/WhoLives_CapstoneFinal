@@ -15,9 +15,9 @@ namespace WhoLives.DataAccess
         }
 
         public DbSet<Measures> Measures { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Vendor> Vendor { get; set; }
-
         public DbSet<VendorItems> VendorItems{ get; set; }
-
     }
 }
