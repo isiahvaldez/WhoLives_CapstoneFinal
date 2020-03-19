@@ -54,7 +54,7 @@ namespace WhoLives.DataAccess.Data.Repository
             {
                 query = query.Where(filter);
             }
-            // Will be comma sperated 
+            // Will be comma seperated 
             if (includeProperties != null)
             {
                 foreach (var includeProrerty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

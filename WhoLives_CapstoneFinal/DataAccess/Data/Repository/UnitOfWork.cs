@@ -11,6 +11,8 @@ namespace WhoLives.DataAccess.Data.Repository
         private readonly ApplicationDbContext _db;
 
         public IMeasuresRepository Measures { get; private set; } 
+        public IItemRepository Item { get; private set; }
+
         public IPurchaseOrderRepository PurchaseOrders { get; private set; }
         public IOrderItemRepository OrderItems { get; private set; }
         public IVendorRepository Vendor { get; private set; }
@@ -19,6 +21,8 @@ namespace WhoLives.DataAccess.Data.Repository
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
+            Measures = new MeasuresRepository(_db);
+            Item = new ItemRepository(_db);
             Measures = new MeasuresRepository(_db);
             PurchaseOrders = new PurchaseOrderRepository(_db);
             OrderItems = new OrderItemRepository(_db);
