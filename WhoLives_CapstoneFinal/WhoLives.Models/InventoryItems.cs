@@ -6,31 +6,31 @@ using System.Text;
 
 namespace WhoLives.Models
 {
-    public class Item
+    public class InventoryItems
     {
         //Primary key for the Item table
         [Key]
-        public int ItemID { get; set; }
+        public int InventoryItemID { get; set; }
 
         //Identifier if the part is used to create an assembly
-        public bool IsAnAssemblyPart { get; set; }
+        public bool AddedAsPartOfAssembly { get; set; }
 
         //Identifier if the part is an assembly
-        public bool IsAnAssembly { get; set; }
+        public bool IsAssembly { get; set; }
 
         //Part name
         [Required]
         [StringLength(255)]
-        [Display(Name = "Item Name")]
-        public string ItemName { get; set; }
+        [Display(Name = "Name")]
+        public string Name { get; set; }
 
         //Part details
-        [Display(Name = "Item Description")]
-        public string ItemDescription { get; set; }
+        [Display(Name = "Description")]
+        public string Description { get; set; }
 
         //Number of loose items available that are not used in an assembly
-        [Display(Name = "Available Quantity")]
-        public int AvailableQty { get; set; }
+        [Display(Name = "Loose Quantity")]
+        public int TotalLooseQty { get; set; }
 
         //Cost to WhoLives to purchase the item
         [Display(Name = "Retail Cost")]
