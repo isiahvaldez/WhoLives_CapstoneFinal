@@ -11,14 +11,15 @@ namespace WhoLives.Models
         [Key]
         public int OrderItemID { get; set; }
 
-        [ForeignKey("Item")]
         public int ItemID { get; set; }
 
-        [ForeignKey("PurchaseOrder")]
+        [ForeignKey("ItemID")]
+        public InventoryItem Item { get; set; }
+
         public int PurchaseOrderID { get; set; }
 
-        [ForeignKey("Vendor")]
-        public int VendorID { get; set; }
+        [ForeignKey("PurchaseOrderID")]
+        public PurchaseOrder PurchaseOrder { get; set; }
 
 
         [DataType(DataType.Currency)]
@@ -39,11 +40,5 @@ namespace WhoLives.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime LastModifiedDate { get; set; }
-
-        [NotMapped]
-        public InventoryItem Item { get; set; }
-
-        [NotMapped]
-        public PurchaseOrder PurchaseOrder { get; set; }
     }
 }

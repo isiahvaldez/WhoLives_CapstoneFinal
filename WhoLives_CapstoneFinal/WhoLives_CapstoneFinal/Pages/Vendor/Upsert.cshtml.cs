@@ -25,7 +25,7 @@ namespace WhoLives_CapstoneFinal.Pages.Vendor
             VendorObj = new WhoLives.Models.Vendor();
             if (id != null) // edit
             {
-                VendorObj = _unitOfWork.Vendor.GetFirstOrDefault(v => v.VendorID == id);
+                VendorObj = _unitOfWork.Vendors.GetFirstOrDefault(v => v.VendorID == id);
                 if (VendorObj == null)
                 {
                     return NotFound();
@@ -43,12 +43,12 @@ namespace WhoLives_CapstoneFinal.Pages.Vendor
 
             if (VendorObj.VendorID == 0) // new food type 
             {
-                _unitOfWork.Vendor.Add(VendorObj);
+                _unitOfWork.Vendors.Add(VendorObj);
             }
 
             else // edit vendor
             {
-                _unitOfWork.Vendor.Update(VendorObj);
+                _unitOfWork.Vendors.Update(VendorObj);
             }
             _unitOfWork.Save();
             return RedirectToPage("./Index");
