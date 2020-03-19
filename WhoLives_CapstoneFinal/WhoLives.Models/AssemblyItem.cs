@@ -14,17 +14,17 @@ namespace WhoLives.Models
         [Key]
         public  int AssemblyItemID { get; set; }
         
-        [ForeignKey("Assembly")]
         public int AssemblyID { get; set; }
         /// <summary>
         /// The assembly this item belongs to
         /// </summary>
+        [ForeignKey("AssemblyID")]
         public InventoryItem Assembly { get; set; }
         /// <summary>
         /// The item used in the assembly
         /// </summary>
+        [ForeignKey("ItemID")]
         public InventoryItem Item { get; set; }
-        [ForeignKey("Item")]
         public int ItemID { get; set; }
         /// <summary>
         /// How many of this item are needed for an assembly
