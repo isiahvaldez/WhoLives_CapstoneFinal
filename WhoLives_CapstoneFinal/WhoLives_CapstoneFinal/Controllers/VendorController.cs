@@ -24,19 +24,19 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(new { data = _unitOfWork.Vendor.GetAll() });
+            return Json(new { data = _unitOfWork.Vendors.GetAll() });
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var objFromDb = _unitOfWork.Vendor.GetFirstOrDefault(v => v.VendorID == id);
+            var objFromDb = _unitOfWork.Vendors.GetFirstOrDefault(v => v.VendorID == id);
             if(objFromDb == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _unitOfWork.Vendor.Remove(objFromDb);
+            _unitOfWork.Vendors.Remove(objFromDb);
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful" });
         }
