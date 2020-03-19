@@ -11,6 +11,11 @@ namespace WhoLives.Models
         [Key]
         public int PurchaseOrderID { get; set; }
 
+        public int VendorID { get; set; }
+
+        [ForeignKey("VendorID")]
+        public Vendor Vendor { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOrdered { get; set; }
@@ -35,7 +40,5 @@ namespace WhoLives.Models
 
         [NotMapped]
         public List<OrderItem> OrderItems { get; set; }
-
-
     }
 }
