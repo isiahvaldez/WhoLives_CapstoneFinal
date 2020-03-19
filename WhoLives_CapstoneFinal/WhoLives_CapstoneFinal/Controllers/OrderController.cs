@@ -9,7 +9,7 @@ namespace WhoLives_CapstoneFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController : Controller
     {
     }
 }

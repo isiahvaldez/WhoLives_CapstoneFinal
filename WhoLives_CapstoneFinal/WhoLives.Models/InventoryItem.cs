@@ -74,7 +74,7 @@ namespace WhoLives.Models
         //Foreign key for the Assembly identifier
         [ForeignKey("Assembly")]
         [Display(Name = "Assembly Id")]
-        public int AssemblyID { get; set; }
+        public int? AssemblyID { get; set; }
 
         //NAVIGATION PROPERTIES
         //public virtual ICollection<RecipeLine> RecipeLines { get; set; }

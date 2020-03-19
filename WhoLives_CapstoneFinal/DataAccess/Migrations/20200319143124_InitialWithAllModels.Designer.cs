@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WhoLives.DataAccess;
 
 namespace WhoLives.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200319143124_InitialWithAllModels")]
+    partial class InitialWithAllModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,7 +256,7 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<bool>("AddedAsPartOfAssembly")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("AssemblyID")
+                    b.Property<int>("AssemblyID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")

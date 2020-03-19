@@ -19,3 +19,76 @@
     //}
 }
 
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-primary">Inventory</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-page="Upsert" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Create New</a>
+
+        </div>
+    </div>
+<br/><br/>
+<div class="container">
+    <br />
+    <div class="container">
+        <h3>Inventory</h3>
+        <div class="row">
+            <div class="col-12">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">All</a>
+                        <a class="nav-item nav-link" id="nav-reorder-tab" data-toggle="tab" href="#nav-reorder" role="tab" aria-controls="nav-reorder" aria-selected="false">To Reorder</a>
+                        <a class="nav-item nav-link" id="nav-assemblies-tab" data-toggle="tab" href="#nav-assemblies" role="tab" aria-controls="nav-assemblies" aria-selected="false">Assemblies</a>
+                    </div>
+                </nav>
+
+                <div class="tab-content py-3 px-3 px-sm-0">
+                    <div class="tab-pane fade show active " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <table class="table-bordered table-striped" id="AllItem" style="width:100%">
+                            <thead class="thead-dark table-bordered">
+                                <tr class="card-header">
+                                    <th style="position:sticky;top:0">Name</th>
+                                    <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                    <div class="tab-pane fade show " id="nav-reorder" role="tabpanel" aria-labelledby="nav-reorder-tab">
+                        <table class="table-bordered table-striped" id="ReOrderTable" style="width:100%">
+                            <thead class="thead-dark table-bordered">
+                                <tr class="card-header">
+                                    <th style="position:sticky;top:0">Name</th>
+                                    <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Vendor</th>
+                                    <th style="position:sticky;top:0" class="text-center">Select</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="col-6">
+                            <button class="btn btn-primary" asp-page="./OrderPopup">Re Order</button>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade show " id="nav-assemblies" role="tabpanel" aria-labelledby="nav-assemblies-tab">
+                        <table class="table-bordered table-striped" id="AssembleDisassemble" style="width:100%">
+                            <thead class="thead-dark table-bordered">
+                                <tr class="card-header">
+                                    <th style="position:sticky;top:0">Name</th>
+                                    <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
+                                    <th style="position:sticky;top:0" class="text-center">Assemble / Disassemble</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
