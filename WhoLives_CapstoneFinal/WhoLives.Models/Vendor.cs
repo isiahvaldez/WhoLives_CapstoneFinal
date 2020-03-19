@@ -21,6 +21,8 @@ namespace WhoLives.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime LastModifiedDate { get; set; }
 
+        public ICollection<VendorItems>VendorItems { get; set; } // This is needed Per Contoso University Tutorial - JDW
+
         //public ICollection<PurchaseOrder> PurchaseOrders { get; set; } // probably belongs in a View Model
     }
 }

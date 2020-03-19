@@ -14,6 +14,7 @@ namespace WhoLives.DataAccess.Data.Repository
         public IPurchaseOrderRepository PurchaseOrders { get; private set; }
         public IOrderItemRepository OrderItems { get; private set; }
         public IVendorRepository Vendor { get; private set; }
+        public IVendorItemRepository VendorItems { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -22,6 +23,7 @@ namespace WhoLives.DataAccess.Data.Repository
             PurchaseOrders = new PurchaseOrderRepository(_db);
             OrderItems = new OrderItemRepository(_db);
             Vendor = new VendorRepository(_db);
+            VendorItems = new VendorItemRepository(_db);
         }
 
         public void Dispose()
