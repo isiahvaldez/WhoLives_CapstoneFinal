@@ -71,6 +71,11 @@ namespace WhoLives.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime LastModifiedDate { get; set; }
 
+        //Foreign key for the Assembly identifier
+        [ForeignKey("Assembly")]
+        [Display(Name = "Assembly Id")]
+        public int AssemblyID { get; set; }
+
         //NAVIGATION PROPERTIES
         //public virtual ICollection<RecipeLine> RecipeLines { get; set; }
         //public virtual ICollection<AssemblyRecipe> AssemblyRecipes { get; set; }
