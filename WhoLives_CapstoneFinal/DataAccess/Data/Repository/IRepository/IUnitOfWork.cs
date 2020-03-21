@@ -6,13 +6,14 @@ namespace WhoLives.DataAccess.Data.Repository.IRepository
 {
     public interface IUnitOfWork : IDisposable
     {
-        IAssemblyItemRepository AssemblyItems { get; }
+        IAssemblyRepository Assemblies { get; }
         IInventoryItemRepository InventoryItems { get; }
         IMeasureRepository Measures { get; }
         IPurchaseOrderRepository PurchaseOrders { get; }
         IOrderItemRepository OrderItems { get; }
         IVendorRepository Vendors { get; }
         IVendorItemRepository VendorItems { get; }
+        IBuildAssemblyRepository BuildAssemblies { get; }
         void Save();
     }
 }

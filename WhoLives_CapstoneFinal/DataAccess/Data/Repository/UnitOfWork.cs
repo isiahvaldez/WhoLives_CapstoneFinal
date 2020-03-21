@@ -10,19 +10,19 @@ namespace WhoLives.DataAccess.Data.Repository
     {
         private readonly ApplicationDbContext _db;
 
-        public IAssemblyItemRepository AssemblyItems { get; private set; }
+        public IAssemblyRepository Assemblies { get; private set; }
         public IMeasureRepository Measures { get; private set; } 
         public IInventoryItemRepository InventoryItems { get; private set; }
-
         public IPurchaseOrderRepository PurchaseOrders { get; private set; }
         public IOrderItemRepository OrderItems { get; private set; }
         public IVendorRepository Vendors { get; private set; }
         public IVendorItemRepository VendorItems { get; private set; }
+        public IBuildAssemblyRepository BuildAssemblies { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            AssemblyItems = new AssemblyItemRepository(_db);
+            Assemblies = new AssemblyRepository(_db);
             Measures = new MeasureRepository(_db);
             InventoryItems = new InventoryItemRepository(_db);
             Measures = new MeasureRepository(_db);
@@ -30,6 +30,7 @@ namespace WhoLives.DataAccess.Data.Repository
             OrderItems = new OrderItemRepository(_db);
             Vendors = new VendorRepository(_db);
             VendorItems = new VendorItemRepository(_db);
+            BuildAssemblies = new BuildAssemblyRepository(_db);
         }
 
         public void Dispose()

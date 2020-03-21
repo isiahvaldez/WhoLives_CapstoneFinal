@@ -14,9 +14,10 @@ namespace WhoLives.Models
         public int InventoryItemID { get; set; }
         public int VendorID { get; set; }
 
-       [ForeignKey("InventoryItemID")]
+        [ForeignKey("InventoryItemID")]
         public InventoryItem InventoryItem { get; set; }
-     [ForeignKey("VendorID")]
+
+        [ForeignKey("VendorID")]
         public Vendor Vendor { get; set; }
     }
 }

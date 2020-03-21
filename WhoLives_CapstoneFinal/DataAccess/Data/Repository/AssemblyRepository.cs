@@ -7,11 +7,11 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository
 {
-    public class AssemblyItemRepository : Repository<AssemblyItem>, IAssemblyItemRepository
+    public class AssemblyRepository : Repository<Assembly>, IAssemblyRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public AssemblyItemRepository(ApplicationDbContext db) : base(db)
+        public AssemblyRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
@@ -20,7 +20,7 @@ namespace WhoLives.DataAccess.Data.Repository
             throw new NotImplementedException();
         }
 
-        public void update(AssemblyItem assemblyItem)
+        public void update(Assembly assembly)
         {
             throw new NotImplementedException();
         }

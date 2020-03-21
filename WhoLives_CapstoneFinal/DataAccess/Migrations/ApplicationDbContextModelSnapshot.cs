@@ -219,9 +219,29 @@ namespace WhoLives.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WhoLives.Models.AssemblyItem", b =>
+            modelBuilder.Entity("WhoLives.Models.Assembly", b =>
                 {
-                    b.Property<int>("AssemblyItemID")
+                    b.Property<int>("AssemblyID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("InventoryItemID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemQty")
+                        .HasColumnType("int");
+
+                    b.HasKey("AssemblyID");
+
+                    b.HasIndex("InventoryItemID");
+
+                    b.ToTable("Assembly");
+                });
+
+            modelBuilder.Entity("WhoLives.Models.BuildAssembly", b =>
+                {
+                    b.Property<int>("BuildAssemblyID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -232,16 +252,13 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<int>("InventoryItemID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ItemQty")
-                        .HasColumnType("int");
-
-                    b.HasKey("AssemblyItemID");
+                    b.HasKey("BuildAssemblyID");
 
                     b.HasIndex("AssemblyID");
 
                     b.HasIndex("InventoryItemID");
 
-                    b.ToTable("AssemblyItems");
+                    b.ToTable("BuildAssemblies");
                 });
 
             modelBuilder.Entity("WhoLives.Models.InventoryItem", b =>
@@ -250,12 +267,6 @@ namespace WhoLives.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AddedAsPartOfAssembly")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("AssemblyID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -272,16 +283,10 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<decimal>("ListRetailCost")
                         .HasColumnType("money");
 
-                    b.Property<decimal>("ListWholesaleCost")
-                        .HasColumnType("money");
-
-                    b.Property<int>("MaxQty")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("MeasureAmnt")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MeasureID")
+                    b.Property<int>("MeasuresID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -292,15 +297,12 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<int>("ReorderQty")
                         .HasColumnType("int");
 
-                    b.Property<int>("TempRequired")
-                        .HasColumnType("int");
-
                     b.Property<int>("TotalLooseQty")
                         .HasColumnType("int");
 
                     b.HasKey("InventoryItemID");
 
-                    b.HasIndex("MeasureID");
+                    b.HasIndex("MeasuresID");
 
                     b.ToTable("InventoryItems");
                 });
@@ -330,7 +332,7 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<DateTime>("DateDelivered")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("InventoryItemID")
+                    b.Property<int>("ItemID")
                         .HasColumnType("int");
 
                     b.Property<bool>("ItemReceived")
@@ -354,16 +356,11 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<int>("QuantityReceived")
                         .HasColumnType("int");
 
-                    b.Property<int>("VendorID")
-                        .HasColumnType("int");
-
                     b.HasKey("OrderItemID");
 
-                    b.HasIndex("InventoryItemID");
+                    b.HasIndex("ItemID");
 
                     b.HasIndex("PurchaseOrderID");
-
-                    b.HasIndex("VendorID");
 
                     b.ToTable("OrderItems");
                 });
@@ -396,7 +393,12 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("money");
 
+                    b.Property<int>("VendorID")
+                        .HasColumnType("int");
+
                     b.HasKey("PurchaseOrderID");
+
+                    b.HasIndex("VendorID");
 
                     b.ToTable("PurchaseOrders");
                 });
@@ -501,16 +503,25 @@ namespace WhoLives.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WhoLives.Models.AssemblyItem", b =>
+            modelBuilder.Entity("WhoLives.Models.Assembly", b =>
                 {
-                    b.HasOne("WhoLives.Models.InventoryItem", "Assembly")
+                    b.HasOne("WhoLives.Models.InventoryItem", "InventoryItem")
                         .WithMany()
+                        .HasForeignKey("InventoryItemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WhoLives.Models.BuildAssembly", b =>
+                {
+                    b.HasOne("WhoLives.Models.Assembly", "Assembly")
+                        .WithMany("BuildAssemblyList")
                         .HasForeignKey("AssemblyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WhoLives.Models.InventoryItem", "InventoryItem")
-                        .WithMany()
+                        .WithMany("BuildAssemblyList")
                         .HasForeignKey("InventoryItemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -520,16 +531,16 @@ namespace WhoLives.DataAccess.Migrations
                 {
                     b.HasOne("WhoLives.Models.Measure", "Measure")
                         .WithMany()
-                        .HasForeignKey("MeasureID")
+                        .HasForeignKey("MeasuresID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("WhoLives.Models.OrderItem", b =>
                 {
-                    b.HasOne("WhoLives.Models.InventoryItem", "InventoryItem")
-                        .WithMany()
-                        .HasForeignKey("InventoryItemID")
+                    b.HasOne("WhoLives.Models.InventoryItem", "Item")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ItemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -538,7 +549,10 @@ namespace WhoLives.DataAccess.Migrations
                         .HasForeignKey("PurchaseOrderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
+            modelBuilder.Entity("WhoLives.Models.PurchaseOrder", b =>
+                {
                     b.HasOne("WhoLives.Models.Vendor", "Vendor")
                         .WithMany()
                         .HasForeignKey("VendorID")
@@ -549,7 +563,7 @@ namespace WhoLives.DataAccess.Migrations
             modelBuilder.Entity("WhoLives.Models.VendorItem", b =>
                 {
                     b.HasOne("WhoLives.Models.InventoryItem", "InventoryItem")
-                        .WithMany()
+                        .WithMany("VendorItems")
                         .HasForeignKey("InventoryItemID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

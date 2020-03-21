@@ -12,9 +12,6 @@ namespace WhoLives.Models
         [Key]
         public int InventoryItemID { get; set; }
 
-        //Identifier if the part is used to create an assembly
-        public bool AddedAsPartOfAssembly { get; set; }
-
         //Identifier if the part is an assembly
         public bool IsAssembly { get; set; }
 
@@ -38,23 +35,16 @@ namespace WhoLives.Models
         [Column(TypeName = "money")]
         public decimal ListRetailCost { get; set; }
 
-        [Display(Name = "Wholesale Cost")]
-        [DataType(DataType.Currency)]
-        [Column(TypeName = "money")]
-        public decimal ListWholesaleCost { get; set; }
-
         //Minimum number of parts to have available
         [Display(Name = "Reorder Quantity")]
         public int ReorderQty { get; set; }
 
-        //Maximum number of parts to have available
-        [Display(Name = "Maximum Quantity")]
-        public int MaxQty { get; set; }
-
-        //Foreign key for the measurement identifier
-        [ForeignKey("Measures")]
         [Display(Name = "Measure Id")]
-        public int MeasureID { get; set; }
+        public int MeasuresID { get; set; }
+
+        [Display(Name = "Measurement Unit(e.g. pounds")]
+        [ForeignKey("MeasuresID")]
+        public Measure Measure { get; set; }
 
         //Total weight of a single item
         [Display(Name = "Weight")]
@@ -64,24 +54,17 @@ namespace WhoLives.Models
         [Display(Name = "Last Modified By")]
         public string LastModifiedBy { get; set; }
 
-        public int TempRequired { get; set; }
-
         //Used to log the modified records date
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime LastModifiedDate { get; set; }
 
-        //Foreign key for the Assembly identifier
-        [ForeignKey("Assembly")]
-        [Display(Name = "Assembly Id")]
-        public int? AssemblyID { get; set; }
+        
 
         //NAVIGATION PROPERTIES
-        //public virtual ICollection<RecipeLine> RecipeLines { get; set; }
-        //public virtual ICollection<AssemblyRecipe> AssemblyRecipes { get; set; }
-        //public virtual ICollection<OrderItem> OrderItems { get; set; }
-
-        [Display(Name = "Measurement Unit(e.g. pounds")]
-        public virtual Measure Measure { get; set; }
+        public virtual ICollection<VendorItem> VendorItems { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<BuildAssembly> BuildAssemblyList { get; set; }
+        
     }
 }
