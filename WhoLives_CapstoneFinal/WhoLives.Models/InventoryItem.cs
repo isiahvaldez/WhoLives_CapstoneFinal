@@ -31,9 +31,11 @@ namespace WhoLives.Models
 
         //Cost to WhoLives to purchase the item
         [Display(Name = "Retail Cost")]
-        [DataType(DataType.Currency)]
-        [Column(TypeName = "money")]
-        public decimal ListRetailCost { get; set; }
+       //[DataType(DataType.Currency)]
+        //[Column(TypeName = "money")]
+        [Range(1, int.MaxValue, ErrorMessage = "Cost should be greater then 0.00")]
+        public double ListRetailCost { get; set; }
+        // public decimal ListRetailCost { get; set; }
 
         //Minimum number of parts to have available
         [Display(Name = "Reorder Quantity")]
@@ -48,8 +50,10 @@ namespace WhoLives.Models
 
         //Total weight of a single item
         [Display(Name = "Weight")]
-        public decimal MeasureAmnt { get; set; }
-
+        [Range(1, int.MaxValue, ErrorMessage = "Weight should be greater then 0.00")]
+        public double MeasureAmnt { get; set; }
+        //public decimal MeasureAmnt { get; set; }
+        
         //Used to log the username of a modified record
         [Display(Name = "Last Modified By")]
         public string LastModifiedBy { get; set; }

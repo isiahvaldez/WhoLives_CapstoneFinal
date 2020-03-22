@@ -10,8 +10,8 @@ using WhoLives.DataAccess;
 namespace WhoLives.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200321033338_Initial2")]
-    partial class Initial2
+    [Migration("20200322035356_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -228,7 +228,7 @@ namespace WhoLives.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("InventoryItemID")
+                    b.Property<int?>("InventoryItemID")
                         .HasColumnType("int");
 
                     b.Property<int>("ItemQty")
@@ -282,11 +282,11 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ListRetailCost")
-                        .HasColumnType("money");
+                    b.Property<double>("ListRetailCost")
+                        .HasColumnType("float");
 
-                    b.Property<decimal>("MeasureAmnt")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("MeasureAmnt")
+                        .HasColumnType("float");
 
                     b.Property<int>("MeasuresID")
                         .HasColumnType("int");
@@ -509,9 +509,7 @@ namespace WhoLives.DataAccess.Migrations
                 {
                     b.HasOne("WhoLives.Models.InventoryItem", "InventoryItem")
                         .WithMany()
-                        .HasForeignKey("InventoryItemID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InventoryItemID");
                 });
 
             modelBuilder.Entity("WhoLives.Models.BuildAssembly", b =>

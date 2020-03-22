@@ -15,7 +15,7 @@ namespace WhoLives.Models
         public int AssemblyID { get; set; }
         
         //Foreign key to link the InventoryItem table to the Assembly Table
-        public int InventoryItemID { get; set; }
+        public int? InventoryItemID { get; set; }
         [ForeignKey("InventoryItemID")]
         public InventoryItem InventoryItem { get; set; }
 
