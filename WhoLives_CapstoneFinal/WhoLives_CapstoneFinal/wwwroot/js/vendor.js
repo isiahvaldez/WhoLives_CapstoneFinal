@@ -6,6 +6,7 @@ $(document).ready(function () {
 
 function loadList() {
     dataTable = $('#DT_load').DataTable({
+        responsive: { details: true },
         "ajax": {
             "url": "/api/vendor/",
             "type": "GET",
@@ -19,11 +20,11 @@ function loadList() {
                 "data": "vendorID",
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a href="/vendor/upsert?vendorID=${data}" class="btn btn-primary text-white" style="cursor:pointer; width:100px;">
-                                    <i class="far fa-edit"></i> Edit
+                                <a href="/vendor/upsert?vendorID=${data}" class="btn btn-primary text-white" style="cursor:pointer; width:40px;">
+                                    <i class="far fa-edit"></i>
                                 </a>
-                                <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/vendor/'+${data})>
-                                    <i class="far fa-trash-alt"></i> Delete
+                                <a class="btn btn-danger text-white" style="cursor:pointer; width:40px;" onclick=Delete('/api/vendor/'+${data})>
+                                    <i class="far fa-trash-alt"></i>
                                 </a>
                              </div>`
                 },
