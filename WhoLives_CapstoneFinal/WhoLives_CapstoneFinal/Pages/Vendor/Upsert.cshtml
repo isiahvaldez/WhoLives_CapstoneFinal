@@ -17,13 +17,13 @@
                 <br />
                 <h2 class="text-dark">@(Model.VendorObj.VendorID != 0 ? "Update" : "Create") Vendor</h2>
             </div>
-            <div class="col-8 pt-3">
+            <div class="col-lg-8 col-sm-12 pt-3">
                 <div class="form-group row">
                     <div class="col-2">
                         <label asp-for="VendorObj.VendorName"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="VendorObj.VendorName" />
+                        <input class="form-control" asp-for="VendorObj.VendorName" autofocus/>
                         <span class="text-danger" asp-validation-for="VendorObj.VendorName"></span>
                     </div>
                 </div>
@@ -46,13 +46,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-9 offset-3">
+                    <div class="col-9 offset-2">
                         <div class="row">
                             <div class="col-6">
                                 <button type="submit" class="btn btn-primary form-control">@(Model.VendorObj.VendorID != 0 ? "Update" : "Create")</button>
                             </div>
                             <div class="col-6">
-                                <a asp-page="./Index" class="btn btn-warning form-control">Back to Vendors</a>
+                                <a asp-page="./Index" class="btn btn-warning form-control">Go Back</a>
                             </div>
                         </div>
                     </div>

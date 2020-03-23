@@ -14,7 +14,15 @@ function loadList() {
         },
         "columns": [
             { "data": "vendorName", "width": "25%" },
-            { "data": "vendorWebsite", "width": "25%" },
+            {
+                "data": "vendorWebsite", "width": "25%",
+                "render": function (data, type) {
+                    if (type == 'display') {
+                        data = '<a href="' + data + '">' + data + '</a>';
+                    }
+                    return data;
+                }
+            },
             { "data": "phoneNumber", "width": "25%"},
             {
                 "data": "vendorID",
