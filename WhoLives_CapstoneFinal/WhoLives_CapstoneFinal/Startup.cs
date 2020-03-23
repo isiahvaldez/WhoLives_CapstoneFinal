@@ -34,7 +34,10 @@ namespace WhoLives_CapstoneFinal
                     Configuration.GetConnectionString("DefaultConnection")));
             _ = services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +65,8 @@ namespace WhoLives_CapstoneFinal
             {
                 endpoints.MapRazorPages();
             });
+
+            app.UseMvc();
         }
     }
 }

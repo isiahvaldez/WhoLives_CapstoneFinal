@@ -12,14 +12,14 @@ function loadList() {
             "datatype": "json"
         },
         "columns": [
-            //{ "data": "vendorName", "width": "25%" },
-            //{ "data": "vendorWebsite", "width": "25%" },
-            { "data": "phoneNumber", "width": "25%"}/*,
+            { "data": "vendorName", "width": "25%" },
+            { "data": "vendorWebsite", "width": "25%" },
+            { "data": "phoneNumber", "width": "25%"},
             {
-                "data": "id",
+                "data": "vendorID",
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a href="/vendor/upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                <a href="/upsert?vendorID=${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
                                     <i class="far fa-edit"></i> Edit
                                 </a>
                                 <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/vendor/'+${data})>
@@ -28,7 +28,7 @@ function loadList() {
                              </div>`
                 },
                 "width": "25%"
-            }*/
+            }
         ],
         "language": {
             "emptyTable": "no data found."
