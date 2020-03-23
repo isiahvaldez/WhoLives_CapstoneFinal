@@ -7,27 +7,28 @@ $(document).ready(function () {
 function loadList() {
     dataTable = $('#DT_load').DataTable({
         "ajax": {
-            "url": "/api/javascript/",
+            "url": "/api/vendor/",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "name", "width": "40%" },
-            { "data": "displayOrder", "width": "30%" },
+            //{ "data": "vendorName", "width": "25%" },
+            //{ "data": "vendorWebsite", "width": "25%" },
+            { "data": "phoneNumber", "width": "25%"}/*,
             {
                 "data": "id",
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a href="/Vendor/upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                <a href="/vendor/upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
                                     <i class="far fa-edit"></i> Edit
                                 </a>
-                                <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/javascript/'+${data})>
+                                <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/vendor/'+${data})>
                                     <i class="far fa-trash-alt"></i> Delete
                                 </a>
                              </div>`
                 },
-                "width": "30%"
-            }
+                "width": "25%"
+            }*/
         ],
         "language": {
             "emptyTable": "no data found."
