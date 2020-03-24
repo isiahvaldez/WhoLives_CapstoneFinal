@@ -1,10 +1,6 @@
 ﻿@page
 @model WhoLives_CapstoneFinal.IndexModel
 
-@{
-    ViewData["Title"] = "Orders";
-}
-
 <div class="container">
     <br />
     <div class="container">
@@ -39,11 +35,11 @@
     </div>
     <div class="row">
         <div class="col-12 text-right">
-            <a asp-page="/PurchaseOrders/Upsert"><i class="fa fa-plus-circle" style="font-size:48px"></i></a>
+            <a asp-page="/PurchaseOrders/Upsert"></a>
         </div>
     </div>
 </div>
 
 @section Scripts{
-    <script src="~/js/order.js"></script>
+    <script src="~/js/order.js" page-type="index"><meta name="page-type" content="index"/></script>
 }
