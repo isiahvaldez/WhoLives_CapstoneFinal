@@ -20,12 +20,12 @@ namespace WhoLives_CapstoneFinal.Pages.Vendor
 
         [BindProperty]
         public WhoLives.Models.Vendor VendorObj { get; set; }
-        public IActionResult OnGet(int? id)
+        public IActionResult OnGet(int? vendorID)
         {
             VendorObj = new WhoLives.Models.Vendor();
-            if (id != null) // edit
+            if (vendorID != null) // edit
             {
-                VendorObj = _unitOfWork.Vendors.GetFirstOrDefault(v => v.VendorID == id);
+                VendorObj = _unitOfWork.Vendors.GetFirstOrDefault(v => v.VendorID == vendorID);
                 if (VendorObj == null)
                 {
                     return NotFound();

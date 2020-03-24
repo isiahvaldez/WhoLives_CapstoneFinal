@@ -3,38 +3,39 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WhoLives_CapstoneFinal</title>
+    <title style="text-wrap:none">@ViewData["Title"] - The Village Drill</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" type="text/css" href="~/css/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="~/css/toastr.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">WhoLives_CapstoneFinal</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <a class="navbar-brand text-white" asp-area="" asp-page="/Index" >The Village Drill</a>
+                <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="Inventory/Index">Inventory</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Inventory/Index">Inventory</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="PurchaseOrders/Index">Inventory</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/PurchaseOrders/Index">Orders</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="vendors/Index">Inventory</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Vendor/Index">Vendors</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="Assemblies/Index">Inventory</a>
+                            <a class="nav-link text-white" asp-area="" asp-page="/Assemblies/Index">Assemblies</a> <!--There isn't a folder or page for this yet - IV 3/22-->
                         </li>
                     </ul>
                 </div>
@@ -47,9 +48,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - WhoLives_CapstoneFinal - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <footer class="border-top footer text-white bg-primary">
+        <div class="container text-white">
+            &copy; 2020 - WHO lives - Village Drill <a asp-area="" asp-page="/Privacy" class="text-white-50">Privacy</a>
         </div>
     </footer>
 
@@ -57,11 +58,13 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script type="text/javascript" serc="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="~/js/toastr.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/xzfm3lxq7esxekkifl0kehm7uy7kkowdtuuxjet3uovkag5z/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
+
 
     @RenderSection("Scripts", required: false)
 </body>

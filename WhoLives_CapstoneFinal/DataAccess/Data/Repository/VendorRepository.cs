@@ -32,6 +32,7 @@ namespace WhoLives.DataAccess.Data.Repository
 
             objFromDb.VendorName = vendor.VendorName;
             objFromDb.VendorWebsite = vendor.VendorWebsite;
+            objFromDb.PhoneNumber = vendor.PhoneNumber;
 
             _db.SaveChanges();
         }

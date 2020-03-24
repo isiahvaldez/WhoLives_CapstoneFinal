@@ -6,27 +6,37 @@ $(document).ready(function () {
 
 function loadList() {
     dataTable = $('#DT_load').DataTable({
+        responsive: { details: true },
         "ajax": {
-            "url": "/api/javascript/",
+            "url": "/api/vendor/",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "name", "width": "40%" },
-            { "data": "displayOrder", "width": "30%" },
+            { "data": "vendorName", "width": "25%" },
             {
-                "data": "id",
+                "data": "vendorWebsite", "width": "25%",
+                "render": function (data, type) {
+                    if (type == 'display') {
+                        data = '<a href="' + data + '">' + data + '</a>';
+                    }
+                    return data;
+                }
+            },
+            { "data": "phoneNumber", "width": "25%"},
+            {
+                "data": "vendorID",
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a href="/Vendor/upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
-                                    <i class="far fa-edit"></i> Edit
+                                <a href="/vendor/upsert?vendorID=${data}" class="btn btn-primary text-white" style="cursor:pointer; width:40px;">
+                                    <i class="far fa-edit"></i>
                                 </a>
-                                <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/javascript/'+${data})>
-                                    <i class="far fa-trash-alt"></i> Delete
+                                <a class="btn btn-danger text-white" style="cursor:pointer; width:40px;" onclick=Delete('/api/vendor/'+${data})>
+                                    <i class="far fa-trash-alt"></i>
                                 </a>
                              </div>`
                 },
-                "width": "30%"
+                "width": "25%"
             }
         ],
         "language": {

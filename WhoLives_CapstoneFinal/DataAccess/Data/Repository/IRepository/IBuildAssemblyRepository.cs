@@ -6,10 +6,10 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess.Data.Repository.IRepository
 {
-    public interface IAssemblyItemRepository : IRepository<AssemblyItem>
+    public interface IBuildAssemblyRepository : IRepository<BuildAssembly>
     {
         IEnumerable<SelectListItem> GetItemListForDropDown();
 
-        void update(AssemblyItem assemblyItem);
+        void update(BuildAssembly buildAssembly);
     }
 }
