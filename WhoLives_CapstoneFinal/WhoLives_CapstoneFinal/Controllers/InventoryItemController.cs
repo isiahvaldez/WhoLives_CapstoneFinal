@@ -18,14 +18,33 @@ namespace WhoLives_CapstoneFinal.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(string input)
         {
-            return Json(new { data = _unitOfWork.InventoryItems.GetAll() });
-        }
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Json(new { data = _unitOfWork.InventoryItems.GetAll(i=>i.IsAssembly != true) });
-        }
+            if (input.Equals("ALL"))
+            {
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll() });
+            }
+            else if (input.Equals("ORDER"))
+            {
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
+            }
+            else
+            {
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
+            }
+        }       
+        //public IActionResult GetOrder()
+        //{
+        //    return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
+
+        //}
+        //public IActionResult GetAssembly()
+        //{
+        //    return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
+
+        //}
+
+
+
     }
 }
