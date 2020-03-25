@@ -71,11 +71,11 @@ function loadAssemblyList() {
                 "data": "inventoryItemID",
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a  class="btn btn-primary text-white" style="cursor:pointer; width:40px;">
-                                    <i class="far fa-edit"></i>
+                                <a  class="btn btn-primary text-white" style="cursor:pointer; width:50%;">
+                                    <i class="far fa-edit">Assemble</i>
                                 </a>
-                                <a class="btn btn-danger text-white" style="cursor:pointer; width:40px;" >
-                                    <i class="far fa-trash-alt"></i>
+                                <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" >
+                                    <i class="far fa-trash-alt">Disassemble</i>
                                 </a>
                              </div>`
                 },
