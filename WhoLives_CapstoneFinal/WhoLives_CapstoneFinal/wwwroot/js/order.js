@@ -22,29 +22,29 @@ function loadList() {
         "columns": [
             {
                 "data": "vendor.vendorName",
-                "width": "25%"
+                "width": "35%"
             },
             {
                 "data": "po",
-                "width": "15%"
+                "width": "20%"
             },
             {
                 "data": "status",
-                "width": "15%"
+                "width": "25%"
             },
             {
                 "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">
-                            <a href="/order/upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width: 100px">
-                                <i class="far fa-edit"></i> Edit
+                            <a href="/order/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 100px">
+                                <i class="far fa-edit"></i>
                             </a>
-                            <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/order/'+${data})>
-                                <i class="far fa-trash-alt"></i> Delete
+                            <a class="btn btn-danger" style="cursor:pointer; width:100px;" onclick=Delete('/api/order/'+${data})>
+                                <i class="far fa-trash-alt"></i>
                             </a>
                         </div>`;
                 },
-                "width": "30%"
+                "width": "20%"
             }
         ],
         "language": {
