@@ -20,7 +20,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Json("some data");
+            return Json(new { data = _unitOfWork.InventoryItems.GetAll() });
         }
     }
 }
