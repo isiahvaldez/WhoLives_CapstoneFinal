@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
@@ -17,7 +18,11 @@ namespace WhoLives.DataAccess.Data.Repository
         }
         public IEnumerable<SelectListItem> GetItemListForDropDown()
         {
-            throw new NotImplementedException();
+            return _db.InventoryItems.Select(item => new SelectListItem()
+            {
+                Text = item.Name,
+                Value = item.InventoryItemID.ToString()
+            });
         }
 
         public void update(InventoryItem item)

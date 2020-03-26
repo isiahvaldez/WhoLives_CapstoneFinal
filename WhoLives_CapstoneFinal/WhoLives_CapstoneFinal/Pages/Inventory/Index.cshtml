@@ -1,7 +1,7 @@
 ﻿@page
 @model WhoLives_CapstoneFinal.Pages.Inventory.IndexModel
 @{
-    ViewData["Title"] = "Index";
+    //ViewData["Title"] = "Index";
 
     //var assemblyList = new List<Models.Item>();
     //var reorderList = new List<Models.Item>();
@@ -19,16 +19,16 @@
     //}
 }
 
-    <div class="row">
-        <div class="col-6">
-            <h2 class="text-primary">Inventory</h2>
-        </div>
-        <div class="col-6 text-right">
-            <a asp-page="Upsert" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Create New</a>
-
-        </div>
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-primary">Inventory</h2>
     </div>
-<br/><br/>
+    <div class="col-6 text-right">
+        <a asp-page="Upsert" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Create New</a>
+    </div>
+</div>
+<br />
+<br />
 <div class="container">
     <br />
     <div class="container">
@@ -68,8 +68,8 @@
                                 </tr>
                             </thead>
                         </table>
-                        <div class="col-6">
-                            <button class="btn btn-primary" asp-page="./OrderPopup">Re Order</button>
+                        <div class="col-12 text-right">
+                            <button class="btn btn-primary " asp-page="./OrderPopup">Re Order</button>
                         </div>
 
                     </div>
@@ -91,4 +91,7 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script src="~/js/InventoryItem.js"></script>
+}
 
