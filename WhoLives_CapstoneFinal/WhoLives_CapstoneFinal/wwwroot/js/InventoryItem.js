@@ -65,13 +65,13 @@ function loadAssemblyList() {
         },
         "columns": [
             { "data": "name", "width": "50%" },
-            { "data": "totalLooseQty", "width": "10%" },
-            { "data": "reorderQty", "width": "10%" },
+            { "data": "totalLooseQty", "width": "20%" },
+            { "data": "reorderQty", "width": "20%" },
             {
                 "data": "inventoryItemID",
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a  class="btn btn-primary text-white" style="cursor:pointer; width:50%;">
+                                <a  class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="swal('Hello World');">
                                     <i class="far fa-edit">Assemble</i>
                                 </a>
                                 <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" >
