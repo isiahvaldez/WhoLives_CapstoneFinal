@@ -33,18 +33,5 @@ namespace WhoLives_CapstoneFinal.Controllers
                 return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
             }
         }       
-        //public IActionResult GetOrder()
-        //{
-        //    return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
-
-        //}
-        //public IActionResult GetAssembly()
-        //{
-        //    return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
-
-        //}
-
-
-
     }
 }
