@@ -14,8 +14,6 @@ namespace WhoLives_CapstoneFinal.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _uow;
-        [BindProperty]
-        public PurchaseOrderVM PurchaseOrderVM { get; set; }
         public OrderController(IUnitOfWork uow)
         {
             _uow = uow;
