@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WhoLives.DataAccess.Data.Repository.IRepository;
+using WhoLives.Models.ViewModels;
 
 namespace WhoLives_CapstoneFinal.Controllers
 {
@@ -13,7 +14,8 @@ namespace WhoLives_CapstoneFinal.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _uow;
-
+        [BindProperty]
+        public PurchaseOrderVM PurchaseOrderVM { get; set; }
         public OrderController(IUnitOfWork uow)
         {
             _uow = uow;
