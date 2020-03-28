@@ -1,15 +1,12 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
-    //var scripts = document.getElementsByTagName('script');
-    //var lastScript = scripts[scripts.length - 1];
-    //let type = lastScript.getAttribute('page-type');
-    //if (document.getElementsByTagName('page-type') == 'upsert') {
-    //    loadUpsertList();
-    //}
-    //else {
+    if (document.location.pathname.toLowerCase().includes('upsert')) {
+        loadUpsertList();
+    }
+    else {
         loadList();
-    //}
+    }
 });
 
 function loadList() {
