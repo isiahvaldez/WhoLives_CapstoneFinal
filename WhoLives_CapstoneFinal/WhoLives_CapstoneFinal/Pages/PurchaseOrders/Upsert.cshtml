@@ -24,18 +24,18 @@
             </div>
             <div class="col-3 px-3 border offset-9">
                 <!--Date group-->
-                <label asp-for="PurchaseOrder.DateOrdered" class="control-label">Order Date:</label>
-                <input name="DateOrdered" asp-for="PurchaseOrder.DateOrdered" class="form-control" />
-                <span asp-validation-for="PurchaseOrder.DateOrdered" class="text-danger"></span>
-                <label asp-for="PurchaseOrder.StatusChangeDate" class="control-label">Status Update:</label>
-                <input name="DateOrdered" asp-for="PurchaseOrder.StatusChangeDate" class="form-control" />
-                <span asp-validation-for="PurchaseOrder.StatusChangeDate" class="text-danger"></span>
+                <label asp-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="control-label">Order Date:</label>
+                <input name="DateOrdered" asp-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="form-control" />
+                <span asp-validation-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="text-danger"></span>
+                <label asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="control-label">Status Update:</label>
+                <input name="DateOrdered" asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="form-control" />
+                <span asp-validation-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="text-danger"></span>
             </div>
             <div class="col-3 px-3 border">
                 <!--PO #-->
-                <label asp-for="PurchaseOrder.PO" class="control-label">Vendor PO:</label>
-                <input name="VendorSKU" asp-for="PurchaseOrder.PO" class="form-control" />
-                <span asp-validation-for="PurchaseOrder.PO" class="text-danger"></span>
+                <label asp-for="PurchaseOrderVM.OrderInfo.PO" class="control-label">Vendor PO:</label>
+                <input name="VendorSKU" asp-for="PurchaseOrderVM.OrderInfo.PO" class="form-control" />
+                <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
             </div>
             <div>
                 <label class="control-label">Export: </label>
@@ -53,10 +53,10 @@
                 </thead>
             </table>
             <!--Price-->
-            <label asp-for="PurchaseOrder.TotalPrice">Total Price:</label>
+            <label asp-for="PurchaseOrderVM.OrderInfo.TotalPrice">Total Price:</label>
             <div class="col-3 px-3 border">
-                <input name="PO" asp-for="PurchaseOrder.TotalPrice" class="form-control" />
-                <span asp-validation-for="PurchaseOrder.TotalPrice" class="text-danger"></span>
+                <input name="PO" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" />
+                <span asp-validation-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="text-danger"></span>
             </div>
         </div>
     </div>
