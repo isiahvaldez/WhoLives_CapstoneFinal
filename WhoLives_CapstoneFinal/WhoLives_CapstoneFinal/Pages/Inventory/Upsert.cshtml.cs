@@ -24,35 +24,33 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
 
         [BindProperty]
         public InventoryItem InventoryItemObj { get; set; }
+
         public IActionResult OnGet(int? id)
         {
-            //MenuItemObj = new MenuItemVM
-            //{
-            //    CategoryList = _unitOfWork.Category.GetCategoryListForDropDown(),
-            //    FoodTypeList = _unitOfWork.FoodType.GetFoodTypeListForDropDown(),
-            //    MenuItem = new Models.MenuItem()
-            //};
-
-            InventoryItemObj = new WhoLives.Models.InventoryItem()
-
-
-            if (id != null) //edit
+            InventoryItemObj = new InventoryItem();
+            if (id != null)
             {
-                MenuItemObj.MenuItem = _unitOfWork.MenuItem.GetFirstOrDefault(u => u.Id == id);
-                if (MenuItemObj == null)
+                InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
+                if (InventoryItemObj == null)
                 {
                     return NotFound();
                 }
-
-                InventoryItemObj.InventoryItemID = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID = id);
             }
-
             return Page();
 
         }
 
+
         public IActionResult OnPost()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            if (InventoryItemObj.InventoryItemID == 0)
+            {
+                _unitOfWork.InventoryItems.Add(InventoryItemObj);
+            }
             _unitOfWork.Save();
             return RedirectToPage("./Index");
         }
