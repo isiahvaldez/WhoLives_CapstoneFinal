@@ -1,4 +1,5 @@
 ﻿var dataTable;
+var name = document.createElement("input");
 $(document).ready(function () {    
     loadInventoryList();
     loadOrderList();
@@ -65,13 +66,13 @@ function loadAssemblyList() {
         },
         "columns": [
             { "data": "name", "width": "50%" },
-            { "data": "totalLooseQty", "width": "10%" },
-            { "data": "reorderQty", "width": "10%" },
+            { "data": "totalLooseQty", "width": "20%" },
+            { "data": "reorderQty", "width": "20%" },
             {
                 "data": "inventoryItemID",
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a  class="btn btn-primary text-white" style="cursor:pointer; width:50%;">
+                                <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble_disassebmle(${data})">
                                     <i class="far fa-edit">Assemble</i>
                                 </a>
                                 <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" >
@@ -87,5 +88,15 @@ function loadAssemblyList() {
         },
         "width": "100%"
 
+    });
+}
+function assemble_disassebmle(id) {
+    console.log("my Id is" + id);
+    swal({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'How Many?',
+        input: 'number',
+        footer: '<a href>Why do I have this issue?</a>'
     });
 }

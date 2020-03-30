@@ -16,10 +16,12 @@ namespace WhoLives.Models
         [ForeignKey("VendorID")]
         public Vendor Vendor { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOrdered { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StatusChangeDate { get; set; }
@@ -39,6 +41,6 @@ namespace WhoLives.Models
         public DateTime LastModifiedDate { get; set; }
 
         [NotMapped]
-        public List<OrderItem> OrderItems { get; set; }
+        public IEnumerable<OrderItem> OrderItems { get; set; }
     }
 }
