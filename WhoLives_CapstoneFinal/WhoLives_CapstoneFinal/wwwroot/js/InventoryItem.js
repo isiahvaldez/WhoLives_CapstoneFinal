@@ -1,4 +1,5 @@
-﻿var dataTable;
+﻿
+var dataTable;
 var name = document.createElement("input");
 $(document).ready(function () {    
     loadInventoryList();
@@ -16,7 +17,14 @@ function loadInventoryList() {
 
         },
         "columns": [
-            {"data": "name", "width": "50%" },
+            {
+                "data": { ItemId: "inventoryItemID", name: "name" },
+                "render": function (data) {
+                    return `<a href=/Inventory/Upsert?id=${data.inventoryItemID} style = "cursor:pointer"> 
+                            ${data.name}
+                    </a> `
+                }
+            },
             { "data": "totalLooseQty", "width": "25%" },
             {"data":"reorderQty","width":"25%"}
 
@@ -70,12 +78,15 @@ function loadAssemblyList() {
             { "data": "reorderQty", "width": "20%" },
             {
                 "data": "inventoryItemID",
+          
                 "render": function (data) {
                     return ` <div class="text-center">
-                                <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble_disassebmle(${data})">
+                               <input type="number" style="width:15%;" id ="asse${data}"/> <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble('/api/inventoryItem/'+${data})">
                                     <i class="far fa-edit">Assemble</i>
                                 </a>
-                                <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" >
+                            </div>
+                            <div class="text-center">
+                               <input type="number" style="width:15%;"/> <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;onClick="disassebmle(${data})" >
                                     <i class="far fa-trash-alt">Disassemble</i>
                                 </a>
                              </div>`
@@ -90,13 +101,43 @@ function loadAssemblyList() {
 
     });
 }
-function assemble_disassebmle(id) {
-    console.log("my Id is" + id);
-    swal({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'How Many?',
-        input: 'number',
-        footer: '<a href>Why do I have this issue?</a>'
+//function assemble(id) {
+//    console.log('asse' + id);
+//    var qty = document.getElementById('asse' + id).value;
+//    console.log("my Id is" + id + 'and I made ' + qty);
+//    $.ajax({
+//        url: '/api/inventoryItem',
+//        type: 'POST',       
+//        data: JSON.stringify(id),
+//        contentType: 'application/json',
+//        success: function (data) {
+//            if (data.success) {
+//                console.log('Finally');
+//            }
+//            else {
+//                console.log('Error');
+//            }
+//        }
+//    });
+//}
+function assemble(url) {
+    //console.log('asse' + id);
+    console.log(url);
+    //var qty = document.getElementById('asse' + id).value;
+    //console.log("my Id is" + id + 'and I made ' + qty);
+    $.ajax({
+        url: url,
+        type: 'POST',
+        success: function (data) {
+            if (data.success) {
+                console.log('Finally');
+            }
+            else {
+                console.log('Error');
+            }
+        }
     });
+}
+function disassebmle(id) {
+    var qty = document.getElementById('asse' + id).value;
 }
