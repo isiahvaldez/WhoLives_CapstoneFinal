@@ -1,13 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using WhoLives.DataAccess;
 using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
 
-namespace WhoLives_CapstoneFinal.Pages.Vendor
+namespace WhoLives_CapstoneFinal.Pages.Inventory
 {
     public class UpsertModel : PageModel
     {
@@ -19,24 +23,24 @@ namespace WhoLives_CapstoneFinal.Pages.Vendor
         }
 
         [BindProperty]
-        public WhoLives.Models.Vendor VendorObj { get; set; }
+        public InventoryItem InventoryItemObj { get; set; }
 
-        [BindProperty]
-        public WhoLives.Models.PurchaseOrder PurchaseOrderObj { get; set; }
-
-        public IActionResult OnGet(int? vendorID)
+        public IActionResult OnGet(int? id)
         {
-            VendorObj = new WhoLives.Models.Vendor();
-            if (vendorID != null) // edit
+            InventoryItemObj = new InventoryItem();
+
+            if (id != null)
             {
-                VendorObj = _unitOfWork.Vendors.GetFirstOrDefault(v => v.VendorID == vendorID);
-                if (VendorObj == null)
+                InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
+                if (InventoryItemObj == null)
                 {
                     return NotFound();
                 }
             }
             return Page();
+
         }
+
 
         public IActionResult OnPost()
         {
@@ -44,15 +48,9 @@ namespace WhoLives_CapstoneFinal.Pages.Vendor
             {
                 return Page();
             }
-
-            if (VendorObj.VendorID == 0) // new food type 
+            if (InventoryItemObj.InventoryItemID == 0)
             {
-                _unitOfWork.Vendors.Add(VendorObj);
-            }
-
-            else // edit vendor
-            {
-                _unitOfWork.Vendors.Update(VendorObj);
+                _unitOfWork.InventoryItems.Add(InventoryItemObj);
             }
             _unitOfWork.Save();
             return RedirectToPage("./Index");

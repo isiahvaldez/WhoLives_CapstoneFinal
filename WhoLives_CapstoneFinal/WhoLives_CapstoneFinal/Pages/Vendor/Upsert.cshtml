@@ -4,7 +4,6 @@
     ViewData["Title"] = "Manage Vendor";
 }
 
-<!--NOTE: This is pretty much a direct copy from Curry to get us going-->
 <form method="post" asp-action="Upsert">
     <div class="container">
         <div class="row px-2 mx-2 backgroundWhite border">
@@ -17,13 +16,13 @@
                 <br />
                 <h2 class="text-dark">@(Model.VendorObj.VendorID != 0 ? "Update" : "Create") Vendor</h2>
             </div>
-            <div class="col-lg-8 col-sm-12 pt-3">
+            <div class="col-lg-6 col-md-12 pt-3">
                 <div class="form-group row">
                     <div class="col-2">
                         <label asp-for="VendorObj.VendorName"></label>
                     </div>
                     <div class="col-9">
-                        <input class="form-control" asp-for="VendorObj.VendorName" autofocus/>
+                        <input class="form-control" asp-for="VendorObj.VendorName" autofocus />
                         <span class="text-danger" asp-validation-for="VendorObj.VendorName"></span>
                     </div>
                 </div>
@@ -58,7 +57,25 @@
                     </div>
                 </div>
             </div>
+            <div class="border backgroundWhite container col-lg-6 col-md-12 pt-3">
+                <br />
+                <table id="DT_load" class="table table-striped table-bordered" style="table-layout:fixed; width:100%">
+                    <thead>
+                        <tr>
+                            <th>PO</th>
+                            <th>Date Placed</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <script src="~/js/vendororder.js"></script>
+}
 
