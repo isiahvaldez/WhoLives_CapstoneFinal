@@ -28,6 +28,7 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
         public IActionResult OnGet(int? id)
         {
             InventoryItemObj = new InventoryItem();
+
             if (id != null)
             {
                 InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
