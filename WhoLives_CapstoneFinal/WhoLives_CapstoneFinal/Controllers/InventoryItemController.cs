@@ -13,6 +13,10 @@ namespace WhoLives_CapstoneFinal.Controllers
     public class InventoryItemController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
+        public int ID { get; set; }
+        public int quantity { get; set; }
+
         public InventoryItemController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -33,17 +37,20 @@ namespace WhoLives_CapstoneFinal.Controllers
                 return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
             }
         }       
-        //public IActionResult GetOrder()
-        //{
-        //    return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
+       
+        [HttpPost("{id}")]
+        public IActionResult Assemble(string temp)
+        {
+            var objFromDb = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == Int32.Parse(temp));
+            if (objFromDb == null)
+            {
+                return Json(new { success = false, message = "Error While Locking / Unlocking" });
+            }
+         
+            _unitOfWork.Save();
 
-        //}
-        //public IActionResult GetAssembly()
-        //{
-        //    return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
-
-        //}
-
+            return Json(new { success = true, message = "Lock / Unlock Successful" });
+        }
 
 
     }

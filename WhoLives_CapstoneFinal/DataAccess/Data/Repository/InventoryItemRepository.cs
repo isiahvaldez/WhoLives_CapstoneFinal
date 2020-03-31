@@ -27,7 +27,22 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public void update(InventoryItem item)
         {
-            throw new NotImplementedException();
+            var objFromDb = _db.InventoryItems.FirstOrDefault(v => v.InventoryItemID == item.InventoryItemID);
+
+            objFromDb.IsAssembly = item.IsAssembly;
+            objFromDb.LastModifiedBy = item.LastModifiedBy;
+            objFromDb.LastModifiedDate = item.LastModifiedDate;
+            objFromDb.ListRetailCost = item.ListRetailCost;
+            objFromDb.Measure = item.Measure;
+            objFromDb.MeasureAmnt = item.MeasureAmnt;
+            objFromDb.MeasuresID = item.MeasuresID;
+            objFromDb.Name = item.Name;
+            objFromDb.OrderItems = item.OrderItems;
+            objFromDb.ReorderQty = item.ReorderQty;
+            objFromDb.TotalLooseQty = item.TotalLooseQty;
+            objFromDb.VendorItems = item.VendorItems;
+
+            _db.SaveChanges();
         }
     }
 }
