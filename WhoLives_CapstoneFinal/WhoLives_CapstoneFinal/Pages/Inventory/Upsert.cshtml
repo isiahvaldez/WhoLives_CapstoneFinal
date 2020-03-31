@@ -2,7 +2,7 @@
 @model WhoLives_CapstoneFinal.Pages.Inventory.UpsertModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Part Information";
 }
 
 <h1>Part Information</h1>
@@ -39,27 +39,39 @@
             <div class="form-group">
                 <label asp-for="InventoryItemObj.TotalLooseQty" class="control-label mr-3">Total Loose Quantity:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemObj.TotalLooseQty" type="text" value="@Model.InventoryItemObj.TotalLooseQty" class="form-control" readonly required />
+                    <input asp-for="InventoryItemObj.TotalLooseQty" type="text" value="@Model.InventoryItemObj.TotalLooseQty" class="form-control" required />
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemObj.ReorderQty" class="control-label mr-3">Reorder Quantity:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemObj.ReorderQty" type="text" value="@Model.InventoryItemObj.ReorderQty" class="form-control" readonly required />
+                    <input asp-for="InventoryItemObj.ReorderQty" type="text" value="@Model.InventoryItemObj.ReorderQty" class="form-control" required />
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemObj.MeasuresID" class="control-label mr-3">Measure Type:</label>
                 <div class="form-inline col-12">
-                    <select name="measureID" asp-for="InventoryItemObj.MeasuresID" class="form-control" asp-items="@ViewBag.MeasureID" required></select>
+                    <select name="measureID" asp-for="InventoryItemObj.MeasuresID" class="form-control" asp-items="@ViewBag.MeasureID" ></select>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemObj.MeasureAmnt" class="control-label mr-3">Measure Amount:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemObj.MeasureAmnt" type="text" value="@Model.InventoryItemObj.MeasureAmnt" class="form-control" readonly required />
+                    <input asp-for="InventoryItemObj.MeasureAmnt" type="text" value="@Model.InventoryItemObj.MeasureAmnt" class="form-control" required />
                 </div>
             </div>
+
+
+            @*<div class="form-group">
+                    @Html.DropDownListFor(i => i.InventoryItemObj.MeasuresID,//.MenuItemObj.MenuItem.FoodTypeId,
+                   Model.InventoryItemObj.Measure.MeasureName,
+                   //Model.MenuItemObj.FoodTypeList,
+                   "-Please select a Measurement Type",
+                   new { @class = "form-control" })
+
+                    <span class="text-danger" asp-validation-for="InventoryItemObj.InventoryItemID"></span>
+                </div>*@
+
             <div class="custom-control custom-checkbox">
                 <input asp-for="InventoryItemObj.IsAssembly" type="checkbox" class="custom-control-input">
                 <label asp-for="InventoryItemObj.IsAssembly" class="custom-control-label">Is this Item an Assembly?</label>
@@ -79,7 +91,7 @@
             </div>
         </form>
     </div>
-    @*<div class="col-6 card">
+    <div class="col-6 card">
         <br />
         <ul class="nav nav-tabs nav-fill">
             <li><a class="nav-item nav-link active" data-toggle="tab" href="#purchasehistory">Purchase History</a></li>
@@ -90,68 +102,43 @@
         </ul>
         <div class="tab-content">
             <div id="purchasehistory" class="tab-pane fade in active text-center">
-                @if (Model.InventoryItemObj.OrderItems.Count() == 0)
-                {
-                    <h4>No Purchase Orders!</h4>
-                }
-                else
-                {
-                    <div>
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr class="border-bottom">
-                                    <td>Order Date</td>
-                                    <td>Vendor</td>
-                                    <td>Qty</td>
-                                    <td>Price</td>
-                                </tr>
-                            </thead>
-                            <tbody class="p-5">
-                                @foreach (var order in Model.InventoryItemObj.OrderItems)
-                                {
-                                <tr class="border">
-                                    <td>@order.PurchaseOrder.DateOrdered.ToString("MM/dd/yyyy")</td>
-                                    <td>@order.PurchaseOrder.Vendor.VendorName</td>
-                                    <td>CALC QTY</td>
-                                    <td>CALC PRICE</td>
-                                    <td>
-                                        <a asp-page="/Orders/Details" asp-route-id="@order.PurchaseOrderID" class="btn btn-primary">Details</a>
-                                    </td>
-                                </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
+                <div>
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="border-bottom">
+                                <td>Order Date</td>
+                                <td>Vendor</td>
+                                <td>Qty</td>
+                                <td>Price</td>
+                            </tr>
+                        </thead>
+                        <tbody class="p-5">
+                            <tr class="border">
+                                <td>ORDER DATE</td>
+                                <td>VENDER NAME</td>
+                                <td>CALC QTY</td>
+                                <td>CALC PRICE</td>
+                                <td>
+                                    <a asp-page="/Orders/Details" class="btn btn-primary">Details</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div id="assemblycomponents" class="tab-pane fade text-center">
                 <table class="table table-striped">
                     <tbody>
-                        @foreach (var rl in Model.RecipeLines)
-                        {
-                            <tr>
-                                <td>
-                                    <a asp-page="./Edit" asp-route-id="@rl.Item.ItemID">@rl.Item.ItemName</a>
-                                </td>
-                                <td>Required: @rl.RequiredItemQuantity</td>
-                                <td>On Hand: @rl.Item.OnhandQty</td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>Required Quantity: </td>
+                            <td>Available Quantity: </td>
+                        </tr>
                     </tbody>
                 </table>
-
-                <div class="row text-center">
-                    <div class="col-12">
-                        <a asp-page="./AddPart" asp-route-id="@Model.Item.ItemID">
-                            <i class="fas fa-edit" style="font-size:48px"></i>
-                        </a>
-                    </div>
-                </div>
             </div>
-
         </div>
-    </div>*@
+    </div>
 </div>
 
 <script>
