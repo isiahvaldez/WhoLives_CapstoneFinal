@@ -26,6 +26,29 @@ namespace WhoLives.DataAccess.Data.Repository.IRepository
         void Remove(int id);
         // Remove(Object) 
         void Remove(T entity);
+        // Logic ref: http://csharpdocs.com/export-data-to-csv-using-c/
+        StringBuilder ExportList(IEnumerable<T> list)
+        {
+            var stringBuilder = new StringBuilder();
+            var header = typeof(T).GetProperties();
+            for (int i = 0; i < header.Length - 1; i++)
+            {
+                stringBuilder.Append(header[i].Name + ",");
+            }
+            var last = header[header.Length - 1].Name;
+            stringBuilder.Append(last + Environment.NewLine);
+            foreach (var item in list)
+            {
+                var rowValues = typeof(T).GetProperties();
+                for (int i = 0; i < rowValues.Length - 1; i++)
+                {
+                    var prop = rowValues[i];
+                    stringBuilder.Append(prop.GetValue(item) + ",");
+                }
+                stringBuilder.Append(rowValues[rowValues.Length - 1].GetValue(item) + Environment.NewLine);
+            }
+            return stringBuilder;
+        }
 
     }
 }

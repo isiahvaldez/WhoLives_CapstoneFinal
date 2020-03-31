@@ -15,9 +15,20 @@ namespace WhoLives_CapstoneFinal
     {
         private readonly IUnitOfWork _uow;
         public IEnumerable<SelectListItem> VendorList { get; set; }
+        public IEnumerable<SelectListItem> StatusList { get; set; }
         public UpsertModel(IUnitOfWork uow)
         {
             _uow = uow;
+            StatusList = new List<SelectListItem>()
+            {
+                new SelectListItem{Text = "Back Order", Value = "backorder"},
+                new SelectListItem{Text = "Ordered", Value = "ordered"},
+                new SelectListItem{Text = "Shipping", Value = "shipping"},
+                new SelectListItem{Text = "Received", Value = "received"},
+                new SelectListItem{Text = "Partially Received", Value = "partially"},
+                new SelectListItem{Text = "Pending", Value = "pending"},
+                new SelectListItem{Text = "Overdue", Value = "overdue"},
+            };
         }
         [BindProperty]
         public PurchaseOrderVM PurchaseOrderVM { get; set; }
@@ -43,6 +54,10 @@ namespace WhoLives_CapstoneFinal
                 }
             }
             return Page(); //No params refreshes the page
+        }
+        public void ExportCSV()
+        {
+            var list = _uow.OrderItems.ExportList(this.PurchaseOrderVM.OrderInfo.OrderItems);
         }
     }
 }

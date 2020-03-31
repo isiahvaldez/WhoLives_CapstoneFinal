@@ -6,7 +6,7 @@
         <div class="container">
             <h1>Upsert</h1>
             <div class="row">
-                <div class="col-6 border">
+                <div class="col-6 px-3 border py-2">
                     <!--Radio group-->
                     @*<input type="radio" id="back" name="status" value="PurchaseOrder.Status">
         <label for="back">Backorder</label><br>
@@ -23,17 +23,14 @@
         <input type="radio" id="overdue" name="status" value="PurchaseOrder.Status">
         <label for="overdue">Overdue</label>*@
                     <!--Status Dropdown-->
-                    <label asp-for="PurchaseOrderVM.OrderInfo.Status" class="control-label">Status:</label><br />
-                    <select asp-for="PurchaseOrderVM.OrderInfo.Status">
-                        <option>Backorder</option>
-                        <option>Ordered</option>
-                        <option>Shipping</option>
-                        <option>Received</option>
-                        <option>Partially Received</option>
-                        <option>Pending</option>
-                        <option>Overdue</option>
-                    </select>
                     <div class="px-3">
+                        <label asp-for="PurchaseOrderVM.OrderInfo.Status" class="control-label">Status:</label><br />
+                        @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.Status,
+                           Model.StatusList,
+                           "-Select Status-",
+                           new { @class = "form-control" })
+                    </div>
+                    <div class="px-3 py-2">
                         <label asp-for="PurchaseOrderVM.OrderInfo.VendorID" class="control-label">Vendor:</label><br />
                         @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.VendorID,
                            Model.PurchaseOrderVM.VendorList,
@@ -42,7 +39,7 @@
                         <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.VendorID" />
                     </div>
                 </div>
-                <div class="col-6 px-3 border">
+                <div class="col-6 px-3 border py-2">
                     <!--Date group-->
                     <label asp-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="control-label">Order Date:</label>
                     <input name="DateOrdered" asp-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="form-control" />
@@ -53,16 +50,18 @@
                 </div>
                 </div>
             <div class="row">
-                <div class="col-6 px-3 border">
+                <div class="col-6 px-3 border py-2">
                     <!--PO #-->
-                    <label asp-for="PurchaseOrderVM.OrderInfo.PO" class="control-label">Vendor PO:</label>
-                    <input name="VendorSKU" asp-for="PurchaseOrderVM.OrderInfo.PO" class="form-control" />
-                    <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
+                    <div class="px-3">
+                        <label asp-for="PurchaseOrderVM.OrderInfo.PO" class="control-label">Vendor PO:</label>
+                        <input name="VendorSKU" asp-for="PurchaseOrderVM.OrderInfo.PO" class="form-control" />
+                        <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
+                    </div>
                 </div>
-                <div>
+                <div class="col-6 px-3 py-2">
                     <label class="control-label">Export: </label>
-                    <i class="far fa-file-excel-o"></i>
-                    <i class="far fa-file-pdf-o"></i>
+                    <i class="fas fa-file-excel-o" onclick="ExportCSV()">CSV</i>
+                    <i class="fas fa-file-pdf-o"></i>
                 </div>
             </div>
             @*<table id="DT_load" class="table table-striped table-bordered" style="width:100%">
@@ -97,9 +96,15 @@
                              "-Select Vendor-",
                              new { @class = "form-control" })
                                                     </td>
-                            <td asp-for="@i.QuantityOrdered">@i.QuantityOrdered</td>
-                            <td asp-for="@i.Price">@i.Price</td>
-                            <td asp-for="@i.QuantityReceived">@i.QuantityReceived</td>
+                            <td asp-for="@i.QuantityOrdered">
+                                @i.QuantityOrdered
+                            </td>
+                            <td asp-for="@i.Price">
+                                @i.Price
+                            </td>
+                            <td asp-for="@i.QuantityReceived">
+                                <input asp-for="@i.QuantityReceived">
+                            </td>
                             <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
                         </tr>
                         }
@@ -115,9 +120,9 @@
                 </table>
             </div>
             <!--Price-->
-            <label asp-for="PurchaseOrderVM.OrderInfo.TotalPrice">Total Price:</label>
-            <div class="col-3 px-3 border">
-                <input name="PO" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" />
+            <div class="col-3 px-3 row">
+                <label @*asp-for="PurchaseOrderVM.OrderInfo.TotalPrice"*@>Total Price:</label>
+                <input name="totalprice" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" readonly/>
                 <span asp-validation-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="text-danger"></span>
             </div>
         </div>
