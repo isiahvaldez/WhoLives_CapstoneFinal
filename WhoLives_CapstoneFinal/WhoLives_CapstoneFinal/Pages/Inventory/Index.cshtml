@@ -41,16 +41,16 @@
                         <table class="table-bordered table-striped" id="ReOrderTable" style="width:100%">
                             <thead class="thead-dark table-bordered">
                                 <tr class="card-header">
+                                    <th style="position:sticky;top:0" class="text-center">Select</th>
                                     <th style="position:sticky;top:0">Name</th>
                                     <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
                                     <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
                                     <th style="position:sticky;top:0" class="text-center">Vendor</th>
-                                    <th style="position:sticky;top:0" class="text-center">Select</th>
                                 </tr>
                             </thead>
                         </table>
                         <div class="col-12 text-right">
-                            <button class="btn btn-primary " asp-page="./OrderPopup">New Purchase Order</button>
+                            <button class="btn btn-primary "onclick="build_order()">New Purchase Order</button>
                         </div>
 
                     </div>

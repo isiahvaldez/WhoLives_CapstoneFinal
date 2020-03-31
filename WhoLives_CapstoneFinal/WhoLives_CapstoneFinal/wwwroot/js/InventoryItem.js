@@ -36,33 +36,46 @@ function loadInventoryList() {
     });
 }
 function loadOrderList() {
-    dataTable = $('#ReOrderTable').dataTable({ 
+    dataTable = $('#ReOrderTable').DataTable({
         "ajax": {
-        "url": "/api/inventoryItem/",
-        "data": { input:"ORDER" },
-        "type": "GET",
-        "datatype": "json"
+            "url": "/api/inventoryItem/",
+            "data": { input: "ORDER" },
+            "type": "GET",
+            "datatype": "json"
         },
-        "columns" : [
-            { "data": "name", "width": "50%" },
-            { "data": "totalLooseQty", "width": "10%" },
-            { "data": "reorderQty", "width": "10%" },
-            { "data": "vendorItems", "width": "20%"},
-            {"data": "inventoryItemID",
+        select: {
+            style: 'multi'
+        },
+        "columns": [
+            {
+                "data": "inventoryItemID",
                 "render": function (data) {
                     return ` <div class="text-center">
                                <input type="checkbox" />
                              </div>`
                 },
                 "width": "10%"
-            }
+            },
+            { "data": "name", "width": "50%" },
+            { "data": "totalLooseQty", "width": "10%" },
+            { "data": "reorderQty", "width": "10%" },
+            { "data": "vendorItems", "width": "20%" }
 
         ], "language": {
             "emptyTable": "no data found."
         },
         "width": "100%"
 
+    }).on('click', 'tbody tr', function () {
+        if ($('#ReOrderTable').DataTable().row(this, { selected: true }).any()) {
+            //$('#ReOrderTable').DataTable().row(this).deselect();
+            $('#ReOrderTable').DataTable().row(this).select();
+        }
+        else {
+            $('#ReOrderTable').DataTable().row(this).select();
+        }
     });
+    
 }
 function loadAssemblyList() {
     dataTable = $('#AssembleDisassemble').dataTable({
@@ -140,4 +153,13 @@ function assemble(url) {
 }
 function disassebmle(id) {
     var qty = document.getElementById('asse' + id).value;
+}
+function build_order() {
+    var data = $('#ReOrderTable').DataTable();
+    var count = data.fnSettings().fnRecordsDisplay();
+
+    for (var i = 0, ien = data.rows().length(); i < ien; i++) {
+        console.log(data.row(i));
+    }
+    
 }
