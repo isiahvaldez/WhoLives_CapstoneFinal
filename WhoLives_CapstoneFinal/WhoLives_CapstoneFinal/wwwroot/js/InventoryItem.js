@@ -36,39 +36,46 @@ function loadInventoryList() {
     });
 }
 function loadOrderList() {
-    dataTable = $('#ReOrderTable').dataTable({ 
+    dataTable = $('#ReOrderTable').DataTable({
         "ajax": {
-        "url": "/api/inventoryItem/",
-        "data": { input:"ORDER" },
-        "type": "GET",
-        "datatype": "json"
+            "url": "/api/inventoryItem/",
+            "data": { input: "ORDER" },
+            "type": "GET",
+            "datatype": "json"
         },
-        "columns" : [
+        select: {
+            style: 'multi'
+        },
+        "columns": [
             {
-                "data": { ItemId: "inventoryItemID", name: "name" },
-                "render": function (data) {
-                    return `<a href=/Inventory/Upsert?id=${data.inventoryItemID} style = "cursor:pointer"> 
-                            ${data.name}
-                    </a> `
-                }, "width": "50%"  },
-            { "data": "totalLooseQty", "width": "10%" },
-            { "data": "reorderQty", "width": "10%" },
-            { "data": "vendorItems", "width": "20%"},
-            {"data": "inventoryItemID",
+                "data": "inventoryItemID",
                 "render": function (data) {
                     return ` <div class="text-center">
                                <input type="checkbox" />
                              </div>`
                 },
                 "width": "10%"
-            }
+            },
+            { "data": "name", "width": "50%" },
+            { "data": "totalLooseQty", "width": "10%" },
+            { "data": "reorderQty", "width": "10%" },
+            { "data": "vendorItems", "width": "20%" }
 
         ], "language": {
             "emptyTable": "no data found."
         },
         "width": "100%"
 
+    }).on('click', 'tbody tr', function () {
+        if ($('#ReOrderTable').DataTable().row(this, { selected: true }).any()) {
+            //$('#ReOrderTable').DataTable().row(this).deselect();
+            $('#ReOrderTable').DataTable().row(this).select();
+        }
+        else {
+            $('#ReOrderTable').DataTable().row(this).select();
+        }
     });
+
 }
 function loadAssemblyList() {
     dataTable = $('#AssembleDisassemble').dataTable({
