@@ -44,7 +44,14 @@ function loadOrderList() {
         "datatype": "json"
         },
         "columns" : [
-            { "data": "name", "width": "50%" },
+            { 
+                "data": { ItemId: "inventoryItemID", name: "name" },
+                "render": function (data) {
+                    return `<a href=/Inventory/Upsert?id=${data.inventoryItemID} style = "cursor:pointer"> 
+                            ${data.name}
+                    </a> `
+                }, "width": "50%"
+            },
             { "data": "totalLooseQty", "width": "10%" },
             { "data": "reorderQty", "width": "10%" },
             { "data": "vendorItems", "width": "20%"},
@@ -73,7 +80,13 @@ function loadAssemblyList() {
             "datatype": "json"
         },
         "columns": [
-            { "data": "name", "width": "50%" },
+            {
+                "data": { ItemId: "inventoryItemID", name: "name" },
+                "render": function (data) {
+                    return `<a href=/Inventory/Upsert?id=${data.inventoryItemID} style = "cursor:pointer"> 
+                            ${data.name}
+                    </a> `
+                }, "width": "50%" },
             { "data": "totalLooseQty", "width": "20%" },
             { "data": "reorderQty", "width": "20%" },
             {
