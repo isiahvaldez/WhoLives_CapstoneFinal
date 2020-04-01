@@ -44,7 +44,8 @@ function loadOrderList() {
             "datatype": "json"
         },
         select: {
-            style: 'multi'
+            style: "multi",
+            items:"row"
         },
         "columns": [
             {
@@ -54,12 +55,12 @@ function loadOrderList() {
                                <input type="checkbox" />
                              </div>`
                 },
-                "width": "10%"
+                "width": "5%"
             },
             { "data": "name", "width": "50%" },
             { "data": "totalLooseQty", "width": "10%" },
             { "data": "reorderQty", "width": "10%" },
-            { "data": "vendorItems", "width": "20%" }
+            { "data": "vendorItems", "width": "25%" }
 
         ], "language": {
             "emptyTable": "no data found."
@@ -69,10 +70,10 @@ function loadOrderList() {
     }).on('click', 'tbody tr', function () {
         if ($('#ReOrderTable').DataTable().row(this, { selected: true }).any()) {
             //$('#ReOrderTable').DataTable().row(this).deselect();
-            $('#ReOrderTable').DataTable().row(this).select();
+            $('#ReOrderTable').DataTable().row(this, { selected: false });
         }
         else {
-            $('#ReOrderTable').DataTable().row(this).select();
+            $('#ReOrderTable').DataTable().row(this, { selected: true });
         }
     });
 
