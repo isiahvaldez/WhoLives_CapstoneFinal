@@ -14,7 +14,6 @@ namespace WhoLives_CapstoneFinal
     public class UpsertModel : PageModel
     {
         private readonly IUnitOfWork _uow;
-        public IEnumerable<SelectListItem> VendorList { get; set; }
         public IEnumerable<SelectListItem> StatusList { get; set; }
         public UpsertModel(IUnitOfWork uow)
         {
@@ -55,9 +54,10 @@ namespace WhoLives_CapstoneFinal
             }
             return Page(); //No params refreshes the page
         }
-        public void ExportCSV()
+        public object ExportCSV()
         {
-            var list = _uow.OrderItems.ExportList(this.PurchaseOrderVM.OrderInfo.OrderItems);
+            var list = _uow.OrderItems.ExportList(PurchaseOrderVM.OrderInfo.OrderItems);
+            return list;
         }
     }
 }
