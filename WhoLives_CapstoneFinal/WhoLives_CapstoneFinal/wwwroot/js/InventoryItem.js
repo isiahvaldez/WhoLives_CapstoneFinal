@@ -50,11 +50,12 @@ function loadOrderList() {
         "columns": [
             {
                 "data": "inventoryItemID",
-                "render": function (data) {
-                    return ` <div class="text-center">
-                               <input type="checkbox" />
-                             </div>`
-                },
+                //"render": function (data) {
+                //    return ` <div class="text-center">
+                //               <input type="checkbox" />
+                //             </div>`
+                //},
+                "visible":false,
                 "width": "5%"
             },
             { "data": "name", "width": "50%" },
