@@ -19,11 +19,11 @@ namespace WhoLives_CapstoneFinal.Controllers
             _uow = uow;
         }
         [HttpGet]
-        public IActionResult Get(string input) {
-            if (input.Equals("upsert"))
-            {
-                return Json(new { data = _uow.OrderItems.GetAll(d => d.PurchaseOrderID == 1) });
-            }
+        public IActionResult Get() {
+            //if (input.Equals("upsert"))
+            //{
+            //    return Json(new { data = _uow.OrderItems.GetAll(d => d.PurchaseOrderID == 1) });
+            //}
             return Json(new { data = _uow.PurchaseOrders.GetAll(null, null, "Vendor") }); 
         }
     }
