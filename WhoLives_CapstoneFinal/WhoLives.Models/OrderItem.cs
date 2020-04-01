@@ -26,7 +26,9 @@ namespace WhoLives.Models
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Please order 1 or more items.")]
         public int QuantityOrdered { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a valid quantity.")]
         public int QuantityReceived { get; set; }
 
         public bool ItemReceived { get; set; }
