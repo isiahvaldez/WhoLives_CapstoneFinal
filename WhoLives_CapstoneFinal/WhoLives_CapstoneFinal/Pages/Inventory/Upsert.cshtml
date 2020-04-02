@@ -61,16 +61,20 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                @Html.DropDownListFor(i => i.InventoryItemObj.MeasuresID,//.MenuItemObj.MenuItem.FoodTypeId,
+               Model.InventoryItemObj.Measure.MeasureName,
+               //Model.MenuItemObj.FoodTypeList,
+               "-Please select a Measurement Type",
+               new { @class = "form-control" })
 
-            @*<div class="form-group">
-                    @Html.DropDownListFor(i => i.InventoryItemObj.MeasuresID,//.MenuItemObj.MenuItem.FoodTypeId,
-                   Model.InventoryItemObj.Measure.MeasureName,
-                   //Model.MenuItemObj.FoodTypeList,
-                   "-Please select a Measurement Type",
-                   new { @class = "form-control" })
+                @Html.DropDownListFor(i => i.InventoryItemVM.//m.PurchaseOrderVM.OrderInfo.OrderItems,
+                         Model.PurchaseOrderVM.ItemList,
+                         "-Select Vendor-",
+                         new { @class = "form-control" })
 
-                    <span class="text-danger" asp-validation-for="InventoryItemObj.InventoryItemID"></span>
-                </div>*@
+                <span class="text-danger" asp-validation-for="InventoryItemObj.InventoryItemID"></span>
+            </div>
 
             <div class="custom-control custom-checkbox">
                 <input asp-for="InventoryItemObj.IsAssembly" type="checkbox" class="custom-control-input">

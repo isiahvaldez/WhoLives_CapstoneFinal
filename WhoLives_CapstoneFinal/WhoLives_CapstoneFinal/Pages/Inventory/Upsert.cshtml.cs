@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using WhoLives.DataAccess;
 using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
+using WhoLives.Models.ViewModels;
 
 namespace WhoLives_CapstoneFinal.Pages.Inventory
 {
@@ -22,20 +23,32 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
             _unitOfWork = unitOfWork;
         }
 
+        public IEnumerable<SelectListItem> VendorList { get; set; }
+
+        //[BindProperty]
+        //public InventoryItem InventoryItemObj { get; set; }
+
         [BindProperty]
-        public InventoryItem InventoryItemObj { get; set; }
+        public InventoryItemVM InventoryItemVM { get; set; }
 
         public IActionResult OnGet(int? id)
         {
-            InventoryItemObj = new InventoryItem();
+            InventoryItemVM = new InventoryItemVM
+            {
+                OrderInfo = new PurchaseOrder(),
+                ItemList = _unitOfWork.InventoryItems.GetItemListForDropDown(),
+                VendorList = _unitOfWork.Vendors.GetVendorListForDropDown(),
+
+            };
+            //InventoryItemObj = new InventoryItem();
 
             if (id != null)
             {
-                InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
+                /*InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
                 if (InventoryItemObj == null)
                 {
                     return NotFound();
-                }
+                }*/
             }
             return Page();
 
@@ -44,7 +57,7 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
 
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid)
+            /*if (!ModelState.IsValid)
             {
                 return Page();
             }
@@ -52,7 +65,7 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
             {
                 _unitOfWork.InventoryItems.Add(InventoryItemObj);
             }
-            _unitOfWork.Save();
+            _unitOfWork.Save();*/
             return RedirectToPage("./Index");
         }
     }
