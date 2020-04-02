@@ -11,24 +11,36 @@ $(document).ready(function () {
 
 function loadList() {
     dataTable = $('#DT_load').dataTable({
+        responsive: { details: true },
         "ajax": {
             "url": "/api/order",
-            "data": { input: "index" },
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
             {
                 "data": "vendor.vendorName",
-                "width": "35%"
+                "width": "20%",
+                "render": function (data, type, row) {
+                    if (type == 'display') {
+                        data = '<a href="/purchaseorders/upsert?id=' + row.purchaseOrderID + '">' + data + '</a>';
+                    }
+                    return data;
+                },
             },
             {
                 "data": "po",
-                "width": "20%"
+                "width": "20%",
+                "render": function (data, type, row) {
+                    if (type == 'display') {
+                        data = '<a href="/purchaseorders/upsert?id=' + row.purchaseOrderID + '">' + data + '</a>';
+                    }
+                    return data;
+                },
             },
             {
                 "data": "status",
-                "width": "25%"
+                "width": "20%"
             },
             {
                 "data": "purchaseOrderID",
@@ -42,7 +54,7 @@ function loadList() {
                             </a>
                         </div>`;
                 },
-                "width": "20%"
+                "width": "25%"
             }
         ],
         "language": {

@@ -32,6 +32,7 @@ namespace WhoLives.Models
 
         public string PO { get; set; }
 
+        [Required]
         public string Status { get; set; }
 
         public string LastModifiedBy { get; set; }

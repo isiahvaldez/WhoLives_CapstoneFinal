@@ -1,24 +1,5 @@
 ﻿@page
 @model WhoLives_CapstoneFinal.Pages.Inventory.IndexModel
-@{
-    //ViewData["Title"] = "Index";
-
-    //var assemblyList = new List<Models.Item>();
-    //var reorderList = new List<Models.Item>();
-
-    //foreach (var i in Model.Item)
-    //{
-    //    if (i.OnhandQty < i.ReorderQty)
-    //    {
-    //        reorderList.Add(i);
-    //    }
-    //    if (i.IsAssembly)
-    //    {
-    //        assemblyList.Add(i);
-    //    }
-    //}
-}
-
 <div class="row">
     <div class="col-6">
         <h2 class="text-primary">Inventory</h2>
@@ -57,14 +38,15 @@
                         </table>
                     </div>
                     <div class="tab-pane fade show " id="nav-reorder" role="tabpanel" aria-labelledby="nav-reorder-tab">
+                        <div><label>Please Select A Vendor</label><input type="text" placeholder="SelectVendor" /></div>
                         <table class="table-bordered table-striped" id="ReOrderTable" style="width:100%">
                             <thead class="thead-dark table-bordered">
                                 <tr class="card-header">
+                                    <th style="position:sticky;top:0" class="text-center">Select</th>
                                     <th style="position:sticky;top:0">Name</th>
                                     <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
                                     <th style="position:sticky;top:0" class="text-center">Reorder Qty</th>
                                     <th style="position:sticky;top:0" class="text-center">Vendor</th>
-                                    <th style="position:sticky;top:0" class="text-center">Select</th>
                                 </tr>
                             </thead>
                         </table>

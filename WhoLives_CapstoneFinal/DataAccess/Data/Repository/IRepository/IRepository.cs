@@ -26,6 +26,7 @@ namespace WhoLives.DataAccess.Data.Repository.IRepository
         void Remove(int id);
         // Remove(Object) 
         void Remove(T entity);
+        StringBuilder ExportList(IEnumerable<T> list);
 
     }
 }
