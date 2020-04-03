@@ -1,5 +1,6 @@
 ﻿
 var dataTable;
+var Qty_ID = {};
 var name = document.createElement("input");
 $(document).ready(function () {    
     loadInventoryList();
@@ -69,6 +70,7 @@ function loadOrderList() {
         "width": "100%"
 
     }).on('click', 'tbody tr', function () {
+        // Need to check if Vendor has been selected  belfore Selection is allowed 
         if ($('#ReOrderTable').DataTable().row(this, { selected: true }).any()) {
             //$('#ReOrderTable').DataTable().row(this).deselect();
             $('#ReOrderTable').DataTable().row(this, { selected: false });
@@ -102,7 +104,7 @@ function loadAssemblyList() {
           
                 "render": function (data) {
                     return ` <div class="text-center">
-                               <input type="number" style="width:15%;" id ="asse${data}"/> <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble('/api/inventoryItem/'+${data})">
+                               <input type="number" style="width:15%;" id ="asse${data}"/> <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble(${data})">
                                     <i class="far fa-edit">Assemble</i>
                                 </a>
                             </div>
@@ -122,43 +124,44 @@ function loadAssemblyList() {
 
     });
 }
-//function assemble(id) {
-//    console.log('asse' + id);
-//    var qty = document.getElementById('asse' + id).value;
-//    console.log("my Id is" + id + 'and I made ' + qty);
-//    $.ajax({
-//        url: '/api/inventoryItem',
-//        type: 'POST',       
-//        data: JSON.stringify(id),
-//        contentType: 'application/json',
-//        success: function (data) {
-//            if (data.success) {
-//                console.log('Finally');
-//            }
-//            else {
-//                console.log('Error');
-//            }
-//        }
-//    });
-//}
-function assemble(url) {
+
+function assemble(id) {
     //console.log('asse' + id);
-    console.log(url);
-    //var qty = document.getElementById('asse' + id).value;
-    //console.log("my Id is" + id + 'and I made ' + qty);
+    var qty = document.getElementById('asse' + id).value;
+   // console.log("my Id is" + id + 'and I made ' + qty);
+    Qty_ID = { QTY: qty, ITEMID: id };
     $.ajax({
-        url: url,
-        type: 'POST',
+        url: '/api/inventoryItem/assemble'+'?QTY='+qty+'&ITEMID='+id,
+        type: 'POST',       
+        data: Qty_ID, //JSON.stringify(Qty_ID),
+       // contentType: 'application/json; charset=utf-16',
+        dataType:'json',
         success: function (data) {
             if (data.success) {
-                console.log('Finally');
+                swal(data.message, {
+                    icon: "success"
+                });
+                //dataTable.ajax.reload();
+            } else if (data.error) {
+                swal(data.message,{
+                    icon: "error"
+                });
             }
             else {
-                console.log('Error');
+                swal(data.message, {
+                    icon: "warning"
+                });
+                
             }
         }
     });
 }
 function disassebmle(id) {
     var qty = document.getElementById('asse' + id).value;
+}
+function PassSelection() {
+    var SelectedRows = $('#ReOrderTable').DataTable().rows({ selected: true }).data();
+
+    
+
 }
