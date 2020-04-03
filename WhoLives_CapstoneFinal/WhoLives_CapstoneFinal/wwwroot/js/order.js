@@ -11,6 +11,27 @@ $(document).ready(function () {
 
 function loadList() {
     dataTable = $('#DT_load').dataTable({
+        initComplete: function () {
+            this.api().columns([2]).every(function () {
+                var column = this;
+                var select = $('    <select><option value=""></option></select>')
+                    .appendTo($(column.header()))
+                    .on('change',
+                    function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    }
+                );
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        },
         responsive: { details: true },
         "ajax": {
             "url": "/api/order",
@@ -20,23 +41,23 @@ function loadList() {
         "columns": [
             {
                 "data": "vendor.vendorName",
-                "width": "20%",
                 "render": function (data, type, row) {
                     if (type == 'display') {
                         data = '<a href="/purchaseorders/upsert?id=' + row.purchaseOrderID + '">' + data + '</a>';
                     }
                     return data;
                 },
+                "width": "20%"
             },
             {
                 "data": "po",
-                "width": "20%",
                 "render": function (data, type, row) {
                     if (type == 'display') {
                         data = '<a href="/purchaseorders/upsert?id=' + row.purchaseOrderID + '">' + data + '</a>';
                     }
                     return data;
                 },
+                "width": "20%"
             },
             {
                 "data": "status",
