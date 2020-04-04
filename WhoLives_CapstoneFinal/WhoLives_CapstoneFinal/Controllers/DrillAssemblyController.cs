@@ -24,11 +24,11 @@ namespace WhoLives_CapstoneFinal.Controllers
         {
             if (input != null && input.Equals("INVENTORY"))
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll()/*.Where(i => i.IsAssembly != true)*/ });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true) });
             }
             else if (input != null && input.Equals("ASSEMBLY"))
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll()/*.Where(i => i.IsAssembly == true)*/ });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly == true) });
             }
             else { return Json(new { data = _unitOfWork.InventoryItems.GetAll() }); }
         }
