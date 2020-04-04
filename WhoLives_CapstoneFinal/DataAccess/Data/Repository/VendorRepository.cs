@@ -33,6 +33,8 @@ namespace WhoLives.DataAccess.Data.Repository
             objFromDb.VendorName = vendor.VendorName;
             objFromDb.VendorWebsite = vendor.VendorWebsite;
             objFromDb.PhoneNumber = vendor.PhoneNumber;
+            vendor.LastModifiedDate = DateTime.Now;
+            objFromDb.LastModifiedDate = DateTime.Now;
 
             _db.SaveChanges();
         }
