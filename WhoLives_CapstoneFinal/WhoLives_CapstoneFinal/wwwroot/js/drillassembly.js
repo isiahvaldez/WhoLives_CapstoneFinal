@@ -37,8 +37,8 @@ function loadAssemblyList() {
         },
         "columns": [
             { "data": "name", "width": "33%", "defaultContent": "<i>Not set</i>" },
-            { "data": "totalLooseQty", "width": "33%" },
-            { "data": "totalLooseQty", "width": "33%" } // this needs to be the number required for the drill - IV 4/3/2020
+            { "data": "totalLooseQty", "width": "33%", "defaultContent": "<i>Not set</i>" },
+            { "data": "totalLooseQty", "width": "33%", "defaultContent": "<i>Not set</i>" } // this needs to be the number required for the drill - IV 4/3/2020
         ],
         "language": {
             "emptyTable": "no data found."
