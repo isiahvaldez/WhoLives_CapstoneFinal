@@ -16,7 +16,7 @@
                     <div class="px-3">
                         <label asp-for="PurchaseOrderVM.OrderInfo.Status"></label><br />
                         @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.Status,
-                           Model.StatusList,
+                           Model.PurchaseOrderVM.StatusList,
                            "-Select Status-",
                            new { @class = "form-control" })
                         <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.Status" />
