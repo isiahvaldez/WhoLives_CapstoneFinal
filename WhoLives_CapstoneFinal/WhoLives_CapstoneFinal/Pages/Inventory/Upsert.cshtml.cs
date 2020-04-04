@@ -23,9 +23,6 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
             _unitOfWork = unitOfWork;
         }
 
-        //[BindProperty]
-        //public InventoryItem InventoryItemObj { get; set; }
-
         [BindProperty]
         public InventoryItemVM InventoryItemVM { get; set; }
 

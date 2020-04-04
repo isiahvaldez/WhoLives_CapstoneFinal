@@ -4,5 +4,147 @@
     ViewData["Title"] = "Assembly";
 }
 
-<h1>Assembly</h1>
+<h1>Assembly Information</h1>
+<hr />
+<div class="row">
+    <div class="col-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.Description" class="control-label mr-3">Description:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.Description" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Description" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" class="control-label mr-3">Retail Cost:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" type="text" value="@Model.InventoryItemVM.InventoryItemObj.ListRetailCost" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label mr-3">Wholesale Cost:</label>
+                <div class="form-inline col-12">
+                    <input type="text" value="Calculated Value" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.TotalLooseQty" class="control-label mr-3">Total Loose Quantity:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.TotalLooseQty" type="text" value="@Model.InventoryItemVM.InventoryItemObj.TotalLooseQty" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.ReorderQty" class="control-label mr-3">Reorder Quantity:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.ReorderQty" type="text" value="@Model.InventoryItemVM.InventoryItemObj.ReorderQty" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.MeasuresID" class="control-label mr-3">Measure Type:</label>
+                <div class="form-inline col-12">
+                    @Html.DropDownListFor(i => i.InventoryItemVM.InventoryItemObj.MeasuresID,
+               Model.InventoryItemVM.MeasureInfo,
+               "-Please select a Measurement Type",
+               new { @class = "form-control" })
+
+                    <span class="text-danger" asp-validation-for="InventoryItemVM.InventoryItemObj.InventoryItemID"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.MeasureAmnt" class="control-label mr-3">Measure Amount:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.MeasureAmnt" type="text" value="@Model.InventoryItemVM.InventoryItemObj.MeasureAmnt" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="custom-control custom-checkbox">
+                <input asp-for="InventoryItemVM.InventoryItemObj.IsAssembly" type="checkbox" class="custom-control-input">
+                <label asp-for="InventoryItemVM.InventoryItemObj.IsAssembly" class="custom-control-label">Is this Item an Assembly?</label>
+            </div>
+            <br />
+            <div class="row text-center">
+                <div class="col-6">
+                    <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
+                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
+                    {
+                        <input type="submit" value="Edit Part" style="width:auto;" class="btn btn-success" />
+                    }
+                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
+                    {
+                        <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
+                    }
+                </div>
+                <div class="col-6">
+                    <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
+    {
+        <div class="col-6 card">
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-purchaseHistory-tab" data-toggle="tab" href="#nav-purchaseHistory" role="tab" aria-controls="nav-purchaseHistory" aria-selected="true">Purchase History</a>
+                            @if (Model.InventoryItemVM.InventoryItemObj.IsAssembly)
+                            {
+                                <a class="nav-item nav-link" id="nav-assemblyComponents-tab" data-toggle="tab" href="#nav-assemblyComponents" role="tab" aria-controls="nav-assemblyComponents" aria-selected="false">Assembly Components</a>
+                            }
+                        </div>
+                    </nav>
+
+                    <div class="tab-content py-3 px-3 px-sm-0">
+                        <div class="tab-pane fade show active " id="nav-purchaseHistory" role="tabpanel" aria-labelledby="nav-purchaseHistory-tab">
+                            <table class="table-bordered table-striped" id="purchaseHistory" style="width:100%">
+                                <thead class="thead-dark table-bordered">
+                                    <tr class="card-header">
+                                        <th style="position:sticky;top:0">Vendor</th>
+                                        <th style="position:sticky;top:0" class="text-center">Purchase Order</th>
+                                        <th style="position:sticky;top:0" class="text-center">Order Date</th>
+                                        <th style="position:sticky;top:0" class="text-center">Purchased Cost</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade show " id="nav-assemblyComponents" role="tabpanel" aria-labelledby="nav-assemblyComponents-tab">
+                            <table class="table-bordered table-striped" id="assemblyComponents" style="width:100%">
+                                <thead class="thead-dark table-bordered">
+                                    <tr class="card-header">
+                                        <th style="position:sticky;top:0">Name</th>
+                                        <th style="position:sticky;top:0" class="text-center">Required Qty</th>
+                                        <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <br />
+                            <div class="row text-right">
+                                <div class="col-12">
+                                    <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
+                                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
+                                    {
+                                        <a class="btn btn-info" style="width:auto;" asp-page="./Assembly">Edit Assembly Components</a>
+                                    }
+                                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
+                                    {
+                                        <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 

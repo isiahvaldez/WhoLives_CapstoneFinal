@@ -16,7 +16,6 @@
                 <div class="form-inline col-12">
                     <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
                 </div>
-
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.Description" class="control-label mr-3">Description:</label>
@@ -72,7 +71,7 @@
             </div>
             <br />
             <div class="row text-center">
-                <div class="col-4">
+                <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                     {
@@ -83,13 +82,7 @@
                         <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
                     }
                 </div>
-                <div class="col-4">
-                    @if (Model.InventoryItemVM.InventoryItemObj.IsAssembly)
-                    {
-                        <input type="submit" value="Edit Assembly Components" style="width:auto;" class="btn btn-success" />
-                    }
-                </div>
-                <div class="col-4">
+                <div class="col-6">
                     <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
                 </div>
             </div>
@@ -134,6 +127,20 @@
                                     </tr>
                                 </thead>
                             </table>
+                            <br />
+                            <div class="row text-right">
+                                <div class="col-12">
+                                    <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
+                                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
+                                    {
+                                        <a class="btn btn-info" style="width:auto;" asp-page="./Assembly">Edit Assembly Components</a>
+                                    }
+                                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
+                                    {
+                                        <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
