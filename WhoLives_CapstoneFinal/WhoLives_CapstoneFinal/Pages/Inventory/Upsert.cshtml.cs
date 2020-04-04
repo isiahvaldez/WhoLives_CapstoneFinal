@@ -23,8 +23,6 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<SelectListItem> VendorList { get; set; }
-
         //[BindProperty]
         //public InventoryItem InventoryItemObj { get; set; }
 
@@ -37,18 +35,19 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
             {
                 OrderInfo = new PurchaseOrder(),
                 ItemList = _unitOfWork.InventoryItems.GetItemListForDropDown(),
-                VendorList = _unitOfWork.Vendors.GetVendorListForDropDown(),
-
+                MeasureInfo = _unitOfWork.Measures.GetMeasureListForDropDown(),
+                BuildInfo = new BuildAssembly(),
+                AssemblyInfo = new Assembly(),
+                InventoryItemObj = new InventoryItem()
             };
-            //InventoryItemObj = new InventoryItem();
 
             if (id != null)
             {
-                /*InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
-                if (InventoryItemObj == null)
+                InventoryItemVM.InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
+                if (InventoryItemVM.InventoryItemObj == null)
                 {
                     return NotFound();
-                }*/
+                }
             }
             return Page();
 
