@@ -72,20 +72,24 @@
             </div>
             <br />
             <div class="row text-center">
-                
-                
-                <div class="col-6">
+                <div class="col-4">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                     {
-                        <input type="submit" value="Edit" style="width:auto;" class="btn btn-success" />
+                        <input type="submit" value="Edit Part" style="width:auto;" class="btn btn-success" />
                     }
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
                     {
                         <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
                     }
                 </div>
-                <div class="col-6">
+                <div class="col-4">
+                    @if (Model.InventoryItemVM.InventoryItemObj.IsAssembly)
+                    {
+                        <input type="submit" value="Edit Assembly Components" style="width:auto;" class="btn btn-success" />
+                    }
+                </div>
+                <div class="col-4">
                     <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
                 </div>
             </div>
@@ -136,7 +140,6 @@
             </div>
         </div>
     }
-
 </div>
 
 <script>
