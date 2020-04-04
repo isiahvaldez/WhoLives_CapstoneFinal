@@ -9,25 +9,24 @@ using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
 using WhoLives.Models.ViewModels;
 
-namespace WhoLives_CapstoneFinal
+namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
 {
     public class UpsertModel : PageModel
     {
         private readonly IUnitOfWork _uow;
-        public IEnumerable<SelectListItem> StatusList { get; set; }
         public UpsertModel(IUnitOfWork uow)
         {
             _uow = uow;
-            StatusList = new List<SelectListItem>()
-            {
-                new SelectListItem{Text = "Back Order", Value = "backorder"},
-                new SelectListItem{Text = "Ordered", Value = "ordered"},
-                new SelectListItem{Text = "Shipping", Value = "shipping"},
-                new SelectListItem{Text = "Received", Value = "received"},
-                new SelectListItem{Text = "Partially Received", Value = "partially"},
-                new SelectListItem{Text = "Pending", Value = "pending"},
-                new SelectListItem{Text = "Overdue", Value = "overdue"},
-            };
+            //StatusList = new List<SelectListItem>()
+            //{
+            //    new SelectListItem{Text = "Back Order", Value = "Backorder"},
+            //    new SelectListItem{Text = "Ordered", Value = "Ordered"},
+            //    new SelectListItem{Text = "Shipping", Value = "Shipping"},
+            //    new SelectListItem{Text = "Received", Value = "Received"},
+            //    new SelectListItem{Text = "Partially Received", Value = "Partially"},
+            //    new SelectListItem{Text = "Pending", Value = "Pending"},
+            //    new SelectListItem{Text = "Overdue", Value = "Overdue"},
+            //};
         }
         [BindProperty]
         public PurchaseOrderVM PurchaseOrderVM { get; set; }
@@ -37,7 +36,8 @@ namespace WhoLives_CapstoneFinal
             {
                 OrderInfo = new PurchaseOrder(),
                 ItemList = _uow.InventoryItems.GetItemListForDropDown(),
-                VendorList = _uow.Vendors.GetVendorListForDropDown()
+                VendorList = _uow.Vendors.GetVendorListForDropDown(),
+                StatusList = _uow.Statuses.GetStatusListForDropDown()
             };
             if (id != null)
             {
@@ -46,7 +46,7 @@ namespace WhoLives_CapstoneFinal
                 {
                     return NotFound();
                 }
-                PurchaseOrderVM.OrderInfo.OrderItems = _uow.OrderItems.GetAll(o => o.PurchaseOrderID == id, null, null);
+                PurchaseOrderVM.OrderInfo.OrderItems = _uow.OrderItems.GetAll(o => o.PurchaseOrderID == id, null, null).ToList();
                 foreach(var l in PurchaseOrderVM.OrderInfo.OrderItems)
                 {
                     l.Item = _uow.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == l.ItemID);
@@ -54,11 +54,33 @@ namespace WhoLives_CapstoneFinal
             }
             return Page(); //No params refreshes the page
         }
+        public ActionResult OnPostSaveOrder(List<OrderItem> orderItems)
+        {
+            // if problems, bail
+            if (orderItems == null)
+            {
+                // setup new list
+                orderItems = new List<OrderItem>();
+            }
 
+            // loop list from ajax
+            foreach (OrderItem item in orderItems)
+            {
+                // set purchase order id
+                item.PurchaseOrderID = PurchaseOrderVM.OrderInfo.PurchaseOrderID;
+                // add item to db
+                //_context.OrderItems.Add(item);
+            }
+            // save db
+            //_context.SaveChanges();
+            // return results back to ajax call
+            return new JsonResult("done");
+        }
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
+                PurchaseOrderVM.VendorList = _uow.Vendors.GetVendorListForDropDown();
                 return Page();
             }
             if(PurchaseOrderVM.OrderInfo.PurchaseOrderID == 0)
@@ -70,7 +92,6 @@ namespace WhoLives_CapstoneFinal
                 _uow.PurchaseOrders.update(PurchaseOrderVM.OrderInfo);
             }
             _uow.Save();
-            var POId = PurchaseOrderVM.OrderInfo.PurchaseOrderID;
             if (PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0)
             {
                 //Get the current order items in the db to compare

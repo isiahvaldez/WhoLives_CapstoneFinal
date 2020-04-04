@@ -12,6 +12,7 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IAssemblyRepository Assemblies { get; private set; }
         public IMeasureRepository Measures { get; private set; } 
+        public IStatusRepository Statuses { get; private set; }
         public IInventoryItemRepository InventoryItems { get; private set; }
         public IPurchaseOrderRepository PurchaseOrders { get; private set; }
         public IOrderItemRepository OrderItems { get; private set; }
@@ -24,6 +25,7 @@ namespace WhoLives.DataAccess.Data.Repository
             _db = db;
             Assemblies = new AssemblyRepository(_db);
             Measures = new MeasureRepository(_db);
+            Statuses = new StatusRepository(_db);
             InventoryItems = new InventoryItemRepository(_db);
             Measures = new MeasureRepository(_db);
             PurchaseOrders = new PurchaseOrderRepository(_db);

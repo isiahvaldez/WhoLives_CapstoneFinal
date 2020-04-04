@@ -68,7 +68,6 @@ namespace WhoLives_CapstoneFinal
                 endpoints.MapRazorPages();
             });
 
-            app.UseMvc();
         }
     }
 }
