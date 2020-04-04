@@ -14,7 +14,7 @@ function loadList() {
         initComplete: function () {
             this.api().columns([2]).every(function () {
                 var column = this;
-                var select = $('    <select><option value=""></option></select>')
+                var select = $('<select><option value="">--Select All--</option></select>')
                     .appendTo($(column.header()))
                     .on('change',
                     function () {
