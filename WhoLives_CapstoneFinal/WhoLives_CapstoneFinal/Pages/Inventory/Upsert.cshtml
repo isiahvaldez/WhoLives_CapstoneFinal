@@ -72,14 +72,20 @@
             </div>
             <br />
             <div class="row text-center">
-                <div class="col-4">
+                
+                
+                <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
+                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
+                    {
+                        <input type="submit" value="Edit" style="width:auto;" class="btn btn-success" />
+                    }
+                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
+                    {
+                        <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
+                    }
                 </div>
-                <div class="col-4">
-                    <a class="btn btn-danger" style="width:auto;" asp-route-id="@Model.InventoryItemVM.InventoryItemObj.InventoryItemID" asp-page="./Delete">Delete</a>
-                </div>
-                <div class="col-4">
+                <div class="col-6">
                     <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
                 </div>
             </div>
@@ -89,35 +95,6 @@
     {
         <div class="col-6 card">
             <br />
-            @*<ul class="nav nav-tabs nav-fill">
-                    <li><a class="nav-item nav-link active" data-toggle="tab" href="#purchasehistory">Purchase History</a></li>
-                    @if (Model.InventoryItemVM.InventoryItemObj.IsAssembly)
-                    {
-                        <li><a class="nav-item nav-link" data-toggle="tab" href="#assemblycomponents">Assembly Components</a></li>
-                    }
-                </ul>
-                <div class="tab-content">
-                    <div id="purchasehistory" class="tab-pane fade in active text-center">
-                        <div>
-                            <table class="table table-borderless">
-                                <thead>
-                                    <tr class="border-bottom">
-                                        <td>Order Date</td>
-                                        <td>Vendor</td>
-                                        <td>Qty</td>
-                                        <td>Price</td>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div id="assemblycomponents" class="tab-pane fade text-center">
-                        <table class="table table-striped">
-                        </table>
-                    </div>
-                </div>*@
-
             <div class="row">
                 <div class="col-12">
                     <nav>
