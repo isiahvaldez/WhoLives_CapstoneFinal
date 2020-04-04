@@ -31,7 +31,7 @@
                     <input name="DateOrdered" asp-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="form-control" />
                     <span asp-validation-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="text-danger"></span>
                     <label asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="control-label">Status Update:</label>
-                    <input name="DateOrdered" asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="form-control" />
+                    <input name="StatusChangeDate" asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="form-control" readonly/>
                     <span asp-validation-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="text-danger"></span>
                 </div>
             </div>
@@ -40,13 +40,13 @@
                     <!--PO #-->
                     <div class="px-3">
                         <label asp-for="PurchaseOrderVM.OrderInfo.PO" class="control-label">Vendor PO:</label>
-                        <input name="VendorSKU" asp-for="PurchaseOrderVM.OrderInfo.PO" class="form-control" />
+                        <input name="PO" asp-for="PurchaseOrderVM.OrderInfo.PO" class="form-control" />
                         <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-6 px-3 py-2 text-right align-text-bottom">
                     <label class="control-label">Export: </label>
-                    <a class="btn" onclick="@Model.ExportCSV()" style="cursor:pointer; width: 100px"><i class="far fa-file-excel"></i></a>
+                    <a class="btn" @*onclick="@Model.ExportCSV()"*@ style="cursor:pointer; width: 100px"><i class="far fa-file-excel"></i></a>
                     <a class="btn"><i class="far fa-file-pdf"></i></a>
                 </div>
             </div>
@@ -73,17 +73,19 @@
                         </tr>
                     </thead>
                     <tbody id="table">
+                        @if (Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0)
+                        {
                         @foreach (var i in Model.PurchaseOrderVM.OrderInfo.OrderItems)
                         {
                             var itemId = @i.ItemID;
                             <tr>
                                 <td>
                                     @Html.DropDownListFor(m =>
-                                        m.PurchaseOrderVM.OrderInfo.OrderItems.Where(o => o.ItemID == itemId).
-                                        Select(s => s.Item.InventoryItemID).ToList()[0],
-                                        Model.PurchaseOrderVM.ItemList,
-                                        "-Select Item-",
-                                        new { @class = "form-control" })
+                                         m.PurchaseOrderVM.OrderInfo.OrderItems.Where(o => o.ItemID == itemId).
+                                         Select(s => s.Item.InventoryItemID).ToList()[0],
+                                         Model.PurchaseOrderVM.ItemList,
+                                         "-Select Item-",
+                                         new { @class = "form-control" })
                                 </td>
                                 <td asp-for="@i.QuantityOrdered">
                                     <input asp-for="@i.QuantityOrdered" />
@@ -96,6 +98,7 @@
                                 </td>
                                 <td><a class="btn" onclick="Remove(this)"><i class="far fa-trash-alt"></i></a></td>
                             </tr>
+                        }
                         }
                         <tr>
                             <td></td>

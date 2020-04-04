@@ -54,10 +54,56 @@ namespace WhoLives_CapstoneFinal
             }
             return Page(); //No params refreshes the page
         }
-        public object ExportCSV()
+
+        public IActionResult OnPost()
         {
-            var list = _uow.OrderItems.ExportList(PurchaseOrderVM.OrderInfo.OrderItems);
-            return list;
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            if(PurchaseOrderVM.OrderInfo.PurchaseOrderID == 0)
+            {
+                _uow.PurchaseOrders.Add(PurchaseOrderVM.OrderInfo);
+            }
+            else
+            {
+                _uow.PurchaseOrders.update(PurchaseOrderVM.OrderInfo);
+            }
+            _uow.Save();
+            var POId = PurchaseOrderVM.OrderInfo.PurchaseOrderID;
+            if (PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0)
+            {
+                //Get the current order items in the db to compare
+                var DBItems = _uow.OrderItems.GetAll(o => o.PurchaseOrderID == PurchaseOrderVM.OrderInfo.PurchaseOrderID).ToList();
+
+                foreach (var o in PurchaseOrderVM.OrderInfo.OrderItems)
+                {
+                    if (DBItems.Contains(o))
+                    {
+                        // Update o in DB
+                        _uow.OrderItems.update(o);
+                        // Remove o from DBItems list
+                        DBItems.Remove(o);
+                    }
+                    else
+                    {
+                        // Add o to DB
+                        _uow.OrderItems.Add(o);
+                    }
+                }
+                foreach (var i in DBItems)
+                {
+                    // Delete i from DB
+                    _uow.OrderItems.Remove(i.OrderItemID);
+                }
+                _uow.Save();
+            }
+            return RedirectToPage("./Index");
+        }
+        public void ExportCSV()
+        {
+            //var list = _uow.OrderItems.ExportList(PurchaseOrderVM.OrderInfo.OrderItems);
+            //return list;
         }
     }
 }
