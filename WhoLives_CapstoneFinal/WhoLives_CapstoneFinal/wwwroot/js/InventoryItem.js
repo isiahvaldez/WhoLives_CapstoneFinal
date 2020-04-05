@@ -109,7 +109,7 @@ function loadAssemblyList() {
                                 </a>
                             </div>
                             <div class="text-center">
-                               <input type="number" style="width:15%;" id ="asse${data}"/> <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" onClick="disassemble(${data})">
+                               <input type="number" style="width:15%;" id ="dis${data}"/> <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" onClick="disassemble(${data})">
                                     <i class="far fa-trash-alt">Disassemble</i>
                                 </a>
                              </div>`
@@ -129,9 +129,9 @@ function assemble(id) {
     //console.log('asse' + id);
     var qty = document.getElementById('asse' + id).value;
    // console.log("my Id is" + id + 'and I made ' + qty);
-    Qty_ID = { QTY: qty, ITEMID: id };
+    Qty_ID = { QTY: qty, ITEMID: id, ASSEMBLE:true };
     $.ajax({
-        url: '/api/inventoryItem/assemble'+'?QTY='+qty+'&ITEMID='+id,
+        url: '/api/inventoryItem/assemble'+'?QTY='+qty+'&ITEMID='+id +'&ASSEMBLE=true',
         type: 'POST',       
         data: Qty_ID, //JSON.stringify(Qty_ID),
        // contentType: 'application/json; charset=utf-16',
@@ -156,13 +156,14 @@ function assemble(id) {
         }
     });
 }
+
 function disassemble(id) {
     //console.log('asse' + id);
-    var qty = document.getElementById('asse' + id).value;
+    var qty = document.getElementById('dis' + id).value;
     // console.log("my Id is" + id + 'and I made ' + qty);
-    Qty_ID = { ITEMID: id, QTY: qty };
+    Qty_ID = { QTY: qty, ITEMID: id, ASSEMBLE: false };
     $.ajax({
-        url: '/api/inventoryItem/disassemble' + '?QTY=' + qty + '&ITEMID=' + id,
+        url: '/api/inventoryItem/disassemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=false',
         type: 'POST',
         data: Qty_ID, //JSON.stringify(Qty_ID),
         // contentType: 'application/json; charset=utf-16',
@@ -188,8 +189,40 @@ function disassemble(id) {
     });
 }
 function PassSelection() {
-    var SelectedRows = $('#ReOrderTable').DataTable().rows({ selected: true }).data();
-
     
+    var SelectedRows = $('#ReOrderTable').DataTable().rows({ selected: true }).data();
+    var count = $('#ReOrderTable').DataTable().rows({ selected: true }).count();
+    var SelectedId = [];
+
+    for (var i = 0; i < count; i++) {
+        SelectedId.push(SelectedRows[i].inventoryItemID);
+    }
+
+        $.ajax({
+            url: '/api/order/fromReOrder',
+            type: 'POST',
+            data: JSON.stringify({ Vendor: '1', Items: SelectedId }),
+            contentType: 'application/json; charset=utf-16',
+            dataType: 'json',
+            success: function (data) {
+                if (data.success) {
+                    swal(data.message, {
+                        icon: "success"
+                    });
+                    //dataTable.ajax.reload();
+                } else if (data.error) {
+                    swal(data.message, {
+                        icon: "error"
+                    });
+                }
+                else {
+                    swal(data.message, {
+                        icon: "warning"
+                    });
+
+                }
+            }
+        });
+
 
 }
