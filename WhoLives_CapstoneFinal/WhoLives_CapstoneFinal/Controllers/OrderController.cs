@@ -28,10 +28,17 @@ namespace WhoLives_CapstoneFinal.Controllers
             //}
             return Json(new { data = _uow.PurchaseOrders.GetAll(null, null, "Vendor") });
         }
-        [HttpPost]
-        public IActionResult FromReOrder([FromBody] JObject Result)
-        {
 
+        public class myOrderSelection
+        {
+            public string Vendor { get; set; }
+            public string[] Items { get; set; }
+        }
+        [HttpPost]
+        public IActionResult FromReOrder([FromBody]myOrderSelection Selection)      
+        {
+            string TestId = Selection.Items[0];
+           
             return Ok();
         }
     }

@@ -195,14 +195,15 @@ function PassSelection() {
     var SelectedId = [];
 
     for (var i = 0; i < count; i++) {
-        SelectedId.push(SelectedRows[i].inventoryItemID);
+        SelectedId.push(SelectedRows[i].inventoryItemID.toString());
     }
 
+    var data = { Vendor: "1", Items: SelectedId };
         $.ajax({
-            url: '/api/order/fromReOrder',
+            url: '/api/order/',
             type: 'POST',
-            data: JSON.stringify({ Vendor: '1', Items: SelectedId }),
-            contentType: 'application/json; charset=utf-16',
+            data: JSON.stringify({ "Vendor": "1", "Items": SelectedId }),
+            contentType: 'application/json',
             dataType: 'json',
             success: function (data) {
                 if (data.success) {
