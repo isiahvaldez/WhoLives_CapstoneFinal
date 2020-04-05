@@ -60,7 +60,7 @@ function loadList() {
                 "width": "20%"
             },
             {
-                "data": "status",
+                "data": "status.name",
                 "width": "20%"
             },
             {

@@ -24,7 +24,22 @@ namespace WhoLives_CapstoneFinal.Controllers
             //{
             //    return Json(new { data = _uow.OrderItems.GetAll(d => d.PurchaseOrderID == 1) });
             //}
-            return Json(new { data = _uow.PurchaseOrders.GetAll(null, null, "Vendor") }); 
+            return Json(new { data = _uow.PurchaseOrders.GetAll(null, null, "Vendor,Status") });
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var objFromDb = _uow.PurchaseOrders.GetFirstOrDefault(p => p.PurchaseOrderID == id);
+            if (objFromDb == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            _uow.PurchaseOrders.Remove(objFromDb);
+            _uow.Save();
+            return Json(new { success = true, message = "Delete successful" });
+
         }
     }
 }
