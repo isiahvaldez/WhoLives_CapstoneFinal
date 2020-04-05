@@ -1,0 +1,81 @@
+﻿@page
+@model WhoLives_CapstoneFinal.AssemblyModel
+@{
+    ViewData["Title"] = "Assembly";
+}
+<div class="row">
+    <div class="col-6">
+        <h1>Assembly Information</h1>
+    </div>
+    <div class="col-6 text-right">
+        <br />
+        <input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-success" />
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Assembly Name:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" class="control-label mr-3">Part Needed:</label>
+                <div class="form-inline col-12">
+                    @Html.DropDownListFor(i => i.InventoryItemVM.InventoryItemObj.InventoryItemID,
+               Model.InventoryItemVM.ItemList,
+               "-Please select the part to assemble",
+               new { @class = "form-control" })
+
+                    <span class="text-danger" asp-validation-for="InventoryItemVM.InventoryItemObj.InventoryItemID"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryItemVM.AssemblyInfo.ItemQty" class="control-label mr-3">Quantity Needed for assembly:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.AssemblyInfo.ItemQty" type="text" value="@Model.InventoryItemVM.AssemblyInfo.ItemQty" class="form-control" required />
+                </div>
+            </div>
+            <br />
+            <div class="row text-center">
+                <div class="col-6">
+                    <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
+                    <input type="submit" value="Add Part" style="width:auto;" class="btn btn-success" />
+                </div>
+                <div class="col-6">
+                    <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-6 card">
+        <br />
+        <div class="row">
+            <div class="col-12">
+                <div class="tab-content py-3 px-3 px-sm-0">
+                    <table class="table-bordered table-striped" id="assemblyComponents" style="width:100%">
+                        <thead class="thead-dark table-bordered">
+                            <tr class="card-header">
+                                <th style="position:sticky;top:0">Name</th>
+                                <th style="position:sticky;top:0" class="text-center">Required Qty</th>
+                                <th style="position:sticky;top:0" class="text-center">Select</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <br />
+                    <div class="row text-right">
+                        <div class="col-12">
+                            <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
+                            <input type="submit" value="Remove" style="width:auto;" asp-page="./Assembly" class="btn btn-danger" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
