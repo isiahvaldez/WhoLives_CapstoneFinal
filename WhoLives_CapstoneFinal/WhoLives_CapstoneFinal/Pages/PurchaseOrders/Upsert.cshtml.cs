@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
 using WhoLives.Models.ViewModels;
+using static WhoLives_CapstoneFinal.Controllers.OrderController;
 
 namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
 {
@@ -125,6 +126,32 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
         {
             //var list = _uow.OrderItems.ExportList(PurchaseOrderVM.OrderInfo.OrderItems);
             //return list;
+        }
+        public IActionResult OnGetReorder(myOrderSelection Selection)
+        {
+            PurchaseOrderVM = new PurchaseOrderVM
+            {
+                OrderInfo = new PurchaseOrder()
+                {
+                    StatusID = 6,
+                    DateOrdered = DateTime.Now,
+                    StatusChangeDate = DateTime.Now,
+                    OrderItems = new List<OrderItem>(),
+                    VendorID = Convert.ToInt32(Selection.Vendor)
+                },
+                ItemList = _uow.InventoryItems.GetItemListForDropDown(),
+                VendorList = _uow.Vendors.GetVendorListForDropDown(),
+                StatusList = _uow.Statuses.GetStatusListForDropDown()
+            };
+            foreach (var i in Selection.Items)
+            {
+                PurchaseOrderVM.OrderInfo.OrderItems.Add(new OrderItem()
+                {
+                    ItemID = Convert.ToInt32(i),
+                    QuantityReceived = 0
+                });
+            }
+            return Page();
         }
     }
 }

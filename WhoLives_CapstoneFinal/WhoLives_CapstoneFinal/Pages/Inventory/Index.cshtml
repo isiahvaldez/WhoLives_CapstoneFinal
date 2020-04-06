@@ -56,8 +56,8 @@
                             </thead>
                         </table>
                         <div class="col-12 text-right">
-                            <button class="btn btn-primary " asp-page="./OrderPopup" onclick="PassSelection()">New Purchase Order</button>
-                        </div>
+                            @*<a asp-page="../PurchaseOrders/Upsert">*@<button class="btn btn-primary" asp-page="../PurchaseOrders/Upsert" onclick="PassSelection()">New Purchase Order</button>@*</a>*@
+</div>
 
                     </div>
                     <div class="tab-pane fade show " id="nav-assemblies" role="tabpanel" aria-labelledby="nav-assemblies-tab">
