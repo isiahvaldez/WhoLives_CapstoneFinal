@@ -29,7 +29,7 @@
                     @Html.DropDownListFor(i => i.InventoryItemVM.InventoryItemObj.InventoryItemID,
                Model.InventoryItemVM.ItemList,
                "-Please select the part to assemble",
-               new { @class = "form-control" })
+               new { @class = "form-control", id = "itemList" })
 
                     <span class="text-danger" asp-validation-for="InventoryItemVM.InventoryItemObj.InventoryItemID"></span>
                 </div>
@@ -37,17 +37,18 @@
             <div class="form-group">
                 <label asp-for="InventoryItemVM.AssemblyInfo.ItemQty" class="control-label mr-3">Quantity Needed for assembly:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.AssemblyInfo.ItemQty" type="text" value="@Model.InventoryItemVM.AssemblyInfo.ItemQty" class="form-control" required />
+                    <input id="required-qty" asp-for="InventoryItemVM.AssemblyInfo.ItemQty" type="text" value="@Model.InventoryItemVM.AssemblyInfo.ItemQty" class="form-control" required />
                 </div>
             </div>
             <br />
             <div class="row text-center">
+                <!-- Adds a part to the table, so it doesn't submit yet - IV 4/5/2020-->
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    <input type="submit" value="Add Part" style="width:auto;" class="btn btn-success" />
+                    <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-primary" />
                 </div>
                 <div class="col-6">
-                    <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
+                    <a class="btn btn-warning" style="width:auto;" asp-page="./Index">Back to List</a>
                 </div>
             </div>
         </form>
@@ -64,13 +65,14 @@
                                 <th style="position:sticky;top:0" class="text-center">Required Qty</th>
                                 <th style="position:sticky;top:0" class="text-center">Select</th>
                             </tr>
+                            <!-- populate current assembly list here - IV 4/5/2020 -->
                         </thead>
                     </table>
                     <br />
                     <div class="row text-right">
                         <div class="col-12">
-                            <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                            <input type="submit" value="Remove" style="width:auto;" asp-page="./Assembly" class="btn btn-danger" />
+                            <!--<input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
+                            <input type="submit" value="Remove" style="width:auto;" asp-page="./Assembly" class="btn btn-danger" />-->
                         </div>
                     </div>
                 </div>
@@ -79,3 +81,33 @@
     </div>
 </div>
 
+@section Scripts {
+<script>
+    function AddItemToTable(tableID, itemID) {
+        var dropdown = document.getElementById(itemID);
+        var currItem = dropdown.options[dropdown.selectedIndex].value;
+        var itemName = dropdown.options[dropdown.selectedIndex].text;
+        var currTable = document.getElementById(tableID);
+        var requiredQty = document.getElementById("required-qty").text;
+        //var row = currTable.rows.length;
+        console.log("Adding item " + currItem + " to table " + tableID);
+        var newRow = currTable.insertRow(-1);
+        var currCell = newRow.insertCell(0);
+        currCell.appendChild(document.createTextNode(itemName));
+        var requiredQty = document.getElementById("required-qty").value;
+        currCell = newRow.insertCell(1);
+        currCell.appendChild(document.createTextNode(requiredQty));
+        currCell = newRow.insertCell(2);
+        var buttonHTML = document.createElement("div");
+        buttonHTML.innerHTML = "<a onclick=RemoveItemFromTable('" + currTable.id + "'," + newRow.rowIndex
+            + ") style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a>";
+        currCell.appendChild(buttonHTML);
+    }
+
+    function RemoveItemFromTable(tableID, rowID) {
+        var myTable = document.getElementById(tableID);
+        var rowToDelete = myTable.rows.item(rowID);
+        rowToDelete.remove();
+    }
+</script>
+} 
