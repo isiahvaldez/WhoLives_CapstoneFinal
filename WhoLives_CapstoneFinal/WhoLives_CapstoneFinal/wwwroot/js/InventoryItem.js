@@ -1,6 +1,7 @@
 ﻿
 var dataTable;
 var Qty_ID = {};
+var reset = false;
 var name = document.createElement("input");
 $(document).ready(function () {    
     loadInventoryList();
@@ -51,11 +52,6 @@ function loadOrderList() {
         "columns": [
             {
                 "data": "inventoryItemID",
-                //"render": function (data) {
-                //    return ` <div class="text-center">
-                //               <input type="checkbox" />
-                //             </div>`
-                //},
                 "visible":false,
                 "width": "5%"
             },
@@ -70,17 +66,42 @@ function loadOrderList() {
         "width": "100%"
 
     }).on('click', 'tbody tr', function () {
-        // Need to check if Vendor has been selected  belfore Selection is allowed 
-        if ($('#ReOrderTable').DataTable().row(this, { selected: true }).any()) {
-            //$('#ReOrderTable').DataTable().row(this).deselect();
-            $('#ReOrderTable').DataTable().row(this, { selected: false });
-        }
-        else {
-            $('#ReOrderTable').DataTable().row(this, { selected: true });
-        }
+        // Check to see if vendor was selected. 
+        var select = document.getElementById('Vendor_VendorID');
+        var selectedValue = select.options[select.selectedIndex].text;
+        //if (selectedValue == "-Please Select a Vendor") {           
+        //    reset = true;      
+        //} 
+            // Need to check if Vendor has been selected  belfore Selection is allowed 
+            if ($('#ReOrderTable').DataTable().row(this, { selected: true }).any()) {
+                //$('#ReOrderTable').DataTable().row(this).deselect();
+                $('#ReOrderTable').DataTable().row(this, { selected: false });
+            }
+            else {
+                $('#ReOrderTable').DataTable().row(this, { selected: true });
+            }
+           
+        
+        //if (reset == true) {
+        //    swal( "Please Select a vendor", {
+        //        icon: "warning"
+        //    }).then((willDelete) => {
+        //        if (willDelete) {
+        //            $('#ReOrderTable').DataTable().row(this, { selected: false });
+        //        } 
+        //       // $('#ReOrderTable').DataTable().row(this, { selected: false });
+        //    });
+        //}
+
     });
+  
 
 }
+// Filter the table on Selection
+$("#Vendor_VendorID").on('change', function () {
+    //filter by selected value on second column
+    $('#ReOrderTable').DataTable().column(4).search($(this).val()).draw();
+}); 
 function loadAssemblyList() {
     dataTable = $('#AssembleDisassemble').dataTable({
         "ajax": {
