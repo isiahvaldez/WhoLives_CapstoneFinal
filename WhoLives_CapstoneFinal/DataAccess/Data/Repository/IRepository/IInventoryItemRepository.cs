@@ -10,6 +10,6 @@ namespace WhoLives.DataAccess.Data.Repository.IRepository
     {
         IEnumerable<SelectListItem> GetItemListForDropDown();
 
-        void update(InventoryItem item);
+        void Update(InventoryItem item);
     }
 }

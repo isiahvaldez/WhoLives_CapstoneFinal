@@ -21,15 +21,34 @@ namespace WhoLives_CapstoneFinal.Controllers
             _uow = uow;
         }
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(int? id)
         {
-            //if (input.Equals("upsert"))
-            //{
-            //    return Json(new { data = _uow.OrderItems.GetAll(d => d.PurchaseOrderID == 1) });
-            //}
+            if (id.HasValue)
+            {
+                return Json(new { data = _uow.OrderItems.GetAll(d => d.PurchaseOrderID == id, null, "Item") });
+            }
             return Json(new { data = _uow.PurchaseOrders.GetAll(null, null, "Vendor,Status") });
         }
 
+        [HttpGet("save")]
+        public IActionResult Save(int id, int itemId, int qtyOrdered, string price, int qtyReceived)
+        {
+            _uow.OrderItems.Add(new OrderItem
+            {
+                PurchaseOrderID = id,
+                ItemID = itemId,
+                QuantityOrdered = qtyOrdered,
+                Price = Convert.ToDecimal(price),
+                QuantityReceived = qtyReceived,
+                ItemReceived = false,
+                DateDelivered = DateTime.Now,
+                LastModifiedBy = "Order Controller",
+                LastModifiedDate = DateTime.Now
+
+            });
+            _uow.Save();
+            return Json(new { data = _uow.OrderItems.GetAll(d => d.PurchaseOrderID == id, null, "Item") });
+        }
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -99,7 +118,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             //var page = new WhoLives_CapstoneFinal.Pages.PurchaseOrders.UpsertModel(_uow);
             //return page.Page();
             //return LocalRedirect("./Pages/PurchaseOrders/Upsert");
-            //return RedirectToPage("/PurchaseOrders/Upsert", "reorder", new { vendor = Selection.Vendor, items = Selection.Items });
+            //return RedirectToPage("./PurchaseOrders/Upsert", "reorder", new { vendor = Selection.Vendor, items = Selection.Items });
             //return RedirectToAction("reorder", "/PurchaseOrders/Upsert");
             //return RedirectToAction("../PurchaseOrders/Index");
             //return Ok();

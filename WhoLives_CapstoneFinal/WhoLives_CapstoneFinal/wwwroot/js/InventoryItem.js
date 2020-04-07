@@ -223,29 +223,11 @@ function PassSelection() {
         $.ajax({
             url: '/api/order/',
             type: 'POST',
-            data: JSON.stringify({ "Vendor": "1", "Items": SelectedId }),
+            data: JSON.stringify({ "Vendor": "3", "Items": SelectedId }),
             contentType: 'application/json',
-            //dataType: 'json',
             success: function (data) {
-                //window.location.replace(data);
+                //bad hard-code, find a html helper
                 window.location.href = '../PurchaseOrders/Upsert?id=' + data;
-                if (data.success) {
-                    window.location.href = '../PurchaseOrders/Upsert';
-                    swal(data.message, {
-                        icon: "success"
-                    });
-                    //dataTable.ajax.reload();
-                } else if (data.error) {
-                    swal(data.message, {
-                        icon: "error"
-                    });
-                }
-                else {
-                    swal(data.message, {
-                        icon: "warning"
-                    });
-
-                }
             }
         });
 

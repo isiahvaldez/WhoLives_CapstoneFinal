@@ -25,6 +25,9 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpGet]
         public IActionResult Get(string input)
         {
+            // ALL is the default Table 
+            // Order is the Re order table
+            // The data is a Inpur value from the Ajax call 
             if (input.Equals("ALL"))
             {
                 return Json(new { data = _unitOfWork.InventoryItems.GetAll() });
@@ -45,6 +48,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpPost("{QTY,ITEMID,ASSEMBLE}")]
         public IActionResult Assemble(string? QTY, string? ITEMID, bool? ASSEMBLE)
         {
+            // ASSEMBLE is a way to seperate Disassemble and Asemble functionality. 
             if (ASSEMBLE == true)
             {
                 int qtyNeeded = 0;

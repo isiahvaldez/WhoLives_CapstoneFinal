@@ -25,7 +25,7 @@ namespace WhoLives.DataAccess.Data.Repository
             });
         }
 
-        public void update(InventoryItem item)
+        public void Update(InventoryItem item)
         {
             var objFromDb = _db.InventoryItems.FirstOrDefault(v => v.InventoryItemID == item.InventoryItemID);
 

@@ -18,16 +18,6 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
         public UpsertModel(IUnitOfWork uow)
         {
             _uow = uow;
-            //StatusList = new List<SelectListItem>()
-            //{
-            //    new SelectListItem{Text = "Back Order", Value = "Backorder"},
-            //    new SelectListItem{Text = "Ordered", Value = "Ordered"},
-            //    new SelectListItem{Text = "Shipping", Value = "Shipping"},
-            //    new SelectListItem{Text = "Received", Value = "Received"},
-            //    new SelectListItem{Text = "Partially Received", Value = "Partially"},
-            //    new SelectListItem{Text = "Pending", Value = "Pending"},
-            //    new SelectListItem{Text = "Overdue", Value = "Overdue"},
-            //};
         }
         [BindProperty]
         public PurchaseOrderVM PurchaseOrderVM { get; set; }
@@ -38,7 +28,8 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
                 OrderInfo = new PurchaseOrder(),
                 ItemList = _uow.InventoryItems.GetItemListForDropDown(),
                 VendorList = _uow.Vendors.GetVendorListForDropDown(),
-                StatusList = _uow.Statuses.GetStatusListForDropDown()
+                StatusList = _uow.Statuses.GetStatusListForDropDown(),
+                tempOrderItem = new OrderItem()
             };
             if (id != null)
             {
@@ -98,25 +89,31 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
                 //Get the current order items in the db to compare
                 var DBItems = _uow.OrderItems.GetAll(o => o.PurchaseOrderID == PurchaseOrderVM.OrderInfo.PurchaseOrderID).ToList();
 
-                foreach (var o in PurchaseOrderVM.OrderInfo.OrderItems)
+                if (PurchaseOrderVM.OrderInfo.OrderItems.Count > 0)
                 {
-                    if (DBItems.Contains(o))
+                    foreach (var o in PurchaseOrderVM.OrderInfo.OrderItems)
                     {
-                        // Update o in DB
-                        _uow.OrderItems.update(o);
-                        // Remove o from DBItems list
-                        DBItems.Remove(o);
-                    }
-                    else
-                    {
-                        // Add o to DB
-                        _uow.OrderItems.Add(o);
+                        if (DBItems.Contains(o))
+                        {
+                            // Update o in DB
+                            _uow.OrderItems.update(o);
+                            // Remove o from DBItems list
+                            DBItems.Remove(o);
+                        }
+                        else
+                        {
+                            // Add o to DB
+                            _uow.OrderItems.Add(o);
+                        }
                     }
                 }
-                foreach (var i in DBItems)
+                if (DBItems.Count > 0)
                 {
-                    // Delete i from DB
-                    _uow.OrderItems.Remove(i.OrderItemID);
+                    foreach (var i in DBItems)
+                    {
+                        // Delete i from DB
+                        _uow.OrderItems.Remove(i.OrderItemID);
+                    }
                 }
                 _uow.Save();
             }
@@ -127,31 +124,17 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
             //var list = _uow.OrderItems.ExportList(PurchaseOrderVM.OrderInfo.OrderItems);
             //return list;
         }
-        public IActionResult OnGetReorder(myOrderSelection Selection)
-        {
-            PurchaseOrderVM = new PurchaseOrderVM
-            {
-                OrderInfo = new PurchaseOrder()
-                {
-                    StatusID = 6,
-                    DateOrdered = DateTime.Now,
-                    StatusChangeDate = DateTime.Now,
-                    OrderItems = new List<OrderItem>(),
-                    VendorID = Convert.ToInt32(Selection.Vendor)
-                },
-                ItemList = _uow.InventoryItems.GetItemListForDropDown(),
-                VendorList = _uow.Vendors.GetVendorListForDropDown(),
-                StatusList = _uow.Statuses.GetStatusListForDropDown()
-            };
-            foreach (var i in Selection.Items)
-            {
-                PurchaseOrderVM.OrderInfo.OrderItems.Add(new OrderItem()
-                {
-                    ItemID = Convert.ToInt32(i),
-                    QuantityReceived = 0
-                });
-            }
-            return Page();
-        }
+        //public IActionResult OnPostAddOrderItem()
+        //{
+        //    _uow.OrderItems.Add(new OrderItem
+        //    {
+        //        ItemID = PurchaseOrderVM.tempOrderItem.ItemID,
+        //        PurchaseOrderID = PurchaseOrderVM.OrderInfo.PurchaseOrderID,
+        //        Price = PurchaseOrderVM.tempOrderItem.Price,
+        //        QuantityOrdered = PurchaseOrderVM.tempOrderItem.QuantityOrdered,
+        //        QuantityReceived = PurchaseOrderVM.tempOrderItem.QuantityReceived
+        //    });
+        //    return Page();
+        //}
     }
 }
