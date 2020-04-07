@@ -67,6 +67,7 @@ namespace WhoLives.Models
 
         //NAVIGATION PROPERTIES
         public virtual ICollection<VendorItem> VendorItems { get; set; }
+        public virtual ICollection<Vendor> VendorList{ get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         public virtual ICollection<BuildAssembly> BuildAssemblyList { get; set; }
         
