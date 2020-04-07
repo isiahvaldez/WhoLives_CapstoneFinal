@@ -18,16 +18,6 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
         public UpsertModel(IUnitOfWork uow)
         {
             _uow = uow;
-            //StatusList = new List<SelectListItem>()
-            //{
-            //    new SelectListItem{Text = "Back Order", Value = "Backorder"},
-            //    new SelectListItem{Text = "Ordered", Value = "Ordered"},
-            //    new SelectListItem{Text = "Shipping", Value = "Shipping"},
-            //    new SelectListItem{Text = "Received", Value = "Received"},
-            //    new SelectListItem{Text = "Partially Received", Value = "Partially"},
-            //    new SelectListItem{Text = "Pending", Value = "Pending"},
-            //    new SelectListItem{Text = "Overdue", Value = "Overdue"},
-            //};
         }
         [BindProperty]
         public PurchaseOrderVM PurchaseOrderVM { get; set; }
@@ -38,7 +28,8 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
                 OrderInfo = new PurchaseOrder(),
                 ItemList = _uow.InventoryItems.GetItemListForDropDown(),
                 VendorList = _uow.Vendors.GetVendorListForDropDown(),
-                StatusList = _uow.Statuses.GetStatusListForDropDown()
+                StatusList = _uow.Statuses.GetStatusListForDropDown(),
+                tempOrderItem = new OrderItem()
             };
             if (id != null)
             {
@@ -126,32 +117,6 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
         {
             //var list = _uow.OrderItems.ExportList(PurchaseOrderVM.OrderInfo.OrderItems);
             //return list;
-        }
-        public IActionResult OnGetReorder(myOrderSelection Selection)
-        {
-            PurchaseOrderVM = new PurchaseOrderVM
-            {
-                OrderInfo = new PurchaseOrder()
-                {
-                    StatusID = 6,
-                    DateOrdered = DateTime.Now,
-                    StatusChangeDate = DateTime.Now,
-                    OrderItems = new List<OrderItem>(),
-                    VendorID = Convert.ToInt32(Selection.Vendor)
-                },
-                ItemList = _uow.InventoryItems.GetItemListForDropDown(),
-                VendorList = _uow.Vendors.GetVendorListForDropDown(),
-                StatusList = _uow.Statuses.GetStatusListForDropDown()
-            };
-            foreach (var i in Selection.Items)
-            {
-                PurchaseOrderVM.OrderInfo.OrderItems.Add(new OrderItem()
-                {
-                    ItemID = Convert.ToInt32(i),
-                    QuantityReceived = 0
-                });
-            }
-            return Page();
         }
     }
 }
