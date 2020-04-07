@@ -9,7 +9,7 @@
     </div>
     <div class="col-6 text-right">
         <br />
-        <input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-success" />
+        <input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-primary" />
     </div>
 </div>
 <hr />
@@ -29,7 +29,7 @@
                     @Html.DropDownListFor(i => i.InventoryItemVM.InventoryItemObj.InventoryItemID,
                Model.InventoryItemVM.ItemList,
                "-Please select the part to assemble",
-               new { @class = "form-control" })
+               new { @class = "form-control", id = "itemList" })
 
                     <span class="text-danger" asp-validation-for="InventoryItemVM.InventoryItemObj.InventoryItemID"></span>
                 </div>
@@ -37,17 +37,18 @@
             <div class="form-group">
                 <label asp-for="InventoryItemVM.AssemblyInfo.ItemQty" class="control-label mr-3">Quantity Needed for assembly:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.AssemblyInfo.ItemQty" type="text" value="@Model.InventoryItemVM.AssemblyInfo.ItemQty" class="form-control" required />
+                    <input id="required-qty" asp-for="InventoryItemVM.AssemblyInfo.ItemQty" type="text" value="@Model.InventoryItemVM.AssemblyInfo.ItemQty" class="form-control" required />
                 </div>
             </div>
             <br />
             <div class="row text-center">
+                <!-- Adds a part to the table, so it doesn't submit yet - IV 4/5/2020-->
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    <input type="submit" value="Add Part" style="width:auto;" class="btn btn-success" />
+                    <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-secondary" />
                 </div>
                 <div class="col-6">
-                    <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
+                    <a class="btn btn-warning" style="width:auto;" asp-page="./Index">Back to List</a>
                 </div>
             </div>
         </form>
@@ -60,17 +61,18 @@
                     <table class="table-bordered table-striped" id="assemblyComponents" style="width:100%">
                         <thead class="thead-dark table-bordered">
                             <tr class="card-header">
-                                <th style="position:sticky;top:0">Name</th>
-                                <th style="position:sticky;top:0" class="text-center">Required Qty</th>
-                                <th style="position:sticky;top:0" class="text-center">Select</th>
+                                <th style="position:sticky;top:0;width:33%">Name</th>
+                                <th style="position:sticky;top:0;width:33%" class="text-center">Required Qty</th>
+                                <th style="position:sticky;top:0;width:33%" class="text-center">Actions</th>
                             </tr>
+                            <!-- populate current assembly list here - IV 4/5/2020 -->
                         </thead>
                     </table>
                     <br />
                     <div class="row text-right">
                         <div class="col-12">
-                            <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                            <input type="submit" value="Remove" style="width:auto;" asp-page="./Assembly" class="btn btn-danger" />
+                            <!--<input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
+                            <input type="submit" value="Remove" style="width:auto;" asp-page="./Assembly" class="btn btn-danger" />-->
                         </div>
                     </div>
                 </div>
@@ -79,3 +81,34 @@
     </div>
 </div>
 
+@section Scripts {
+<script>
+    function AddItemToTable(tableID, dropdownID) {
+        var dropdown = document.getElementById(dropdownID); // the item selected in the "Part Needed" dropdown
+        var itemID = dropdown.options[dropdown.selectedIndex].value; 
+        var itemName = dropdown.options[dropdown.selectedIndex].text; 
+        var currTable = document.getElementById(tableID); 
+        var requiredQty = document.getElementById("required-qty").value;
+        console.log("there are " + currTable.rows.length + "rows");
+        // before adding a new item, search the table for duplicates
+        for (var i = 0; i < currTable.rows.length; i++) {
+            if (currTable.rows[i].cells[0].innerHTML == itemID)
+            {
+                currTable.rows[i].cells[2].innerHTML = requiredQty; 
+                return;
+            }
+        }
+        
+        var newRow = currTable.insertRow(-1); // add row at next index
+        newRow.innerHTML = "<td style='display:none'>" + itemID + "</td><td class='px-3'>" + itemName + "</td><td class='px-3'>" + requiredQty
+            + "</td><td class='text-center'><a style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a></td>"
+        newRow.cells[3].firstChild.addEventListener("click", RemoveItemFromTable); // add listener to the button inside the cell
+    }
+
+    function RemoveItemFromTable() {
+        var nodeToDelete = this.parentNode; // cell
+        var parent = nodeToDelete.parentNode;
+        parent.parentNode.removeChild(parent); 
+    }
+</script>
+} 

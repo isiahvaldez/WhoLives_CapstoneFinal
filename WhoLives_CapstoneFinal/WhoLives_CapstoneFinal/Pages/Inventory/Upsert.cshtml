@@ -12,10 +12,21 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
-                <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
-                </div>
+                @if (Model.isEditable == true)
+                {
+                    <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
+                    <div class="form-inline col-12">
+                        <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
+                    </div>
+                }
+                else
+                {
+                    <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
+                    <div class="form-inline col-12">
+                        <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
+                    </div>
+                }
+
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.Description" class="control-label mr-3">Description:</label>
@@ -133,7 +144,7 @@
                                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
                                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                                     {
-                                        <a class="btn btn-info" style="width:auto;" asp-page="./Assembly">Edit Assembly Components</a>
+                                        <a class="btn btn-info" style="width:auto;" href="/Inventory/Assembly?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID">Edit Assembly Components</a>
                                     }
                                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
                                     {
