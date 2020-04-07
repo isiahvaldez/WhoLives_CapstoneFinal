@@ -36,7 +36,8 @@ function loadList() {
         "ajax": {
             "url": "/api/order",
             "type": "GET",
-            "datatype": "json"
+            "datatype": "json",
+            "data": { input: "n" }
         },
         "columns": [
             {

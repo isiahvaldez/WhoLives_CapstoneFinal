@@ -89,25 +89,31 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
                 //Get the current order items in the db to compare
                 var DBItems = _uow.OrderItems.GetAll(o => o.PurchaseOrderID == PurchaseOrderVM.OrderInfo.PurchaseOrderID).ToList();
 
-                foreach (var o in PurchaseOrderVM.OrderInfo.OrderItems)
+                if (PurchaseOrderVM.OrderInfo.OrderItems.Count > 0)
                 {
-                    if (DBItems.Contains(o))
+                    foreach (var o in PurchaseOrderVM.OrderInfo.OrderItems)
                     {
-                        // Update o in DB
-                        _uow.OrderItems.update(o);
-                        // Remove o from DBItems list
-                        DBItems.Remove(o);
-                    }
-                    else
-                    {
-                        // Add o to DB
-                        _uow.OrderItems.Add(o);
+                        if (DBItems.Contains(o))
+                        {
+                            // Update o in DB
+                            _uow.OrderItems.update(o);
+                            // Remove o from DBItems list
+                            DBItems.Remove(o);
+                        }
+                        else
+                        {
+                            // Add o to DB
+                            _uow.OrderItems.Add(o);
+                        }
                     }
                 }
-                foreach (var i in DBItems)
+                if (DBItems.Count > 0)
                 {
-                    // Delete i from DB
-                    _uow.OrderItems.Remove(i.OrderItemID);
+                    foreach (var i in DBItems)
+                    {
+                        // Delete i from DB
+                        _uow.OrderItems.Remove(i.OrderItemID);
+                    }
                 }
                 _uow.Save();
             }
@@ -118,5 +124,17 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
             //var list = _uow.OrderItems.ExportList(PurchaseOrderVM.OrderInfo.OrderItems);
             //return list;
         }
+        //public IActionResult OnPostAddOrderItem()
+        //{
+        //    _uow.OrderItems.Add(new OrderItem
+        //    {
+        //        ItemID = PurchaseOrderVM.tempOrderItem.ItemID,
+        //        PurchaseOrderID = PurchaseOrderVM.OrderInfo.PurchaseOrderID,
+        //        Price = PurchaseOrderVM.tempOrderItem.Price,
+        //        QuantityOrdered = PurchaseOrderVM.tempOrderItem.QuantityOrdered,
+        //        QuantityReceived = PurchaseOrderVM.tempOrderItem.QuantityReceived
+        //    });
+        //    return Page();
+        //}
     }
 }

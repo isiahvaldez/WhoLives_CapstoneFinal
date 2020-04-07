@@ -14,7 +14,7 @@ namespace WhoLives.Models
         public int ItemID { get; set; }
 
         [ForeignKey("ItemID")]
-        public InventoryItem Item { get; set; }
+        public virtual InventoryItem Item { get; set; }
 
         public int PurchaseOrderID { get; set; }
 
