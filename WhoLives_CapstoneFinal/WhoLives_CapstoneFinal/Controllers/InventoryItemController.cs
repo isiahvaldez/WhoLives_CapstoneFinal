@@ -32,6 +32,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             else if (input.Equals("ORDER"))
             {
                 return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
+               // return Json(new { data = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty, null ,"VendorItems,VendorList") });
             }
             else
             {
