@@ -133,7 +133,7 @@
                                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
                                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                                     {
-                                        <a class="btn btn-info" style="width:auto;" asp-page="./Assembly">Edit Assembly Components</a>
+                                        <a class="btn btn-info" style="width:auto;" href="/Inventory/Assembly?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID">Edit Assembly Components</a>
                                     }
                                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
                                     {
