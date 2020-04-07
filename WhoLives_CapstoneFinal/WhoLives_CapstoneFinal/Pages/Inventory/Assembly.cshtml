@@ -9,7 +9,7 @@
     </div>
     <div class="col-6 text-right">
         <br />
-        <input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-success" />
+        <input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-primary" />
     </div>
 </div>
 <hr />
@@ -45,7 +45,7 @@
                 <!-- Adds a part to the table, so it doesn't submit yet - IV 4/5/2020-->
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-primary" />
+                    <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-secondary" />
                 </div>
                 <div class="col-6">
                     <a class="btn btn-warning" style="width:auto;" asp-page="./Index">Back to List</a>
@@ -61,9 +61,9 @@
                     <table class="table-bordered table-striped" id="assemblyComponents" style="width:100%">
                         <thead class="thead-dark table-bordered">
                             <tr class="card-header">
-                                <th style="position:sticky;top:0">Name</th>
-                                <th style="position:sticky;top:0" class="text-center">Required Qty</th>
-                                <th style="position:sticky;top:0" class="text-center">Select</th>
+                                <th style="position:sticky;top:0;width:33%">Name</th>
+                                <th style="position:sticky;top:0;width:33%" class="text-center">Required Qty</th>
+                                <th style="position:sticky;top:0;width:33%" class="text-center">Actions</th>
                             </tr>
                             <!-- populate current assembly list here - IV 4/5/2020 -->
                         </thead>
@@ -83,31 +83,32 @@
 
 @section Scripts {
 <script>
-    function AddItemToTable(tableID, itemID) {
-        var dropdown = document.getElementById(itemID);
-        var currItem = dropdown.options[dropdown.selectedIndex].value;
-        var itemName = dropdown.options[dropdown.selectedIndex].text;
-        var currTable = document.getElementById(tableID);
-        var requiredQty = document.getElementById("required-qty").text;
-        //var row = currTable.rows.length;
-        console.log("Adding item " + currItem + " to table " + tableID);
-        var newRow = currTable.insertRow(-1);
-        var currCell = newRow.insertCell(0);
-        currCell.appendChild(document.createTextNode(itemName));
+    function AddItemToTable(tableID, dropdownID) {
+        var dropdown = document.getElementById(dropdownID); // the item selected in the "Part Needed" dropdown
+        var itemID = dropdown.options[dropdown.selectedIndex].value; 
+        var itemName = dropdown.options[dropdown.selectedIndex].text; 
+        var currTable = document.getElementById(tableID); 
         var requiredQty = document.getElementById("required-qty").value;
-        currCell = newRow.insertCell(1);
-        currCell.appendChild(document.createTextNode(requiredQty));
-        currCell = newRow.insertCell(2);
-        var buttonHTML = document.createElement("div");
-        buttonHTML.innerHTML = "<a onclick=RemoveItemFromTable('" + currTable.id + "'," + newRow.rowIndex
-            + ") style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a>";
-        currCell.appendChild(buttonHTML);
+        console.log("there are " + currTable.rows.length + "rows");
+        // before adding a new item, search the table for duplicates
+        for (var i = 0; i < currTable.rows.length; i++) {
+            if (currTable.rows[i].cells[0].innerHTML == itemID)
+            {
+                currTable.rows[i].cells[2].innerHTML = requiredQty; 
+                return;
+            }
+        }
+        
+        var newRow = currTable.insertRow(-1); // add row at next index
+        newRow.innerHTML = "<td style='display:none'>" + itemID + "</td><td class='px-3'>" + itemName + "</td><td class='px-3'>" + requiredQty
+            + "</td><td class='text-center'><a style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a></td>"
+        newRow.cells[3].firstChild.addEventListener("click", RemoveItemFromTable); // add listener to the button inside the cell
     }
 
-    function RemoveItemFromTable(tableID, rowID) {
-        var myTable = document.getElementById(tableID);
-        var rowToDelete = myTable.rows.item(rowID);
-        rowToDelete.remove();
+    function RemoveItemFromTable() {
+        var nodeToDelete = this.parentNode; // cell
+        var parent = nodeToDelete.parentNode;
+        parent.parentNode.removeChild(parent); 
     }
 </script>
 } 
