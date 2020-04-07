@@ -12,10 +12,21 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
-                <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
-                </div>
+                @if (Model.isEditable == true)
+                {
+                    <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
+                    <div class="form-inline col-12">
+                        <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
+                    </div>
+                }
+                else
+                {
+                    <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
+                    <div class="form-inline col-12">
+                        <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required readonly/>
+                    </div>
+                }
+
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.Description" class="control-label mr-3">Description:</label>
