@@ -225,9 +225,12 @@ function PassSelection() {
             type: 'POST',
             data: JSON.stringify({ "Vendor": "1", "Items": SelectedId }),
             contentType: 'application/json',
-            dataType: 'json',
+            //dataType: 'json',
             success: function (data) {
+                //window.location.replace(data);
+                window.location.href = '../PurchaseOrders/Upsert?id=' + data;
                 if (data.success) {
+                    window.location.href = '../PurchaseOrders/Upsert';
                     swal(data.message, {
                         icon: "success"
                     });
