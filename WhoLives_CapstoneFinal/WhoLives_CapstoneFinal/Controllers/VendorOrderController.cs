@@ -28,7 +28,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
             else
             {
-                return Json(new { }); ;
+                return Json(new { } ); // a null ID will be handled in the upsert cshtml - IV 4/3/2020
             }
         }
     }

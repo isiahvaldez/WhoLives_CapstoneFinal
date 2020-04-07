@@ -23,7 +23,16 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public void update(PurchaseOrder purchaseOrder)
         {
-            throw new NotImplementedException();
+            var PO = _appContext.PurchaseOrders.FirstOrDefault(p => p.PurchaseOrderID == purchaseOrder.PurchaseOrderID);
+            PO.VendorID = purchaseOrder.VendorID;
+            PO.StatusChangeDate = PO.StatusID == purchaseOrder.StatusID ? purchaseOrder.StatusChangeDate : DateTime.Now;
+            PO.StatusID = purchaseOrder.StatusID;
+            PO.PO = purchaseOrder.PO;
+            PO.DateOrdered = purchaseOrder.DateOrdered;
+            PO.LastModifiedBy = purchaseOrder.LastModifiedBy;
+            PO.LastModifiedDate = DateTime.Now;
+
+            _appContext.SaveChanges();
         }
 
     }

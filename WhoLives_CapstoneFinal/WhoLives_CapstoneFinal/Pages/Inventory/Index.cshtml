@@ -38,12 +38,12 @@
                         </table>
                     </div>
                     <div class="tab-pane fade show " id="nav-reorder" role="tabpanel" aria-labelledby="nav-reorder-tab">
-                        @*@Html.DropDownListFor(v =>  m.MenuItemObj.MenuItem.CategoryId,
-                   Model.MenuItemObj.CategoryList,
-                   "-Please Select a Category",
-                   new { @class = "form-control" })
-                        <span class="text-danger" asp-validation-for="MenuItemObj.MenuItem.CategoryId"></span>*@
-                        <div><label>Please Select A Vendor</label><input type="text" placeholder="SelectVendor" /></div>
+                       @Html.DropDownListFor(v =>  v.Vendor.VendorID,
+                   Model.VendorObjList,
+                   "-Please Select a Vendor",
+                   new {@class = "form-control" })
+                        <span class="text-danger" asp-validation-for="Vendor.VendorID"></span>
+                        @*<div><label>Please Select A Vendor</label><input type="text" placeholder="SelectVendor" /></div>*@
                         <table class="table-bordered table-striped" id="ReOrderTable" style="width:100%">
                             <thead class="thead-dark table-bordered">
                                 <tr class="card-header">
@@ -56,8 +56,8 @@
                             </thead>
                         </table>
                         <div class="col-12 text-right">
-                            <button class="btn btn-primary " asp-page="./OrderPopup" onclick="PassSelection()">New Purchase Order</button>
-                        </div>
+                            <button class="btn btn-primary" asp-page="../PurchaseOrders/Upsert" onclick="PassSelection()">New Purchase Order</button>
+</div>
 
                     </div>
                     <div class="tab-pane fade show " id="nav-assemblies" role="tabpanel" aria-labelledby="nav-assemblies-tab">

@@ -7,20 +7,22 @@ using System.Text;
 namespace WhoLives.Models
 {
     /// <summary>
-    /// One of the items necessary to build a given assembly
+    /// A component of a Build Assembly
     /// </summary>
     public class Assembly
     {
         [Key]
         public int AssemblyID { get; set; }
         
-        //Foreign key to link the InventoryItem table to the Assembly Table
         public int? InventoryItemID { get; set; }
+        /// <summary>
+        /// The item being used as a component
+        /// </summary>
         [ForeignKey("InventoryItemID")]
         public InventoryItem InventoryItem { get; set; }
 
         /// <summary>
-        /// Number of items used for an individual assembly.
+        /// Number of a certain item to complete an assembly
         /// </summary>
         [Display(Name = "Item Qty")]
         public int ItemQty { get; set; }

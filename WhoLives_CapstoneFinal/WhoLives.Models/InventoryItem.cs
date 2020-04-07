@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WhoLives.Models
 {
@@ -67,6 +68,7 @@ namespace WhoLives.Models
 
         //NAVIGATION PROPERTIES
         public virtual ICollection<VendorItem> VendorItems { get; set; }
+        [JsonIgnore]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         public virtual ICollection<BuildAssembly> BuildAssemblyList { get; set; }
         

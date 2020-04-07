@@ -27,7 +27,12 @@ function loadList() {
                 "data": "vendorWebsite", "width": "25%",
                 "render": function (data, type) {
                     if (type == 'display') {
-                        data = '<a href="' + data + '">' + data + '</a>';
+                        if (data != null) {
+                            data = '<a href="' + data + '">' + data + '</a>';
+                        }
+                        else {
+                            data = "";
+                        }
                     }
                     return data;
                 }
