@@ -20,6 +20,7 @@ namespace WhoLives_CapstoneFinal.Pages.Vendor
 
         [BindProperty]
         public WhoLives.Models.Vendor VendorObj { get; set; }
+
         public IActionResult OnGet(int? vendorID)
         {
             VendorObj = new WhoLives.Models.Vendor();
@@ -36,12 +37,13 @@ namespace WhoLives_CapstoneFinal.Pages.Vendor
 
         public IActionResult OnPost()
         {
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            if (VendorObj.VendorID == 0) // new food type 
+            if (VendorObj.VendorID == 0) // new vendor
             {
                 _unitOfWork.Vendors.Add(VendorObj);
             }

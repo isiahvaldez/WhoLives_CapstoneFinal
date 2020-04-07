@@ -15,6 +15,7 @@ namespace WhoLives.DataAccess
         }
 
         public DbSet<Measure> Measures { get; set; }
+        public DbSet<Status> Statuses { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<Assembly> Assembly { get; set; }
         public DbSet<BuildAssembly> BuildAssemblies { get; set; }

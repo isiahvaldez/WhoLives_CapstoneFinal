@@ -1,19 +1,38 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
-    //var scripts = document.getElementsByTagName('script');
-    //var lastScript = scripts[scripts.length - 1];
-    //let type = lastScript.getAttribute('page-type');
-    //if (document.getElementsByTagName('page-type') == 'upsert') {
-    //    loadUpsertList();
-    //}
-    //else {
+    if (document.location.pathname.toLowerCase().includes('upsert')) {
+        loadUpsertList();
+    }
+    else {
         loadList();
-    //}
+    }
 });
 
 function loadList() {
     dataTable = $('#DT_load').dataTable({
+        initComplete: function () {
+            this.api().columns([2]).every(function () {
+                var column = this;
+                var select = $('<select><option value="">--Select All--</option></select>')
+                    .appendTo($(column.header()))
+                    .on('change',
+                    function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    }
+                );
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        },
+        responsive: { details: true },
         "ajax": {
             "url": "/api/order",
             "type": "GET",
@@ -22,29 +41,41 @@ function loadList() {
         "columns": [
             {
                 "data": "vendor.vendorName",
-                "width": "25%"
+                "render": function (data, type, row) {
+                    if (type == 'display') {
+                        data = '<a href="/purchaseorders/upsert?id=' + row.purchaseOrderID + '">' + data + '</a>';
+                    }
+                    return data;
+                },
+                "width": "20%"
             },
             {
                 "data": "po",
-                "width": "15%"
+                "render": function (data, type, row) {
+                    if (type == 'display') {
+                        data = '<a href="/purchaseorders/upsert?id=' + row.purchaseOrderID + '">' + data + '</a>';
+                    }
+                    return data;
+                },
+                "width": "20%"
             },
             {
-                "data": "status",
-                "width": "15%"
+                "data": "status.name",
+                "width": "20%"
             },
             {
-                "data": "id",
+                "data": "purchaseOrderID",
                 "render": function (data) {
                     return `<div class="text-center">
-                            <a href="/order/upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width: 100px">
-                                <i class="far fa-edit"></i> Edit
+                            <a href="/purchaseorders/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 100px">
+                                <i class="far fa-edit"></i>
                             </a>
-                            <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/order/'+${data})>
-                                <i class="far fa-trash-alt"></i> Delete
+                            <a class="btn btn-danger" style="cursor:pointer; width:100px;" onclick=Delete('/api/purchaseorders/'+${data})>
+                                <i class="far fa-trash-alt"></i>
                             </a>
                         </div>`;
                 },
-                "width": "30%"
+                "width": "25%"
             }
         ],
         "language": {
@@ -54,46 +85,47 @@ function loadList() {
     });
 }
 
-function loadUpsertList() {
-    dataTable = $('#DT_load').dataTable({
-        "ajax": {
-            "url": "/api/order",
-            "type": "GET",
-            "datatype": "json"
-        },
-        "columns": [
-            {
-                "data": "item",
-                "width": "35%"
-            },
-            {
-                "data": "quantityOrdered",
-                "width": "15%"
-            },
-            {
-                "data": "status",
-                "width": "35%",
-                "render": function (data, type, row, meta) {
-                    var index = sdata.indexOf(row);
-                    var select = $("<select id='" + index + "'>" +
-                        "<option value='backorder'>Backorder</option>" +
-                        "<option value='ordered'>Ordered</option>" +
-                        "<option value='shipping'>Shipping</option>" +
-                        "<option value='received'>Received</option>" +
-                        "<option value='partiallyreceived'>Partially Received</option>" +
-                        "<option value='overdue'>Overdue</option>" +
-                        "<option value='pending'>Pending</option>" +
-                        "</select>");
-                }
-            },
-            {
-                "data": "quantityReceived",
-                "width": "15%"
-            }
-        ],
-        "language": {
-            "emptyTable": "No order items to display."
-        },
-        "width": "100%"
-    });
-}
+//function loadUpsertList() {
+//    dataTable = $('#DT_load').dataTable({
+//        "ajax": {
+//            "url": "/api/order",
+//            "data": { input: "upsert" },
+//            "type": "GET",
+//            "datatype": "json"
+//        },
+//        "columns": [
+//            {
+//                "data": "item",
+//                "width": "35%"
+//            },
+//            {
+//                "data": "quantityOrdered",
+//                "width": "15%"
+//            },
+//            {
+//                "data": "status",
+//                "width": "35%",
+//                //"render": function (data, type, row, meta) {
+//                //    var index = data.indexOf(row);
+//                //    var select = $("<select id='" + index + "'>" +
+//                //        "<option value='backorder'>Backorder</option>" +
+//                //        "<option value='ordered'>Ordered</option>" +
+//                //        "<option value='shipping'>Shipping</option>" +
+//                //        "<option value='received'>Received</option>" +
+//                //        "<option value='partiallyreceived'>Partially Received</option>" +
+//                //        "<option value='overdue'>Overdue</option>" +
+//                //        "<option value='pending'>Pending</option>" +
+//                //        "</select>");
+//                //}
+//            },
+//            {
+//                "data": "quantityReceived",
+//                "width": "15%"
+//            }
+//        ],
+//        "language": {
+//            "emptyTable": "No order items to display."
+//        },
+//        "width": "100%"
+//    });
+//}

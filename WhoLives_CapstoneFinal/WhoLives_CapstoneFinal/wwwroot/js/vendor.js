@@ -13,12 +13,26 @@ function loadList() {
             "datatype": "json"
         },
         "columns": [
-            { "data": "vendorName", "width": "25%" },
+            {
+                "data": "vendorName", 
+                "render": function (data, type, row) {
+                    if (type == 'display') {
+                        data = '<a href="/vendor/upsert?vendorID=' + row.vendorID + '">' + data + '</a>';
+                    }
+                    return data;
+                },
+                "width": "25%",
+            },
             {
                 "data": "vendorWebsite", "width": "25%",
                 "render": function (data, type) {
                     if (type == 'display') {
-                        data = '<a href="' + data + '">' + data + '</a>';
+                        if (data != null) {
+                            data = '<a href="' + data + '">' + data + '</a>';
+                        }
+                        else {
+                            data = "";
+                        }
                     }
                     return data;
                 }
