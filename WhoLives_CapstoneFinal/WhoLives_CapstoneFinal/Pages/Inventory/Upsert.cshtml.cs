@@ -69,8 +69,8 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
                 _unitOfWork.InventoryItems.Update(InventoryItemVM.InventoryItemObj);
             }
             _unitOfWork.Save();
-            //return RedirectToPage("./Index");
-            return RedirectToPage(new { id=InventoryItemVM.InventoryItemObj.InventoryItemID, isEditable = true});
+            return RedirectToPage("./Index");
+            //return RedirectToPage(new { id=InventoryItemVM.InventoryItemObj.InventoryItemID, isEditable = true});
         }
         /*
         [HttpGet("{id,isEditable}")]
