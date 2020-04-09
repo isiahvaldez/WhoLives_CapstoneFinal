@@ -38,11 +38,11 @@
                         </table>
                     </div>
                     <div class="tab-pane fade show " id="nav-reorder" role="tabpanel" aria-labelledby="nav-reorder-tab">
-                       @Html.DropDownListFor(v =>  v.Vendor.VendorID,
-                   Model.VendorObjList,
+                       @Html.DropDownListFor(v =>  v.ItemAssemblyVendor.Vendor.VendorID,
+                   Model.ItemAssemblyVendor.VendorList,
                    "-Please Select a Vendor",
                    new {@class = "form-control" })
-                        <span class="text-danger" asp-validation-for="Vendor.VendorID"></span>
+                        <span class="text-danger" asp-validation-for="ItemAssemblyVendor.Vendor.VendorID"></span>
                         @*<div><label>Please Select A Vendor</label><input type="text" placeholder="SelectVendor" /></div>*@
                         <table class="table-bordered table-striped" id="ReOrderTable" style="width:100%">
                             <thead class="thead-dark table-bordered">

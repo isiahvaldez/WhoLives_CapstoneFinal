@@ -67,7 +67,7 @@ function loadOrderList() {
 
     }).on('click', 'tbody tr', function () {
         // Check to see if vendor was selected. 
-        var select = document.getElementById('Vendor_VendorID');
+        var select = document.getElementById('ItemAssemblyVendor_Vendor_VendorID');
         var selectedValue = select.options[select.selectedIndex].text;
         //if (selectedValue == "-Please Select a Vendor") {           
         //    reset = true;      
@@ -98,7 +98,7 @@ function loadOrderList() {
 
 }
 // Filter the table on Selection
-$("#Vendor_VendorID").on('change', function () {
+$("#ItemAssemblyVendor_Vendor_VendorID").on('change', function () {
     //filter by selected value on second column
     $('#ReOrderTable').DataTable().column(4).search($(this).val()).draw();
 }); 

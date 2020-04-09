@@ -7,7 +7,9 @@ namespace WhoLives.Models.ViewModels
 {
     public class ItemAssembleVM
     {
-        public IEnumerable<Vendor> VendorList { get; set; }
-        public List<int> ItemS { get; set; }
+        public IEnumerable<SelectListItem> VendorList { get; set; }
+        public Vendor Vendor { get; set; }
+        public IEnumerable<SelectListItem> VendorItemList { get; set; }
+        public IEnumerable<SelectListItem> Items { get; set; }
     }
 }
