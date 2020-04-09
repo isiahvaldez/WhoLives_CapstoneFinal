@@ -23,14 +23,19 @@ namespace WhoLives_CapstoneFinal.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpGet]
-        public IActionResult Get(string input)
+        public IActionResult Get(string input,string id)
         {
+            
             // ALL is the default Table 
             // Order is the Re order table
             // The data is a Inpur value from the Ajax call 
             if (input.Equals("purchase"))
             {
-                return Json(new { data = _unitOfWork.PurchaseOrders.GetAll() });
+                var purchase = _unitOfWork.PurchaseOrders.GetAll();
+                var order = _unitOfWork.OrderItems.GetAll(o=>o.ItemID == Int32.Parse(id));
+
+
+                return Json(new { data = purchase.Join(order, p=>p.PurchaseOrderID, o=>o.PurchaseOrderID, (p,o)=>new { p.Vendor, p.PurchaseOrderID, p.DateOrdered, o.Price }) });
             }         
             else
             {

@@ -107,7 +107,8 @@ $("#ItemAssemblyVendor_Vendor_VendorID").on('change', function () {
         //filter by selected value on Last column
         $('#ReOrderTable').DataTable().column(4).search("").draw();
     }
-    }); 
+}); 
+// Load Assemble diss assemble Table
 function loadAssemblyList() {
     dataTable = $('#AssembleDisassemble').dataTable({
         "ajax": {
@@ -178,7 +179,7 @@ function assemble(id) {
         }
     });
 }
-
+// Used when there was seperate Dis assemble button 
 function disassemble(id) {
     //console.log('asse' + id);
     var qty = document.getElementById('dis' + id).value;
@@ -210,6 +211,7 @@ function disassemble(id) {
         }
     });
 }
+// Handles Passing the selection to re order page
 function PassSelection() {
     
     var SelectedRows = $('#ReOrderTable').DataTable().rows({ selected: true }).data();

@@ -11,7 +11,7 @@ $(document).ready(function () {
 function loadAssemblyList() {
     dataTable = $('#AllItem').dataTable({
         "ajax": {
-            "url": "/api/inventoryItem/",
+            "url": "/api/itemUpsert/",
             "data": { input:"ALL"},
             "type": "GET",
             "datatype": "json"
@@ -55,7 +55,7 @@ function loadPurchaseList() {
                     </a> `
                 }, "width": "50%" },
             { "data": "DateOrdered", "width": "20%" },
-            { "data": "Purchased Cost", "width": "20%" }  
+            { "data": "Price", "width": "20%" }  
         ], "language": {
             "emptyTable": "no data found."
         },
