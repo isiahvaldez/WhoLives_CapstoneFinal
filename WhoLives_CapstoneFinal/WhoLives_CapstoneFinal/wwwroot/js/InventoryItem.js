@@ -58,7 +58,7 @@ function loadOrderList() {
             { "data": "name", "width": "50%" },
             { "data": "totalLooseQty", "width": "10%" },
             { "data": "reorderQty", "width": "10%" },
-            { "data": "vendorItems", "width": "25%" }
+            { "data": "vendorName", "width": "25%" }
 
         ], "language": {
             "emptyTable": "no data found."
@@ -99,9 +99,15 @@ function loadOrderList() {
 }
 // Filter the table on Selection
 $("#ItemAssemblyVendor_Vendor_VendorID").on('change', function () {
-    //filter by selected value on second column
-    $('#ReOrderTable').DataTable().column(4).search($(this).val()).draw();
-}); 
+    var select = document.getElementById('ItemAssemblyVendor_Vendor_VendorID');
+    var selectedValue = select.options[select.selectedIndex].text;
+    if (selectedValue != "-Please Select a Vendor") {
+        $('#ReOrderTable').DataTable().column(4).search(selectedValue).draw();
+    } else {
+        //filter by selected value on Last column
+        $('#ReOrderTable').DataTable().column(4).search("").draw();
+    }
+    }); 
 function loadAssemblyList() {
     dataTable = $('#AssembleDisassemble').dataTable({
         "ajax": {
