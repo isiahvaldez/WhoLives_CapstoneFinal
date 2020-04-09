@@ -55,17 +55,16 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpPost("{QTY,ITEMID,ASSEMBLE}")]
         public IActionResult Assemble(string? QTY, string? ITEMID, bool? ASSEMBLE)
         {
-            // ASSEMBLE is a way to seperate Disassemble and Asemble functionality. 
-            if (ASSEMBLE == true)
+            int qtyNeeded = 0;
+            int qtyAssembled = 1;
+            if (QTY != null)
             {
-                int qtyNeeded = 0;
-                int qtyAssembled = 1;
-                if (QTY != null)
-                {
-                    qtyAssembled = Int32.Parse(QTY);
-                }
-                bool check = false;
-
+                qtyAssembled = Int32.Parse(QTY);
+            }
+            bool check = false;
+            // ASSEMBLE is a way to seperate Disassemble and Asemble functionality. 
+            if (qtyAssembled >0 )
+            {
                 // pull the recipe fo the assembly 
                 // Check the Qty required to make it and VS the qty on hand 
                 // Return the result based on if it can be made 
@@ -116,11 +115,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             else
             {
                 int qtyReplaced = 0;
-                int qtyAssembled = 1;
-                if (QTY != null)
-                {
-                    qtyAssembled = Int32.Parse(QTY);
-                }
+                qtyAssembled*=-1;
 
 
                 // pull the recipe fo the assembly 

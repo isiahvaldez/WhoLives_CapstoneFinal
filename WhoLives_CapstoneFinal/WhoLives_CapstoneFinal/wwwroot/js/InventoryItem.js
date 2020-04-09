@@ -132,14 +132,9 @@ function loadAssemblyList() {
                 "render": function (data) {
                     return ` <div class="text-center">
                                <input type="number" style="width:15%;" id ="asse${data}"/> <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble(${data})">
-                                    <i class="far fa-edit">Assemble</i>
+                                    <i class="far fa-edit">Assemble / Disassemble</i>
                                 </a>
-                            </div>
-                            <div class="text-center">
-                               <input type="number" style="width:15%;" id ="dis${data}"/> <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" onClick="disassemble(${data})">
-                                    <i class="far fa-trash-alt">Disassemble</i>
-                                </a>
-                             </div>`
+                            </div>`
                 },
                 "width": "10%"
             }
