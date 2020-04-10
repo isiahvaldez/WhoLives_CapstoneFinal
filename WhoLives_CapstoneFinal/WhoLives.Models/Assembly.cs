@@ -7,7 +7,7 @@ using System.Text;
 namespace WhoLives.Models
 {
     /// <summary>
-    /// A component of a Build Assembly
+    /// An item and quantity to use in a build assembly
     /// </summary>
     public class Assembly
     {
@@ -27,6 +27,9 @@ namespace WhoLives.Models
         [Display(Name = "Item Qty")]
         public int ItemQty { get; set; }
 
+        /// <summary>
+        /// What build assemblies use this assembly
+        /// </summary>
         public virtual ICollection<BuildAssembly> BuildAssemblyList { get; set; }
     }
 }

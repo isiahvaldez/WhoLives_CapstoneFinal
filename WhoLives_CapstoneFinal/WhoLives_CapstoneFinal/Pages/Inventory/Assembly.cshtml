@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "Assembly";
 }
+
 <div class="row">
     <div class="col-6">
         <h1>Assembly Information</h1>
     </div>
     <div class="col-6 text-right">
         <br />
-        <input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-primary" />
+        <!--<input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-primary" />-->
+        <a onclick="AddToDatabase()" style='width:auto' class='btn btn-primary'>Save Assembly</a>
     </div>
 </div>
 <hr />
@@ -66,6 +68,18 @@
                                 <th style="position:sticky;top:0;width:33%" class="text-center">Actions</th>
                             </tr>
                             <!-- populate current assembly list here - IV 4/5/2020 -->
+                            @if (Model.BuildAssemblyVM.BuildAssemblies != null)
+                            {
+                                foreach (var assembly in Model.BuildAssemblyVM.BuildAssemblies)
+                                {
+                                    <tr>
+                                        <td style='display:none'>@assembly.InventoryItemID</td>
+                                        <td>@(Model.BuildAssemblyVM.InventoryItems.Single(i => i.InventoryItemID == (Model.BuildAssemblyVM.Assemblies.Single(i => i.AssemblyID == assembly.AssemblyID)).InventoryItemID).Name)</td>
+                                        <td>@assembly.Assembly.ItemQty</td>
+                                        <td class='text-center'><a  style='width:40px' class='btn btn-danger text-white'><i  class='far fa-trash-alt'></i></a></td>
+                                    </tr>
+                                }
+                            }
                         </thead>
                     </table>
                     <br />
@@ -82,33 +96,76 @@
 </div>
 
 @section Scripts {
-<script>
-    function AddItemToTable(tableID, dropdownID) {
-        var dropdown = document.getElementById(dropdownID); // the item selected in the "Part Needed" dropdown
-        var itemID = dropdown.options[dropdown.selectedIndex].value; 
-        var itemName = dropdown.options[dropdown.selectedIndex].text; 
-        var currTable = document.getElementById(tableID); 
-        var requiredQty = document.getElementById("required-qty").value;
-        console.log("there are " + currTable.rows.length + "rows");
-        // before adding a new item, search the table for duplicates
-        for (var i = 0; i < currTable.rows.length; i++) {
-            if (currTable.rows[i].cells[0].innerHTML == itemID)
-            {
-                currTable.rows[i].cells[2].innerHTML = requiredQty; 
-                return;
+    <script>
+        function AddMissingDeletes() {
+            myTable = document.getElementById("assemblyComponents");
+            for (var i = 1; i < myTable.rows.length; i++) {
+                myTable.rows[i].cells[3].firstChild.addEventListener("click", RemoveItemFromTable);
             }
         }
-        
-        var newRow = currTable.insertRow(-1); // add row at next index
-        newRow.innerHTML = "<td style='display:none'>" + itemID + "</td><td class='px-3'>" + itemName + "</td><td class='px-3'>" + requiredQty
-            + "</td><td class='text-center'><a style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a></td>"
-        newRow.cells[3].firstChild.addEventListener("click", RemoveItemFromTable); // add listener to the button inside the cell
-    }
 
-    function RemoveItemFromTable() {
-        var nodeToDelete = this.parentNode; // cell
-        var parent = nodeToDelete.parentNode;
-        parent.parentNode.removeChild(parent); 
-    }
-</script>
+        function AddItemToTable(tableID, dropdownID) {
+            var dropdown = document.getElementById(dropdownID); // the item selected in the "Part Needed" dropdown
+            var itemID = dropdown.options[dropdown.selectedIndex].value;
+            var itemName = dropdown.options[dropdown.selectedIndex].text;
+            var currTable = document.getElementById(tableID);
+            var requiredQty = document.getElementById("required-qty").value;
+            console.log("there are " + currTable.rows.length + "rows");
+            // before adding a new item, search the table for duplicates
+            for (var i = 0; i < currTable.rows.length; i++) {
+                if (currTable.rows[i].cells[0].innerHTML == itemID) {
+                    currTable.rows[i].cells[2].innerHTML = requiredQty;
+                    return;
+                }
+            }
+
+            var newRow = currTable.insertRow(-1); // add row at next index
+            newRow.innerHTML = "<td style='display:none'>" + itemID + "</td><td class='px-3'>" + itemName + "</td><td class='px-3'>" + requiredQty
+                + "</td><td class='text-center'><a style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a></td>"
+            newRow.cells[3].firstChild.addEventListener("click", RemoveItemFromTable); // add listener to the button inside the cell
+        }
+
+        function RemoveItemFromTable() {
+            var nodeToDelete = this.parentNode;
+            var parent = nodeToDelete.parentNode;
+            parent.parentNode.removeChild(parent);
+        }
+
+        function AddToDatabase() {
+            console.log("Add items to database");
+            var urlParams = new URLSearchParams(window.location.search);
+            var id = urlParams.get("id");
+            var componentList = [];
+            var myTable = document.getElementById("assemblyComponents");
+            // get table row data
+            // don't read data from the table header
+            for (var i = 1; i < myTable.rows.length; i++) {
+                var Component = {
+                    id: id,
+                    InventoryItemID: myTable.rows[i].cells[0].innerHTML,
+                    Qty: myTable.rows[i].cells[2].innerHTML
+                }
+                componentList.push(Component);
+                console.log("Assembly: " + myTable.rows[i].cells[1].innerHTML + " Qty:" + myTable.rows[i].cells[2].innerHTML);
+            }
+
+            console.log(componentList);
+
+            $.ajax({
+                url: "../api/buildAssembly/" + JSON.stringify(componentList),
+                dataType: "json",
+                data: JSON.stringify(componentList),
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    alert("success");
+                },
+                error: function (xhr) {
+                    alert("error");
+                }
+            })
+        }
+
+        AddMissingDeletes();
+    </script>
 } 

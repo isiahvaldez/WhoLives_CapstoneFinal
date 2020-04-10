@@ -9,7 +9,7 @@ namespace WhoLives.Models
     public class BuildAssembly
     {
         /// <summary>
-        /// Object that links an inventory item to its assembly components
+        /// Object that links an inventory item marked as assembly to its components
         /// </summary>
         [Key]
         public int BuildAssemblyID { get; set; }
