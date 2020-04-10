@@ -159,13 +159,14 @@
         </div>
     }
 </div>
-
-<script>
-    $('[name="Edit"]').on('click', function () {
-        var prev = $(this).prev('input'),
-            ro = prev.prop('readonly');
-        prev.prop('readonly', !ro).focus();
-        $(this).val(ro ? 'Save' : 'Edit');
-    });
-</script>
-<script src="~/js/itemupsert.js"></script>
+@section Scripts {
+    <script src="~/js/itemupsert.js"></script>
+    <script>
+        //$('[name="Edit"]').on('click', function () {
+        //    var prev = $(this).prev('input'),
+        //        ro = prev.prop('readonly');
+        //    prev.prop('readonly', !ro).focus();
+        //    $(this).val(ro ? 'Save' : 'Edit');
+        //});
+    </script>
+}

@@ -33,13 +33,17 @@ namespace WhoLives_CapstoneFinal.Controllers
             {
                 var purchase = _unitOfWork.PurchaseOrders.GetAll();
                 var order = _unitOfWork.OrderItems.GetAll(o=>o.ItemID == Int32.Parse(id));
+                var vend = _unitOfWork.Vendors.GetAll();
 
-
-                return Json(new { data = purchase.Join(order, p=>p.PurchaseOrderID, o=>o.PurchaseOrderID, (p,o)=>new { p.Vendor, p.PurchaseOrderID, p.DateOrdered, o.Price }) });
+                return Json(new
+                {
+                    data = purchase.Join(order, p => p.PurchaseOrderID, o => o.PurchaseOrderID, (p, o) => new { p.VendorID, p.PurchaseOrderID, p.DateOrdered, o.Price })
+                .Join(vend, a => a.VendorID, n => n.VendorID, (a, n) => new { n.VendorName, a.PurchaseOrderID, a.DateOrdered, a.Price })
+                });
             }         
             else
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll()});
             }
         }
 

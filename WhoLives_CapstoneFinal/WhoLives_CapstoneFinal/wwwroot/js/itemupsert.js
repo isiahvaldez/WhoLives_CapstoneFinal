@@ -1,10 +1,16 @@
 ﻿
 var dataTable;
-var Qty_ID = {};
-var reset = false;
-var name = document.createElement("input");
+var obj = {};
+var queryString;
+var urlParams;
+var urlid;
+
 $(document).ready(function () {
-    loadAssemblyList();    
+    queryString = window.location.search;
+    urlParams = new URLSearchParams(queryString);
+    urlid = urlParams.get('id');
+    console.log(urlid);
+    //loadAssemblyList();    
     loadPurchaseList();
 });
 
@@ -38,24 +44,25 @@ function loadAssemblyList() {
 }
 
 function loadPurchaseList() {
+    obj = { input: "purchase", id: urlid};
     dataTable = $('#purchaseHistory').dataTable({
         "ajax": {
-            "url": "/api/itemupsert/",
-            "data": { input: "purchase"},
+            "url": "/api/itemUpsert/",
+            "data": obj,
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "Vendor", "width": "20%" },
+            { "data": "vendorName", "width": "20%" },
             {
-                "data":  "PurchaseOrderID", 
+                "data":  "purchaseOrderID", 
                 "render": function (data) {
-                    return `<a href=/Inventory/Upsert?id=${data.PurchaseOrderID} style = "cursor:pointer"> 
-                            ${data.PurchaseOrderID}
+                    return `<a href=/PurchaseOrders/Upsert?id=${data} style = "cursor:pointer"> 
+                            ${data}
                     </a> `
                 }, "width": "50%" },
-            { "data": "DateOrdered", "width": "20%" },
-            { "data": "Price", "width": "20%" }  
+            { "data": "dateOrdered", "width": "20%" },
+            { "data": "price", "width": "20%" }  
         ], "language": {
             "emptyTable": "no data found."
         },
