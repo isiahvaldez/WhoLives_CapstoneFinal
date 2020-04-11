@@ -26,7 +26,7 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
             PurchaseOrderVM = new PurchaseOrderVM
             {
                 OrderInfo = new PurchaseOrder(),
-                ItemList = _uow.InventoryItems.GetItemListForDropDown(),
+                ItemList = _uow.InventoryItems.GetNonAssemblyItemListForDropDown(),
                 VendorList = _uow.Vendors.GetVendorListForDropDown(),
                 StatusList = _uow.Statuses.GetStatusListForDropDown(),
                 tempOrderItem = new OrderItem()

@@ -25,6 +25,14 @@ namespace WhoLives.DataAccess.Data.Repository
             });
         }
 
+        public IEnumerable<SelectListItem> GetNonAssemblyItemListForDropDown()
+        {
+            return _db.InventoryItems.Where(i => i.IsAssembly != true).Select(item => new SelectListItem()
+            {
+                Text = item.Name,
+                Value = item.InventoryItemID.ToString()
+            });
+        }
         public void Update(InventoryItem item)
         {
             var objFromDb = _db.InventoryItems.FirstOrDefault(v => v.InventoryItemID == item.InventoryItemID);
