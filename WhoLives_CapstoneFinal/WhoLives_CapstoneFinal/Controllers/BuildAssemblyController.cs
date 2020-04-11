@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.WebEncoders.Testing;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
@@ -21,7 +22,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         public string Qty;
     }
 
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BuildAssemblyController : Controller
     {
@@ -32,53 +33,74 @@ namespace WhoLives_CapstoneFinal.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpPost("{id}")]
+        [ActionName("id")]
+        public IActionResult ID(int id)
+        {
+            // delete all build items for the current id if any exist
+            IEnumerable<BuildAssembly> buildList = _unitOfWork.BuildAssemblies.GetAll().Where(a => a.InventoryItemID == id);
+            foreach (var build in buildList)
+            {
+                _unitOfWork.BuildAssemblies.Remove(build);
+            }
+            _unitOfWork.Save();
+
+            return Json(new { msg = "success" });
+        }
+
         [HttpPost("{componentList}")]
-        public IActionResult Post(string componentList)
+        [ActionName("list")]
+        public IActionResult List(string componentList)
         {
             if (componentList != null)
             {
                 Component[] components = JsonConvert.DeserializeObject<Component[]>(componentList);
+                InventoryItem InventoryItemObj = new InventoryItem();
 
-                // use inventoryItemVM to compare existing list vs new list
-                InventoryItemVM InventoryItemVM = new InventoryItemVM
+                if (components.Length > 0 && components[0].id != null)
                 {
-                    OrderInfo = new PurchaseOrder(),
-                    ItemList = _unitOfWork.InventoryItems.GetItemListForDropDown(),
-                    MeasureInfo = _unitOfWork.Measures.GetMeasureListForDropDown(),
-                    BuildInfo = new BuildAssembly(),
-                    AssemblyInfo = new Assembly(),
-                    InventoryItemObj = new InventoryItem()
-                };
-
-                if (components[0].id != null)
-                {
-                    InventoryItemVM.InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == Int32.Parse(components[0].id));
-                    if (InventoryItemVM.InventoryItemObj == null)
+                    InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == Int32.Parse(components[0].id));
+                    if (InventoryItemObj == null)
                     {
                         return NotFound();
                     }
                 }
+
                 // get current build assembly list for the item
-                IEnumerable<BuildAssembly> BuildList = _unitOfWork.BuildAssemblies.GetAll().Where(b => b.InventoryItemID == Int32.Parse(components[0].id));
+                IEnumerable<BuildAssembly> BuildList = _unitOfWork.BuildAssemblies.GetAll().Where(b => b.InventoryItemID == InventoryItemObj.InventoryItemID);
                 IEnumerable<Assembly> assemblyList = _unitOfWork.Assemblies.GetAll();
                 BuildAssembly tempBuild = new BuildAssembly();
                 Assembly tempAssembly = new Assembly();
-                bool buildMatch = false; // if a build for the assembly + item combo exists
-                bool assemblyMatch = false; // if an assembly exists with the desired component + qty
-                bool itemMatch = false;
-                int assemblyID; // used for finding a build + assembly combo
+                Assembly tempAssemblyWithQty = new Assembly();
+
+                bool assemblyMatch = false; // if an assembly exists with the desired component + qty; we'll use that assembly for the build assembly
                 
                 foreach (var component in components)
                 {
-                    buildMatch = false;
+                    // clear the variables and objects we need
                     assemblyMatch= false;
-                    itemMatch = false;
+                    tempBuild = new BuildAssembly();
+                    tempAssembly = new Assembly();
+
                     // do any assemblies use this component?
                     IEnumerable<Assembly> possibleAssemblies = assemblyList.Where(a => a.InventoryItemID == Int32.Parse(component.InventoryItemID));
+
                     if(possibleAssemblies.Count() > 0)
                     {
+                        // do any of these assemblies have the same qty desired?
+                        tempAssemblyWithQty = possibleAssemblies.SingleOrDefault(a => a.ItemQty == Int32.Parse(component.Qty));
+                        if(tempAssemblyWithQty == null)
+                        {
+                            // if no assembly with that qty exists, create it
+                            tempAssemblyWithQty = new Assembly();
+                            tempAssemblyWithQty.InventoryItemID = Int32.Parse(component.InventoryItemID);
+                            tempAssemblyWithQty.ItemQty = Int32.Parse(component.Qty);
+                            _unitOfWork.Assemblies.Add(tempAssemblyWithQty);
+                            _unitOfWork.Save();
+                        }
+
                         // Do any of the builds use these assemblies? 
-                        foreach(var build in BuildList)
+                        foreach (var build in BuildList)
                         {
                             foreach(var assembly in possibleAssemblies)
                             {
@@ -86,12 +108,12 @@ namespace WhoLives_CapstoneFinal.Controllers
                                 {
                                     assemblyMatch = true;
                                     tempAssembly = assembly;
+                                    tempBuild = build;
                                     break;
                                 }
                             }
                             if (assemblyMatch)
                             {
-                                tempBuild = build;
                                 break;
                             }
                         }
@@ -99,14 +121,10 @@ namespace WhoLives_CapstoneFinal.Controllers
                         if(assemblyMatch)
                         {
                             // does the amount match the desired amount?
-                            if(tempAssembly.ItemQty == Int32.Parse(component.Qty))
+                            if(tempAssembly.ItemQty != tempAssemblyWithQty.ItemQty)
                             {
-                                buildMatch = true; // nothing more to do here
-                            }
-                            else
-                            {
-                                // set the build assembly to use the temp assembly
-                                tempBuild.AssemblyID = tempAssembly.AssemblyID;
+                                // if no, set the build assembly to use the right amount
+                                tempBuild.AssemblyID = tempAssemblyWithQty.AssemblyID;
                                 _unitOfWork.BuildAssemblies.update(tempBuild);
                                 _unitOfWork.Save();
                             }
@@ -114,16 +132,10 @@ namespace WhoLives_CapstoneFinal.Controllers
                         // no, the build doesn't use an existing assembly for this item
                         else
                         {
-                            // create a new assembly for this component
-                            tempAssembly = new Assembly();
-                            tempAssembly.InventoryItemID = Int32.Parse(component.InventoryItemID);
-                            tempAssembly.ItemQty = Int32.Parse(component.Qty);
-                            _unitOfWork.Assemblies.Add(tempAssembly);
-                            _unitOfWork.Save();
-                            // now create the build
+                            // create a new build using the right assembly
                             tempBuild = new BuildAssembly();
-                            tempBuild.InventoryItemID = Int32.Parse(component.id);
-                            tempBuild.AssemblyID = tempAssembly.AssemblyID;
+                            tempBuild.InventoryItemID = InventoryItemObj.InventoryItemID;
+                            tempBuild.AssemblyID = tempAssemblyWithQty.AssemblyID;
                             _unitOfWork.BuildAssemblies.Add(tempBuild);
                         }
                     }
@@ -131,16 +143,16 @@ namespace WhoLives_CapstoneFinal.Controllers
                     {
                         // no build or assemblies using this component, create a new build and assembly
                         // create a new assembly for this component
-                        tempAssembly = new Assembly();
                         tempAssembly.InventoryItemID = Int32.Parse(component.InventoryItemID);
                         tempAssembly.ItemQty = Int32.Parse(component.Qty);
                         _unitOfWork.Assemblies.Add(tempAssembly);
                         _unitOfWork.Save();
                         // now create the build
                         tempBuild = new BuildAssembly();
-                        tempBuild.InventoryItemID = Int32.Parse(component.id);
+                        tempBuild.InventoryItemID = InventoryItemObj.InventoryItemID;
                         tempBuild.AssemblyID = tempAssembly.AssemblyID;
                         _unitOfWork.BuildAssemblies.Add(tempBuild);
+                        _unitOfWork.Save();
                     }
                 }
                 // now check what's missing from the build list
@@ -151,7 +163,7 @@ namespace WhoLives_CapstoneFinal.Controllers
                     match = false;
                     foreach(var component in components)
                     {
-                        if(Int32.Parse(component.InventoryItemID) == build.InventoryItemID)
+                        if(Int32.Parse(component.InventoryItemID) == (assemblyList.SingleOrDefault<Assembly>(a => a.AssemblyID == build.AssemblyID)).InventoryItemID)
                         {
                             match = true;
                             break;
@@ -165,11 +177,12 @@ namespace WhoLives_CapstoneFinal.Controllers
                 foreach(var build in buildsToDelete)
                 {
                     _unitOfWork.BuildAssemblies.Remove(build);
-                    _unitOfWork.Save();
                 }
+                _unitOfWork.Save();
 
-                return Json(JsonConvert.SerializeObject(components));
+                return Json(new { msg = "success" });
             }
+
             else return Json(new { msg = "Empty list received" });
         }
     }
