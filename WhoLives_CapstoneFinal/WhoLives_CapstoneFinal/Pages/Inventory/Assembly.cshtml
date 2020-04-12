@@ -10,7 +10,7 @@
     </div>
     <div class="col-6 text-right">
         <br />
-        <a onclick="AddToDatabase()" style='width:auto' class='btn btn-primary'>Save Assembly</a>
+        <a onclick="AddToDatabase()" style='width:auto' class='btn btn-primary text-white'>Save Assembly</a>
     </div>
 </div>
 <hr />
@@ -45,7 +45,7 @@
             <div class="row text-center">
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-secondary" />
+                    <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-primary" />
                 </div>
                 <div class="col-6">
                     <a class="btn btn-warning" style="width:auto;" asp-page="./Index">Back to List</a>
@@ -70,11 +70,8 @@
                                 foreach (var assembly in Model.BuildAssemblyVM.BuildAssemblies)
                                 {
                                     <tr>
-                                        <td style='display:none' class='px-3'>@(Model.BuildAssemblyVM.InventoryItems.SingleOrDefault(i => i.InventoryItemID == (Model.BuildAssemblyVM.Assemblies
-                                                .SingleOrDefault(i => i.AssemblyID == assembly.AssemblyID)).InventoryItemID).InventoryItemID)
-                                        </td>
-                                        <td class='px-3'>@(Model.BuildAssemblyVM.InventoryItems.SingleOrDefault(i => i.InventoryItemID == (Model.BuildAssemblyVM.Assemblies.
-                                                     SingleOrDefault(i => i.AssemblyID == assembly.AssemblyID)).InventoryItemID).Name)</td>
+                                        <td style='display:none' class='px-3'>@(Model.BuildAssemblyVM.InventoryItems.SingleOrDefault(i => i.InventoryItemID == (Model.BuildAssemblyVM.Assemblies.SingleOrDefault(i => i.AssemblyID == assembly.AssemblyID)).InventoryItemID).InventoryItemID)</td>
+                                        <td class='px-3'>@(Model.BuildAssemblyVM.InventoryItems.SingleOrDefault(i => i.InventoryItemID == (Model.BuildAssemblyVM.Assemblies.SingleOrDefault(i => i.AssemblyID == assembly.AssemblyID)).InventoryItemID).Name)</td>
                                         <td>@assembly.Assembly.ItemQty</td>
                                         <td class='text-center'><a  style='width:40px' class='btn btn-danger text-white'><i  class='far fa-trash-alt'></i></a></td>
                                     </tr>
@@ -142,8 +139,8 @@
             for (var i = 1; i < myTable.rows.length; i++) {
                 var Component = {
                     id: id,
-                    InventoryItemID: myTable.rows[i].cells[0].innerHTML,
-                    Qty: myTable.rows[i].cells[2].innerHTML
+                    InventoryItemID: myTable.rows[i].cells[0].innerHTML.replace(/[^0-9]/g, ""),
+                    Qty: myTable.rows[i].cells[2].innerHTML.replace(/[^0-9]/g, "")
                 }
                 componentList.push(Component);
                 console.log("Assembly: " + myTable.rows[i].cells[1].innerHTML + " Qty:" + myTable.rows[i].cells[2].innerHTML);
