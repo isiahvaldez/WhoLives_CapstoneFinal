@@ -35,6 +35,8 @@ namespace WhoLives_CapstoneFinal.Controllers
                 var order = _unitOfWork.OrderItems.GetAll(o=>o.ItemID == Int32.Parse(id));
                 var vend = _unitOfWork.Vendors.GetAll();
 
+                
+
                 return Json(new
                 {
                     data = purchase.Join(order, p => p.PurchaseOrderID, o => o.PurchaseOrderID, (p, o) => new { p.VendorID, p.PurchaseOrderID, p.DateOrdered, o.Price })
@@ -43,7 +45,11 @@ namespace WhoLives_CapstoneFinal.Controllers
             }         
             else
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll()});
+                var item = _unitOfWork.InventoryItems.GetAll();
+                var build = _unitOfWork.BuildAssemblies.GetAll(o => o.InventoryItemID == Int32.Parse(id));
+                var asse = _unitOfWork.Assemblies.GetAll();
+                return Json(new { data = item.Join(build, i=>i.InventoryItemID, b=>b.InventoryItemID, (i,b)=>new {i.Name, })
+                });
             }
         }
 
