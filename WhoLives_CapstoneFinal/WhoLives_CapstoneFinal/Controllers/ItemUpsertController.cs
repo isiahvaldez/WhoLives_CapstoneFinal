@@ -14,39 +14,42 @@ namespace WhoLives_CapstoneFinal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InventoryItemController : Controller
+    public class ItemUpsertController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public InventoryItemController(IUnitOfWork unitOfWork)
+        public ItemUpsertController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
         [HttpGet]
-        public IActionResult Get(string input)
+        public IActionResult Get(string input,string id)
         {
+            
             // ALL is the default Table 
             // Order is the Re order table
             // The data is a Inpur value from the Ajax call 
-            if (input.Equals("ALL"))
+            if (input.Equals("purchase"))
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll() });
-            }
-            else if (input.Equals("ORDER"))
-            {
-                var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty);
-                var venditem = _unitOfWork.VendorItems.GetAll();
+                var purchase = _unitOfWork.PurchaseOrders.GetAll();
+                var order = _unitOfWork.OrderItems.GetAll(o=>o.ItemID == Int32.Parse(id));
                 var vend = _unitOfWork.Vendors.GetAll();
 
-                //return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
-                return Json(new { data = 
-                    items.Join(venditem, i => i.InventoryItemID, v => v.InventoryItemID, 
-                    (i, v)=> new {i.InventoryItemID, i.Name,i.TotalLooseQty,i.ReorderQty, v.VendorItemId, v.VendorID}).Join(
-                        vend, s=>s.VendorID, q=>q.VendorID,(s,q)=>new { s.InventoryItemID, s.Name, s.TotalLooseQty, s.ReorderQty, q.VendorName }) });
-            }
+                
+
+                return Json(new
+                {
+                    data = purchase.Join(order, p => p.PurchaseOrderID, o => o.PurchaseOrderID, (p, o) => new { p.VendorID, p.PurchaseOrderID, p.DateOrdered, o.Price })
+                .Join(vend, a => a.VendorID, n => n.VendorID, (a, n) => new { n.VendorName, a.PurchaseOrderID, a.DateOrdered, a.Price })
+                });
+            }         
             else
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
+                var item = _unitOfWork.InventoryItems.GetAll();
+                var build = _unitOfWork.BuildAssemblies.GetAll(o => o.InventoryItemID == Int32.Parse(id));
+                var asse = _unitOfWork.Assemblies.GetAll();
+                return Json(new { data = item.Join(build, i=>i.InventoryItemID, b=>b.InventoryItemID, (i,b)=>new {i.Name, })
+                });
             }
         }
 
@@ -55,16 +58,17 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpPost("{QTY,ITEMID,ASSEMBLE}")]
         public IActionResult Assemble(string? QTY, string? ITEMID, bool? ASSEMBLE)
         {
-            int qtyNeeded = 0;
-            int qtyAssembled = 1;
-            if (QTY != null)
-            {
-                qtyAssembled = Int32.Parse(QTY);
-            }
-            bool check = false;
             // ASSEMBLE is a way to seperate Disassemble and Asemble functionality. 
-            if (qtyAssembled >0 )
+            if (ASSEMBLE == true)
             {
+                int qtyNeeded = 0;
+                int qtyAssembled = 1;
+                if (QTY != null)
+                {
+                    qtyAssembled = Int32.Parse(QTY);
+                }
+                bool check = false;
+
                 // pull the recipe fo the assembly 
                 // Check the Qty required to make it and VS the qty on hand 
                 // Return the result based on if it can be made 
@@ -115,7 +119,11 @@ namespace WhoLives_CapstoneFinal.Controllers
             else
             {
                 int qtyReplaced = 0;
-                qtyAssembled*=-1;
+                int qtyAssembled = 1;
+                if (QTY != null)
+                {
+                    qtyAssembled = Int32.Parse(QTY);
+                }
 
 
                 // pull the recipe fo the assembly 

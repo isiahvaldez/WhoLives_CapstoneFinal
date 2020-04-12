@@ -58,7 +58,7 @@ function loadOrderList() {
             { "data": "name", "width": "50%" },
             { "data": "totalLooseQty", "width": "10%" },
             { "data": "reorderQty", "width": "10%" },
-            { "data": "vendorItems", "width": "25%" }
+            { "data": "vendorName", "width": "25%" }
 
         ], "language": {
             "emptyTable": "no data found."
@@ -67,7 +67,7 @@ function loadOrderList() {
 
     }).on('click', 'tbody tr', function () {
         // Check to see if vendor was selected. 
-        var select = document.getElementById('Vendor_VendorID');
+        var select = document.getElementById('ItemAssemblyVendor_Vendor_VendorID');
         var selectedValue = select.options[select.selectedIndex].text;
         //if (selectedValue == "-Please Select a Vendor") {           
         //    reset = true;      
@@ -98,10 +98,17 @@ function loadOrderList() {
 
 }
 // Filter the table on Selection
-$("#Vendor_VendorID").on('change', function () {
-    //filter by selected value on second column
-    $('#ReOrderTable').DataTable().column(4).search($(this).val()).draw();
+$("#ItemAssemblyVendor_Vendor_VendorID").on('change', function () {
+    var select = document.getElementById('ItemAssemblyVendor_Vendor_VendorID');
+    var selectedValue = select.options[select.selectedIndex].text;
+    if (selectedValue != "-Please Select a Vendor") {
+        $('#ReOrderTable').DataTable().column(4).search(selectedValue).draw();
+    } else {
+        //filter by selected value on Last column
+        $('#ReOrderTable').DataTable().column(4).search("").draw();
+    }
 }); 
+// Load Assemble diss assemble Table
 function loadAssemblyList() {
     dataTable = $('#AssembleDisassemble').dataTable({
         "ajax": {
@@ -126,14 +133,9 @@ function loadAssemblyList() {
                 "render": function (data) {
                     return ` <div class="text-center">
                                <input type="number" style="width:15%;" id ="asse${data}"/> <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble(${data})">
-                                    <i class="far fa-edit">Assemble</i>
+                                    <i class="far fa-edit">Assemble / Disassemble</i>
                                 </a>
-                            </div>
-                            <div class="text-center">
-                               <input type="number" style="width:15%;" id ="dis${data}"/> <a class="btn btn-danger text-white" style="cursor:pointer; width:50%;" onClick="disassemble(${data})">
-                                    <i class="far fa-trash-alt">Disassemble</i>
-                                </a>
-                             </div>`
+                            </div>`
                 },
                 "width": "10%"
             }
@@ -177,7 +179,7 @@ function assemble(id) {
         }
     });
 }
-
+// Used when there was seperate Dis assemble button 
 function disassemble(id) {
     //console.log('asse' + id);
     var qty = document.getElementById('dis' + id).value;
@@ -209,6 +211,7 @@ function disassemble(id) {
         }
     });
 }
+// Handles Passing the selection to re order page
 function PassSelection() {
     
     var SelectedRows = $('#ReOrderTable').DataTable().rows({ selected: true }).data();

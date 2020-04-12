@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
+using WhoLives.Models.ViewModels;
 
 namespace WhoLives_CapstoneFinal.Pages.Inventory
 {
@@ -19,12 +20,17 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
         {
             _unitOfWork = unitOfWork;
         }
-
-        public WhoLives.Models.Vendor Vendor { get; set; }
-        public IEnumerable<SelectListItem> VendorObjList{ get; set; }       
+        [BindProperty]
+        public ItemAssembleVM ItemAssemblyVendor { get; set; }
         public void OnGet()
         {
-            VendorObjList = _unitOfWork.Vendors.GetVendorListForDropDown();
+            ItemAssemblyVendor = new ItemAssembleVM()
+            {
+                VendorList = _unitOfWork.Vendors.GetVendorListForDropDown(),
+                VendorItemList = _unitOfWork.VendorItems.GetVendorListForDropDown(),
+                Items = _unitOfWork.InventoryItems.GetItemListForDropDown()
+
+            };
 
         }
     }
