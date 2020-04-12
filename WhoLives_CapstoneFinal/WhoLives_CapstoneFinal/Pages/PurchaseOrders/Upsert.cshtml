@@ -52,12 +52,12 @@
                         <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-3 px-3 py-2 text-left border">
+                <div class="col-4 px-3 py-2 text-left border">
                     <label class="control-label">Export: </label>
-                    <a class="btn" @*onclick="@Model.ExportCSV()"*@ style="cursor:pointer; width: 100px"><i class="far fa-file-excel"></i></a>
-                    <a class="btn"><i class="far fa-file-pdf"></i></a>
+                    <a class="btn" onclick="exportTableToCSV()" style="cursor:pointer; width: 100px"><i class="far fa-file-excel"></i></a>
+                    <a class="btn" onclick="exportTableToPDF()" style="cursor:pointer; width: 100px"><i class="far fa-file-pdf"></i></a>
                 </div>
-                <div class="col-3 text-right">
+                <div class="col-2 text-right">
                     <a class="btn btn-primary text-light" id="add"><i class="fas fa-plus"></i>&nbsp;Add Item</a>
                 </div>
             </div>
@@ -149,7 +149,7 @@
     <button type="button" class="btn btn-primary" onclick="AddItemToTable()" id="save">Save</button>
 </div>
 @section Scripts{
-    @*<script src="~/js/order-items.js"></script>*@
+    <script src="~/js/order-items.js"></script>
 <script>
     //var datatable;
     //dataTable = $('#DT_load').DataTable({
@@ -259,29 +259,34 @@
     parent.parentNode.removeChild(parent);
     }
 
-    // CSV code from https://www.codexworld.com/export-html-table-data-to-csv-using-javascript/
-    function exportTableToCSV(filename) {
-    var csv = [];
-    var rows = document.querySelectorAll("table tr");
     
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
-        
-        for (var j = 0; j < cols.length; j++) 
-            row.push(cols[j].innerText);
-        
-        csv.push(row.join(","));        
-    }
+// CSV code from https://www.codexworld.com/export-html-table-data-to-csv-using-javascript/
+    function exportTableToCSV() {
+        var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+        var filename = 'order' +
+            (po ? '-' + po : '') +
+            '.csv';
 
-    // Download CSV file
-    downloadCSV(csv.join("\n"), filename);
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++)
+                row.push(cols[j].innerText);
+
+            csv.push(row.join(","));
+        }
+
+        // Download CSV file
+        downloadCSV(csv.join("\n"), filename);
     }
     function downloadCSV(csv, filename) {
         var csvFile;
         var downloadLink;
 
         // CSV file
-        csvFile = new Blob([csv], {type: "text/csv"});
+        csvFile = new Blob([csv], { type: "text/csv" });
 
         // Download link
         downloadLink = document.createElement("a");
@@ -301,5 +306,58 @@
         // Click download link
         downloadLink.click();
     }
+    // PDF code obtained + revised from https://www.encodedna.com/javascript/convert-html-table-to-pdf-using-javascript-without-a-plugin.htm
+function exportTableToPDF() {
+    var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+    var rows = document.querySelectorAll("table tr");
+    var sTable = document.getElementById('iTable').innerHTML;
+
+    var style = "<style>" +
+        "table {width: 100%;font: 17px Calibri;}" +
+        "table, th, td {border: solid 1px #DDD; border-collapse: collapse;" +
+        "padding: 2px 3px;text-align: center;}" +
+        "</style>";
+
+    // CREATE A WINDOW OBJECT.
+    var win = window.open('', '', 'height=700,width=700');
+
+    win.document.write('<html><head>');
+    win.document.write('<title>Order' +
+        (po ? ' for PO ' + po : '') +
+        '</title>');   // <title> FOR PDF HEADER.
+    win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+    win.document.write('</head>');
+    win.document.write('<body>');
+    win.document.write('<table>');
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        win.document.write('<tr>');
+        if (i == 0) {
+            for (var j = 0; j < cols.length; j++) {
+                win.document.write('<th>');
+                win.document.write(cols[j].innerText);
+                win.document.write('</th>');
+            }
+        }
+        else {
+            for (var j = 0; j < cols.length; j++) {
+                win.document.write('<td>');
+                win.document.write(cols[j].innerText);
+                win.document.write('</td>');
+            }
+        }
+
+        //csv.push(row.join(","));
+        //win.document.write(row);
+        win.document.write('</tr>');
+    }
+    //win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+    win.document.write('</table></body></html>');
+
+    win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+
+    win.print();    // PRINT THE CONTENTS.
+}
+
 </script>
 }
