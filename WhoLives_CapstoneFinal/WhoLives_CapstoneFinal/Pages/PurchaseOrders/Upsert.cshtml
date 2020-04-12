@@ -52,16 +52,16 @@
                         <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-3 px-3 py-2 text-left border">
+                <div class="col-4 px-3 py-2 text-left border">
                     <label class="control-label">Export: </label>
-                    <a class="btn" @*onclick="@Model.ExportCSV()"*@ style="cursor:pointer; width: 100px"><i class="far fa-file-excel"></i></a>
-                    <a class="btn"><i class="far fa-file-pdf"></i></a>
+                    <a class="btn" onclick="exportTableToCSV()" style="cursor:pointer; width: 100px"><i class="far fa-file-excel"></i></a>
+                    <a class="btn" onclick="exportTableToPDF()" style="cursor:pointer; width: 100px"><i class="far fa-file-pdf"></i></a>
                 </div>
-                <div class="col-3 text-right">
+                <div class="col-2 text-right">
                     <a class="btn btn-primary text-light" id="add"><i class="fas fa-plus"></i>&nbsp;Add Item</a>
                 </div>
             </div>
-            <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+            <table id="iTable" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
                         <th>Item</th>
@@ -71,6 +71,28 @@
                         <th></th>
                     </tr>
                 </thead>
+                <tbody id="table">
+                    @if (Model.PurchaseOrderVM.OrderInfo.OrderItems.Count() > 0)
+                    {
+                        
+                        @foreach (var i in Model.PurchaseOrderVM.OrderInfo.OrderItems)
+                        {
+                            var itemId = @i.ItemID;
+                            <tr>
+                                <td>@i.Item.Name</td>
+                                <td>@i.QuantityOrdered</td>
+                                <td>@i.Price</td>
+                                <td>@i.QuantityReceived</td>
+                                <td>
+                                    <a class="btn" onclick="RemoveItemFromTable(this)"><i class="far fa-trash-alt"></i></a>
+                                    <a class="btn" onclick="Edit(this)"><i class="far fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+
             </table>
 
         </div>
@@ -103,30 +125,239 @@
     </div>
 </form>
 <div id="itemdialog" title="Add new order item">
-        <label asp-for="PurchaseOrderVM.tempOrderItem.ItemID"></label>
-        @Html.DropDownListFor(m =>
-            m.PurchaseOrderVM.tempOrderItem.ItemID,
-            Model.PurchaseOrderVM.ItemList,
-            "-Select Item-",
-            new { @class = "form-control" })
-        <div class="form-group">
-            <label asp-for="PurchaseOrderVM.tempOrderItem.QuantityOrdered"></label>
-            <input name="QuantityOrdered" asp-for="PurchaseOrderVM.tempOrderItem.QuantityOrdered" class="form-control" />
-            <span asp-validation-for="PurchaseOrderVM.tempOrderItem.QuantityOrdered" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="PurchaseOrderVM.tempOrderItem.Price"></label>
-            <input name="Price" asp-for="PurchaseOrderVM.tempOrderItem.Price" class="form-control" />
-            <span asp-validation-for="PurchaseOrderVM.tempOrderItem.Price" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="PurchaseOrderVM.tempOrderItem.QuantityReceived"></label>
-            <input name="QuantityReceived" asp-for="PurchaseOrderVM.tempOrderItem.QuantityReceived" class="form-control" />
-            <span asp-validation-for="PurchaseOrderVM.tempOrderItem.QuantityReceived" class="text-danger"></span>
-        </div>
-        <button type="button" class="btn btn-primary" id="save">Save</button>
+    <label asp-for="PurchaseOrderVM.tempOrderItem.Item.Name"></label>
+    @Html.DropDownListFor(m =>
+        m.PurchaseOrderVM.tempOrderItem.ItemID,
+        Model.PurchaseOrderVM.ItemList,
+        "-Select Item-",
+        new { @class = "form-control" })
+    <div class="form-group">
+        <label asp-for="PurchaseOrderVM.tempOrderItem.QuantityOrdered"></label>
+        <input name="QuantityOrdered" asp-for="PurchaseOrderVM.tempOrderItem.QuantityOrdered" class="form-control" />
+        <span asp-validation-for="PurchaseOrderVM.tempOrderItem.QuantityOrdered" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PurchaseOrderVM.tempOrderItem.Price"></label>
+        <input name="Price" asp-for="PurchaseOrderVM.tempOrderItem.Price" class="form-control" />
+        <span asp-validation-for="PurchaseOrderVM.tempOrderItem.Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PurchaseOrderVM.tempOrderItem.QuantityReceived"></label>
+        <input name="QuantityReceived" asp-for="PurchaseOrderVM.tempOrderItem.QuantityReceived" class="form-control" />
+        <span asp-validation-for="PurchaseOrderVM.tempOrderItem.QuantityReceived" class="text-danger"></span>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="AddItemToTable()" id="save">Save</button>
 </div>
 @section Scripts{
     <script src="~/js/order-items.js"></script>
+<script>
+    //var datatable;
+    //dataTable = $('#DT_load').DataTable({
+    //    //responsive: { details: true },
+    //    "ajax": {
+    //        "url": "/api/order/",
+    //        "data": function (data) {
+    //            data.forEach(d => {
+
+    //            });
+    //            },
+    //        "type": "GET",
+    //        "datatype": "json"
+    //    },
+    //    "columns": [
+    //        {
+    //            "data": "item.name",
+    //            "width": "25%"
+    //        },
+    //        {
+    //            "data": "quantityOrdered",
+    //            "width": "20%"
+    //        },
+    //        {
+    //            "data": "price",
+    //            "width": "25%"
+    //        },
+    //        {
+    //            "data": "quantityReceived",
+    //            "width": "20%"
+    //        },
+    //        {
+    //            "data": "orderItemID",
+    //            "render": function (data) {
+    //                return ` <div class="text-center">
+    //                            <button type="button" class="btn btn-primary" style="cursor:pointer; width: 40px" onclick=Edit(${data})>
+    //                                <i class="far fa-edit"></i>
+    //                            </button>
+    //                            <a class="btn btn-danger text-white" style="cursor:pointer; width:40px;" onclick=Delete('/api/order/item?='+${data})>
+    //                                <i class="far fa-trash-alt"></i>
+    //                            </a>
+    //                         </div>`
+    //            },
+    //            "width": "10%"
+    //        }
+    //    ],
+    //    "language": {
+    //        "emptyTable": "no data found."
+    //    },
+    //    "width": "100%"
+    //});
+    function Edit(itemid, qtyreceived, qtyordered, price) {
+        var id = document.getElementById("poid").value; 
+        //document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value = id.toString();
+        document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value = itemid;
+        document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityReceived").value = qtyreceived;
+        document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityOrdered").value = qtyordered;
+        document.getElementById("PurchaseOrderVM_tempOrderItem_Price").value = price;
+
+        $("#itemdialog").dialog("open");
+    }
+
+    $("#itemdialog").dialog({ autoOpen: false });
+
+    $("#add").click(function (e) {
+
+        $("#itemdialog").dialog("open");
+    });
+
+    function AddItemToTable() {
+        $("#itemdialog").dialog("close");
+
+        var currTable = $("#iTable > TBODY")[0];
+        var itemid = document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value;
+        var qtyreceived= document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityReceived").value;
+        var qtyordered= document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityOrdered").value;
+        var price = document.getElementById("PurchaseOrderVM_tempOrderItem_Price").value;
+
+    console.log("there are " + currTable.rows.length + "rows");
+    // before adding a new item, search the table for duplicates
+    for (var i = 0; i < currTable.rows.length; i++) {
+        if (currTable.rows[i].cells[0].innerHTML == itemid)
+        {
+            currTable.rows[i].cells[1].innerHTML = qtyordered;
+            currTable.rows[i].cells[2].innerHTML = price;
+            currTable.rows[i].cells[3].innerHTML = qtyreceived;
+            return;
+        }
+    }
+
+    var newRow = currTable.insertRow(-1); // add row at next index
+        newRow.innerHTML = "<td style='display:none'>" + itemid + "</td>" +
+            "<td class='px-3'>" + qtyordered + "</td>" +
+            "<td class='px-3'>" + price + "</td>" +
+            "<td class='px-3'>" + qtyreceived + "</td>" +
+            "<td class='text-center'>" +
+                "<a style='width:40px' class='btn'><i class='far fa-trash-alt'></i></a>" +
+                "<a style='width:40px' class='btn'><i class='far fa-edit'></i></a>" +
+            "</td >";
+    newRow.cells[4].firstChild.addEventListener("click", RemoveItemFromTable); // add listener to the button inside the cell
+    newRow.cells[4].firstChild.addEventListener("click", Edit); // add listener to the button inside the cell
+    }
+
+    function RemoveItemFromTable() {
+    var nodeToDelete = this.parentNode; // cell
+    var parent = nodeToDelete.parentNode;
+    parent.parentNode.removeChild(parent);
+    }
+
+    
+// CSV code from https://www.codexworld.com/export-html-table-data-to-csv-using-javascript/
+    function exportTableToCSV() {
+        var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+        var filename = 'order' +
+            (po ? '-' + po : '') +
+            '.csv';
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++)
+                row.push(cols[j].innerText);
+
+            csv.push(row.join(","));
+        }
+
+        // Download CSV file
+        downloadCSV(csv.join("\n"), filename);
+    }
+    function downloadCSV(csv, filename) {
+        var csvFile;
+        var downloadLink;
+
+        // CSV file
+        csvFile = new Blob([csv], { type: "text/csv" });
+
+        // Download link
+        downloadLink = document.createElement("a");
+
+        // File name
+        downloadLink.download = filename;
+
+        // Create a link to the file
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+
+        // Hide download link
+        downloadLink.style.display = "none";
+
+        // Add the link to DOM
+        document.body.appendChild(downloadLink);
+
+        // Click download link
+        downloadLink.click();
+    }
+    // PDF code obtained + revised from https://www.encodedna.com/javascript/convert-html-table-to-pdf-using-javascript-without-a-plugin.htm
+function exportTableToPDF() {
+    var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+    var rows = document.querySelectorAll("table tr");
+    var sTable = document.getElementById('iTable').innerHTML;
+
+    var style = "<style>" +
+        "table {width: 100%;font: 17px Calibri;}" +
+        "table, th, td {border: solid 1px #DDD; border-collapse: collapse;" +
+        "padding: 2px 3px;text-align: center;}" +
+        "</style>";
+
+    // CREATE A WINDOW OBJECT.
+    var win = window.open('', '', 'height=700,width=700');
+
+    win.document.write('<html><head>');
+    win.document.write('<title>Order' +
+        (po ? ' for PO ' + po : '') +
+        '</title>');   // <title> FOR PDF HEADER.
+    win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+    win.document.write('</head>');
+    win.document.write('<body>');
+    win.document.write('<table>');
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        win.document.write('<tr>');
+        if (i == 0) {
+            for (var j = 0; j < cols.length; j++) {
+                win.document.write('<th>');
+                win.document.write(cols[j].innerText);
+                win.document.write('</th>');
+            }
+        }
+        else {
+            for (var j = 0; j < cols.length; j++) {
+                win.document.write('<td>');
+                win.document.write(cols[j].innerText);
+                win.document.write('</td>');
+            }
+        }
+
+        //csv.push(row.join(","));
+        //win.document.write(row);
+        win.document.write('</tr>');
+    }
+    //win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+    win.document.write('</table></body></html>');
+
+    win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+
+    win.print();    // PRINT THE CONTENTS.
 }
 
+</script>
+}

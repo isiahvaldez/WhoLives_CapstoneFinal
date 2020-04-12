@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Storage;
 using WhoLives.DataAccess.Data.Repository.IRepository;
 using WhoLives.Models;
 using WhoLives.Models.ViewModels;
@@ -21,6 +22,11 @@ namespace WhoLives_CapstoneFinal
 
         [BindProperty]
         public InventoryItemVM InventoryItemVM { get; set; }
+
+        [BindProperty]
+        public BuildAssemblyVM BuildAssemblyVM { get; set; }
+
+        //public IEnumerable<Assembly> AssemblyList { get; set; }
         public IActionResult OnGet(int? id)
         {
             InventoryItemVM = new InventoryItemVM
@@ -33,6 +39,16 @@ namespace WhoLives_CapstoneFinal
                 InventoryItemObj = new InventoryItem()
             };
 
+            BuildAssemblyVM = new BuildAssemblyVM
+            {
+                InventoryItems = _unitOfWork.InventoryItems.GetAll(),
+                BuildAssemblies = _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == id),
+                InventoryItem = _unitOfWork.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == id),
+                Assemblies = _unitOfWork.Assemblies.GetAll()
+            };
+
+            //BuildAssemblyVM.Assemblies.App
+
             if (id != null)
             {
                 InventoryItemVM.InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
@@ -40,6 +56,9 @@ namespace WhoLives_CapstoneFinal
                 {
                     return NotFound();
                 }
+                InventoryItemVM.InventoryItemObj.BuildAssemblyList = _unitOfWork.BuildAssemblies.GetAll().Where(b => b.InventoryItemID == id).ToList();
+                
+                
             }
             return Page();
         }
