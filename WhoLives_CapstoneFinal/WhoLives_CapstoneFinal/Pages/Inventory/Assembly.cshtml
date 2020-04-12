@@ -10,7 +10,6 @@
     </div>
     <div class="col-6 text-right">
         <br />
-        <!--<input type="submit" value="Save Assembly" style="width:auto;" asp-page="./Assembly" class="btn btn-primary" />-->
         <a onclick="AddToDatabase()" style='width:auto' class='btn btn-primary'>Save Assembly</a>
     </div>
 </div>
@@ -44,7 +43,6 @@
             </div>
             <br />
             <div class="row text-center">
-                <!-- Adds a part to the table, so it doesn't submit yet - IV 4/5/2020-->
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
                     <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-secondary" />
@@ -67,7 +65,6 @@
                                 <th style="position:sticky;top:0;width:33%" class="text-center">Required Qty</th>
                                 <th style="position:sticky;top:0;width:33%" class="text-center">Actions</th>
                             </tr>
-                            <!-- populate current assembly list here - IV 4/5/2020 -->
                             @if (Model.BuildAssemblyVM.BuildAssemblies != null)
                             {
                                 foreach (var assembly in Model.BuildAssemblyVM.BuildAssemblies)
@@ -86,12 +83,6 @@
                         </thead>
                     </table>
                     <br />
-                    <div class="row text-right">
-                        <div class="col-12">
-                            <!--<input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                            <input type="submit" value="Remove" style="width:auto;" asp-page="./Assembly" class="btn btn-danger" />-->
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
