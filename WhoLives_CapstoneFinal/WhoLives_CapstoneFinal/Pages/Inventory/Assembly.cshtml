@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" class="control-label mr-3">Part Needed:</label>
-                <div class="form-inline col-12">
+                <div class="form-inline col-12" id="dropdownInput">
                     @Html.DropDownListFor(i => i.InventoryItemVM.InventoryItemObj.InventoryItemID,
                Model.InventoryItemVM.ItemList,
                "-Please select the part to assemble",
@@ -45,7 +45,7 @@
             <div class="row text-center">
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    <input onclick="AddItemToTable('assemblyComponents', 'itemList')" value="Add Part" style="width:auto;" class="btn btn-primary" />
+                    <a onclick="AddItemToTable('assemblyComponents', 'itemList')" style="width:auto;" class="btn btn-primary">Add Part</a>
                 </div>
                 <div class="col-6">
                     <a class="btn btn-warning" style="width:auto;" asp-page="./Index">Back to List</a>
@@ -72,7 +72,7 @@
                                     <tr>
                                         <td style='display:none' class='px-3'>@(Model.BuildAssemblyVM.InventoryItems.SingleOrDefault(i => i.InventoryItemID == (Model.BuildAssemblyVM.Assemblies.SingleOrDefault(i => i.AssemblyID == assembly.AssemblyID)).InventoryItemID).InventoryItemID)</td>
                                         <td class='px-3'>@(Model.BuildAssemblyVM.InventoryItems.SingleOrDefault(i => i.InventoryItemID == (Model.BuildAssemblyVM.Assemblies.SingleOrDefault(i => i.AssemblyID == assembly.AssemblyID)).InventoryItemID).Name)</td>
-                                        <td>@assembly.Assembly.ItemQty</td>
+                                        <td class='px-3'>@assembly.Assembly.ItemQty</td>
                                         <td class='text-center'><a  style='width:40px' class='btn btn-danger text-white'><i  class='far fa-trash-alt'></i></a></td>
                                     </tr>
                                 }
@@ -98,6 +98,7 @@
                 console.log("replaced = " + item);
                 myTable.rows[i].cells[1].addEventListener("click", function (item) { return function () { SetSelectedItem('itemList', item); } }(item));
             }
+            document.getElementById("itemList").selectedIndex = 0;
         }
 
         function AddItemToTable(tableID, dropdownID) {
@@ -108,18 +109,20 @@
             var requiredQty = document.getElementById("required-qty").value;
             console.log("there are " + currTable.rows.length + "rows");
             // before adding a new item, search the table for duplicates
-            for (var i = 0; i < currTable.rows.length; i++) {
-                if (currTable.rows[i].cells[0].innerHTML == itemID) {
-                    currTable.rows[i].cells[2].innerHTML = requiredQty;
-                    return;
+            if (itemID != null && itemID != "" && requiredQty > 0) {
+                for (var i = 0; i < currTable.rows.length; i++) {
+                    if (currTable.rows[i].cells[0].innerHTML == itemID) {
+                        currTable.rows[i].cells[2].innerHTML = requiredQty;
+                        return;
+                    }
                 }
-            }
 
-            var newRow = currTable.insertRow(-1); // add row at next index
-            newRow.innerHTML = "<td style='display:none'>" + itemID + "</td><td class='px-3' onclick=SetSelectedItem('" + dropdownID + "','" + itemID + "')> "
-                + itemName + "</td > <td class='px-3'>" + requiredQty
-                + "</td><td class='text-center'><a style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a></td>";
-            newRow.cells[3].firstChild.addEventListener("click", RemoveItemFromTable); // add listener to the button inside the cell
+                var newRow = currTable.insertRow(-1); // add row at next index
+                newRow.innerHTML = "<td style='display:none'>" + itemID + "</td><td class='px-3' onclick=SetSelectedItem('" + dropdownID + "','" + itemID + "')> "
+                    + itemName + "</td > <td class='px-3'>" + requiredQty
+                    + "</td><td class='text-center'><a style='width:40px' class='btn btn-danger text-white'><i class='far fa-trash-alt'></i></a></td>";
+                newRow.cells[3].firstChild.addEventListener("click", RemoveItemFromTable); // add listener to the button inside the cell
+            }
         }
 
         function RemoveItemFromTable() {
@@ -167,7 +170,7 @@
                 $.ajax({
                     url: "../api/buildAssembly/list/" + JSON.stringify(componentList),
                     dataType: "json",
-                    data: JSON.stringify(componentList),
+                    data: componentList,
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {

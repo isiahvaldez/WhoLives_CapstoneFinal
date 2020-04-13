@@ -54,7 +54,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         {
             if (componentList != null)
             {
-                Component[] components = JsonConvert.DeserializeObject<Component[]>(componentList);
+                Component[] components = JsonConvert.DeserializeObject<Component[]>(componentList.ToString());
                 InventoryItem InventoryItemObj = new InventoryItem();
 
                 if (components.Length > 0 && components[0].id != null)
