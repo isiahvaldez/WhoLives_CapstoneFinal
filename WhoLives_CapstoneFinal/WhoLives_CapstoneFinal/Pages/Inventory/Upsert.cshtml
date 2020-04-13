@@ -126,6 +126,17 @@
                                         <th style="position:sticky;top:0" class="text-center">Purchased Cost</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach (var PO in Model.InventoryItemVM.PurchaseOrderInfo)
+                                    {
+                                        <tr>
+                                            <td>@PO.Vendor.VendorName</td>
+                                            <td><a href="/PurchaseOrders/Upsert?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID"style = "cursor:pointer">@PO.PurchaseOrderID</a></td>
+                                            <td>@PO.DateOrdered</td>
+                                            <td>@PO.OrderItems.ElementAt(0).Price</td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade show " id="nav-assemblyComponents" role="tabpanel" aria-labelledby="nav-assemblyComponents-tab">
@@ -137,6 +148,16 @@
                                         <th style="position:sticky;top:0" class="text-center">On Hand Qty</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach (var Asse in Model.InventoryItemVM.AssemblyListInfo)
+                                    {
+                                        <tr>
+                                            <td>@Asse.InventoryItem.Name</td>
+                                            <td>@Asse.ItemQty</td>
+                                            <td>@Asse.InventoryItem.TotalLooseQty</td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                             <br />
                             <div class="row text-right">
@@ -159,7 +180,7 @@
         </div>
     }
 </div>
-@section Scripts {
+@*@section Scripts {
     <script src="~/js/itemupsert.js"></script>
 
-}
+}*@

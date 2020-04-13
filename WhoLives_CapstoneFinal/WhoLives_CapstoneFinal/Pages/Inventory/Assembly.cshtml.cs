@@ -31,7 +31,7 @@ namespace WhoLives_CapstoneFinal
         {
             InventoryItemVM = new InventoryItemVM
             {
-                OrderInfo = new PurchaseOrder(),
+                PurchaseOrderInfo = _unitOfWork.PurchaseOrders.GetAll().ToList(),
                 ItemList = _unitOfWork.InventoryItems.GetItemListForDropDown(),
                 MeasureInfo = _unitOfWork.Measures.GetMeasureListForDropDown(),
                 BuildInfo = new BuildAssembly(),
