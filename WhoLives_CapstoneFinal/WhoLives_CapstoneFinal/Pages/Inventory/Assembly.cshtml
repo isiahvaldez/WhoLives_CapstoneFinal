@@ -38,14 +38,14 @@
             <div class="form-group">
                 <label asp-for="InventoryItemVM.AssemblyInfo.ItemQty" class="control-label mr-3">Quantity Needed for assembly:</label>
                 <div class="form-inline col-12">
-                    <input id="required-qty" asp-for="InventoryItemVM.AssemblyInfo.ItemQty" type="text" value="@Model.InventoryItemVM.AssemblyInfo.ItemQty" class="form-control" required />
+                    <input id="required-qty" asp-for="InventoryItemVM.AssemblyInfo.ItemQty" type="text" value="1" class="form-control" required />
                 </div>
             </div>
             <br />
             <div class="row text-center">
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    <a onclick="AddItemToTable('assemblyComponents', 'itemList')" style="width:auto;" class="btn btn-primary">Add Part</a>
+                    <a onclick="AddItemToTable('assemblyComponents', 'itemList')" style="width:auto;" class="btn btn-primary text-white">Add Part</a>
                 </div>
                 <div class="col-6">
                     <a class="btn btn-warning" style="width:auto;" asp-page="./Index">Back to List</a>
@@ -168,9 +168,9 @@
             }
             else {
                 $.ajax({
-                    url: "../api/buildAssembly/list/" + JSON.stringify(componentList),
+                    url: "../api/buildAssembly/list/" /*+ JSON.stringify(componentList)*/,
                     dataType: "json",
-                    data: componentList,
+                    data: JSON.stringify(componentList),
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {

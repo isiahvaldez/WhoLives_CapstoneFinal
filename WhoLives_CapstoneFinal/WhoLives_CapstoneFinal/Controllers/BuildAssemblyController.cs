@@ -17,9 +17,9 @@ namespace WhoLives_CapstoneFinal.Controllers
 {
     public class Component
     {
-        public string id;
-        public string InventoryItemID;
-        public string Qty;
+        public string id { get; set; }
+        public string InventoryItemID { get; set; }
+        public string Qty { get; set; }
     }
 
     [Route("api/[controller]/[action]")]
@@ -48,13 +48,14 @@ namespace WhoLives_CapstoneFinal.Controllers
             return Json(new { msg = "success" });
         }
 
-        [HttpPost("{componentList}")]
+        [HttpPost()]
         [ActionName("list")]
-        public IActionResult List(string componentList)
+        public IActionResult List(Component[] components)
         {
-            if (componentList != null)
+            if (components != null)
             {
-                Component[] components = JsonConvert.DeserializeObject<Component[]>(componentList.ToString());
+                //var json = JsonConvert.SerializeObject(componentList);
+                //Component[] components = JsonConvert.DeserializeObject<Component[]>(componentList);
                 InventoryItem InventoryItemObj = new InventoryItem();
 
                 if (components.Length > 0 && components[0].id != null)
