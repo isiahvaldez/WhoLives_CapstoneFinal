@@ -9,35 +9,24 @@
 <hr />
 <div class="row">
     <div class="col-6">
-        <form method="post" >
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @if (Model.isEditable == true)
-                {
-                    <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
-                    <div class="form-inline col-12">
-                        <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" required />
-                    </div>
-                }
-                else
-                {
-                    <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
-                    <div class="form-inline col-12">
-                        <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" readonly required />
-                    </div>
-                }
-
+                <label asp-for="InventoryItemVM.InventoryItemObj.Name" class="control-label mr-3">Name:</label>
+                <div class="form-inline col-12">
+                    <input asp-for="InventoryItemVM.InventoryItemObj.Name" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Name" class="form-control" readonly required id="nameInput" />
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.Description" class="control-label mr-3">Description:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.InventoryItemObj.Description" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Description" class="form-control" readonly required id="descriptionInput"/>
+                    <input asp-for="InventoryItemVM.InventoryItemObj.Description" type="text" value="@Model.InventoryItemVM.InventoryItemObj.Description" class="form-control" readonly required id="descriptionInput" />
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" class="control-label mr-3">Retail Cost:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" type="number" step="0.01" min="0"  value="@Model.InventoryItemVM.InventoryItemObj.ListRetailCost" class="form-control" required />
+                    <input asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" type="number" step="0.01" min="0" value="@Model.InventoryItemVM.InventoryItemObj.ListRetailCost" class="form-control" readonly required id="retailInput" />
                 </div>
             </div>
             <div class="form-group">
@@ -49,30 +38,29 @@
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.TotalLooseQty" class="control-label mr-3">Total Loose Quantity:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.InventoryItemObj.TotalLooseQty" type="number" value="@Model.InventoryItemVM.InventoryItemObj.TotalLooseQty" class="form-control" required />
+                    <input asp-for="InventoryItemVM.InventoryItemObj.TotalLooseQty" type="number" value="@Model.InventoryItemVM.InventoryItemObj.TotalLooseQty" class="form-control" readonly required id="looseInput" />
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.ReorderQty" class="control-label mr-3">Reorder Quantity:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.InventoryItemObj.ReorderQty" type="number" value="@Model.InventoryItemVM.InventoryItemObj.ReorderQty" class="form-control" required />
+                    <input asp-for="InventoryItemVM.InventoryItemObj.ReorderQty" type="number" value="@Model.InventoryItemVM.InventoryItemObj.ReorderQty" class="form-control" readonly required id="reorderInput" />
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.MeasuresID" class="control-label mr-3">Measure Type:</label>
                 <div class="form-inline col-12">
                     @Html.DropDownListFor(i => i.InventoryItemVM.InventoryItemObj.MeasuresID,
-               Model.InventoryItemVM.MeasureInfo,
-               "-Please select a Measurement Type",
-               new { @class = "form-control" })
-
+                    Model.InventoryItemVM.MeasureInfo,
+                    "-Please select a Measurement Type",
+                    new { @class = "form-control" })
                     <span class="text-danger" asp-validation-for="InventoryItemVM.InventoryItemObj.InventoryItemID"></span>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.MeasureAmnt" class="control-label mr-3">Measure Amount:</label>
                 <div class="form-inline col-12">
-                    <input asp-for="InventoryItemVM.InventoryItemObj.MeasureAmnt" type="number" value="@Model.InventoryItemVM.InventoryItemObj.MeasureAmnt" class="form-control" required />
+                    <input asp-for="InventoryItemVM.InventoryItemObj.MeasureAmnt" type="number" value="@Model.InventoryItemVM.InventoryItemObj.MeasureAmnt" class="form-control" readonly required id="measureInput" />
                 </div>
             </div>
 
@@ -84,30 +72,73 @@
             <div class="row text-center">
                 <div class="col-6">
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
-                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
-                    {
-                        <input type="button" value="Edit Part" style="width:auto;" class="btn btn-success" id="editButton" />
-                        <input type="submit" value="Save" style="width:auto; display:none;" class="btn btn-success" id="saveButton" />
-                        <script> 
-                            window.addEventListener("load", function (e) {
-                                var editButton = this.document.getElementById("editButton");
-                                var descriptionInput = this.document.getElementById("descriptionInput");
-                                var saveButton = this.document.getElementById("saveButton");
-                                
+                    @*@if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
+                        {
+                            <input type="button" value="Edit Part" style="width:auto;" class="btn btn-success" id="editButton" />
+                            <input type="submit" value="Save" style="width:auto; display:none;" class="btn btn-success" id="saveButton" />
+                            <input type="submit" value="Delete" style="width:auto; display:none;" class="btn btn-success" id="deleteButton" />
+                            <script>
+                                window.addEventListener("load", function (e) {
+                                    var editButton = this.document.getElementById("editButton");
+                                    var saveButton = this.document.getElementById("saveButton");
+                                    var deleteButton = this.document.getElementById("deleteButton");
 
-                                editButton.addEventListener("click", function (e) {
-                                    editButton.style.display = "none";
-                                    saveButton.style.display = "initial";
-                                    descriptionInput.removeAttribute("readonly");
-                                });
-                            })
-                        </script>
-                    }
+                                    var name = this.document.getElementById("nameInput");
+                                    var descriptionInput = this.document.getElementById("descriptionInput");
+                                    var retail = this.document.getElementById("retailInput");
+                                    var loose = this.document.getElementById("looseInput");
+                                    var reorder = this.document.getElementById("reorderInput");
+                                    var measure = this.document.getElementById("measureInput");
 
-                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
-                    {
-                        <input type="submit" value="Save" style="width:auto;" class="btn btn-success" id="saveButton" />
-                    }
+                                    editButton.addEventListener("click", function (e) {
+                                        editButton.style.display = "none";
+                                        saveButton.style.display = "initial";
+                                        deleteButton.style.display = "initial";
+                                        descriptionInput.removeAttribute("readonly");
+                                        name.removeAttribute("readonly");
+                                        retail.removeAttribute("readonly");
+                                        loose.removeAttribute("readonly");
+                                        reorder.removeAttribute("readonly");
+                                        measure.removeAttribute("readonly");
+                                    });
+                                })
+                            </script>
+                        }
+
+                        @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
+                        {
+                            <input type="submit" value="Save" style="width:auto;" class="btn btn-success" id="saveButton" />
+                        }*@
+
+                    <input type="button" value="Edit Part" style="width:auto;" class="btn btn-success" id="editButton" />
+                    <input type="submit" value="Save" style="width:auto; display:none;" class="btn btn-success" id="saveButton" />
+                    <input type="submit" value="Delete" style="width:auto; display:none;" class="btn btn-success" id="deleteButton" />
+                    <script>
+                        window.addEventListener("load", function (e) {
+                            var editButton = this.document.getElementById("editButton");
+                            var saveButton = this.document.getElementById("saveButton");
+                            var deleteButton = this.document.getElementById("deleteButton");
+
+                            var name = this.document.getElementById("nameInput");
+                            var descriptionInput = this.document.getElementById("descriptionInput");
+                            var retail = this.document.getElementById("retailInput");
+                            var loose = this.document.getElementById("looseInput");
+                            var reorder = this.document.getElementById("reorderInput");
+                            var measure = this.document.getElementById("measureInput");
+
+                            editButton.addEventListener("click", function (e) {
+                                editButton.style.display = "none";
+                                saveButton.style.display = "initial";
+                                deleteButton.style.display = "initial";
+                                descriptionInput.removeAttribute("readonly");
+                                name.removeAttribute("readonly");
+                                retail.removeAttribute("readonly");
+                                loose.removeAttribute("readonly");
+                                reorder.removeAttribute("readonly");
+                                measure.removeAttribute("readonly");
+                            });
+                        })
+                    </script>
                 </div>
                 <div class="col-6">
                     <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
@@ -147,7 +178,7 @@
                                     {
                                         <tr>
                                             <td>@PO.Vendor.VendorName</td>
-                                            <td><a href="/PurchaseOrders/Upsert?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID"style = "cursor:pointer">@PO.PurchaseOrderID</a></td>
+                                            <td><a href="/PurchaseOrders/Upsert?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID" style="cursor:pointer">@PO.PurchaseOrderID</a></td>
                                             <td>@PO.DateOrdered</td>
                                             <td>@PO.OrderItems.ElementAt(0).Price</td>
                                         </tr>
@@ -197,6 +228,6 @@
     }
 </div>
 @*@section Scripts {
-    <script src="~/js/itemupsert.js"></script>
+        <script src="~/js/itemupsert.js"></script>
 
-}*@
+    }*@
