@@ -221,12 +221,14 @@ function PassSelection() {
     for (var i = 0; i < count; i++) {
         SelectedId.push(SelectedRows[i].inventoryItemID.toString());
     }
+    var select = document.getElementById('ItemAssemblyVendor_Vendor_VendorID');
+    var selectedValue = select.options[select.selectedIndex].value;
 
-    var data = { Vendor: "1", Items: SelectedId };
+    var data = { Vendor: selectedValue, Items: SelectedId };
         $.ajax({
             url: '/api/order/',
             type: 'POST',
-            data: JSON.stringify({ "Vendor": "3", "Items": SelectedId }),
+            data: JSON.stringify({ "Vendor": selectedValue, "Items": SelectedId }),
             contentType: 'application/json',
             success: function (data) {
                 //bad hard-code, find a html helper
