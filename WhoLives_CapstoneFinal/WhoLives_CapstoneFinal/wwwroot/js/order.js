@@ -34,7 +34,7 @@ function loadList() {
         },
         responsive: { details: true },
         "ajax": {
-            "url": "/api/order",
+            "url": "/api/order/",
             "type": "GET",
             "datatype": "json",
             "data": { input: "n" }
