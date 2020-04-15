@@ -12,7 +12,7 @@ using WhoLives.Models.ViewModels;
 
 namespace WhoLives_CapstoneFinal.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class OrderController : Controller
     {
@@ -22,7 +22,6 @@ namespace WhoLives_CapstoneFinal.Controllers
             _uow = uow;
         }
         [HttpGet]
-        [ActionName("")]
         public IActionResult Get(int? id)
         {
             if (id.HasValue)
@@ -33,7 +32,6 @@ namespace WhoLives_CapstoneFinal.Controllers
         }
 
         [HttpGet("save")]
-        [ActionName("")]
         public IActionResult Save(int id, int itemId, int qtyOrdered, string price, int qtyReceived)
         {
             _uow.OrderItems.Add(new OrderItem
@@ -54,7 +52,6 @@ namespace WhoLives_CapstoneFinal.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ActionName("")]
         public IActionResult Delete(int id)
         {
             var objFromDb = _uow.PurchaseOrders.GetFirstOrDefault(p => p.PurchaseOrderID == id);
@@ -76,7 +73,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         }
         [HttpPost]
         [ActionName("")]
-        public int FromReOrder([FromBody]myOrderSelection Selection)      
+        public int FromReOrder([FromBody]myOrderSelection Selection)
         {
             string TestId = Selection.Items[0];
 
@@ -128,87 +125,6 @@ namespace WhoLives_CapstoneFinal.Controllers
             //return RedirectToAction("reorder", "/PurchaseOrders/Upsert");
             //return RedirectToAction("../PurchaseOrders/Index");
             //return Ok();
-        }
-
-        private IActionResult Page()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        [HttpPost("{id}")]
-        [ActionName("id")]
-        public IActionResult PostID(int id, [FromBody] PurchaseOrder purchaseOrderDetails)
-        {
-            // delete all order items for the current purchase order id if any exist
-            var ItemList = _uow.OrderItems.GetAll().Where(a => a.PurchaseOrderID == id);
-            foreach (var orderItem in ItemList)
-            {
-                _uow.OrderItems.Remove(orderItem);
-            }
-            //Update the purchase order as necessary
-            _uow.Save();
-
-            return Json(new { msg = "success" });
-        }
-
-        [HttpPost("{purchaseOrder}")]
-        [ActionName("list")]
-        public IActionResult PostList([FromBody] string componentList, string purchaseOrder)
-        {
-            //var purchaseOrder = "{ purchaseOrderID = 12 }";
-            var orderItems = JsonConvert.DeserializeObject<IEnumerable<OrderItem>>(componentList);
-            PurchaseOrder purchaseOrderDetails = JsonConvert.DeserializeObject<PurchaseOrder>(purchaseOrder);
-            //Normal Post
-            //if (!ModelState.IsValid)
-            //{
-            //    PurchaseOrderVM.VendorList = _uow.Vendors.GetVendorListForDropDown();
-            //    return Page();
-            //}
-            if (purchaseOrderDetails.PurchaseOrderID == 0)
-            {
-                _uow.PurchaseOrders.Add(purchaseOrderDetails);
-            }
-            else
-            {
-                _uow.PurchaseOrders.update(purchaseOrderDetails);
-            }
-            _uow.Save();
-            //Now update the order items
-            if (purchaseOrderDetails.PurchaseOrderID != 0)
-            {
-                //Get the current order items in the db to compare
-                var DBItems = _uow.OrderItems.GetAll(o => o.PurchaseOrderID == purchaseOrderDetails.PurchaseOrderID).ToList();
-
-                if (orderItems.Count() > 0)
-                {
-                    foreach (var o in orderItems)
-                    {
-                        if (DBItems.Contains(o))
-                        {
-                            // Update o in DB
-                            _uow.OrderItems.update(o);
-                            // Remove o from DBItems list
-                            DBItems.Remove(o);
-                        }
-                        else
-                        {
-                            // Add o to DB
-                            _uow.OrderItems.Add(o);
-                        }
-                    }
-                }
-                if (DBItems.Count > 0)
-                {
-                    foreach (var i in DBItems)
-                    {
-                        // Delete i from DB
-                        _uow.OrderItems.Remove(i.OrderItemID);
-                    }
-                }
-                _uow.Save();
-            }
-            return Json(new { msg = "success" });
         }
     }
 }

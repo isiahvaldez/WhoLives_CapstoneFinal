@@ -42,5 +42,8 @@ namespace WhoLives.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime LastModifiedDate { get; set; }
+
+        [NotMapped]
+        public string ItemName { get; set; }
     }
 }

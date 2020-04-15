@@ -92,10 +92,10 @@ $("#add").click(function (e) {
 function Edit(itemid, qtyreceived, qtyordered, price) {
     var id = document.getElementById("poid").value;
     //document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value = id.toString();
-    document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value = itemid;
-    document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityReceived").value = qtyreceived;
-    document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityOrdered").value = qtyordered;
-    document.getElementById("PurchaseOrderVM_tempOrderItem_Price").value = price;
+    document.getElementById("TempOrderItem_ItemID").value = itemid;
+    document.getElementById("TempOrderItem_QuantityReceived").value = qtyreceived;
+    document.getElementById("TempOrderItem_QuantityOrdered").value = qtyordered;
+    document.getElementById("TempOrderItem_Price").value = price;
 
     $("#itemdialog").dialog("open");
 }
@@ -105,10 +105,10 @@ function AddItemToTable() {
     $("#itemdialog").dialog("close");
 
     var currTable = $("#iTable > TBODY")[0];
-    var itemid = document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value;
-    var qtyreceived = document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityReceived").value;
-    var qtyordered = document.getElementById("PurchaseOrderVM_tempOrderItem_QuantityOrdered").value;
-    var price = document.getElementById("PurchaseOrderVM_tempOrderItem_Price").value;
+    var itemid = document.getElementById("TempOrderItem_ItemID").value;
+    var qtyreceived = document.getElementById("TempOrderItem_QuantityReceived").value;
+    var qtyordered = document.getElementById("TempOrderItem_QuantityOrdered").value;
+    var price = document.getElementById("TempOrderItem_Price").value;
 
     console.log("there are " + currTable.rows.length + "rows");
     // before adding a new item, search the table for duplicates

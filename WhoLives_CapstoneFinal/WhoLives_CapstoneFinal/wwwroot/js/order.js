@@ -1,12 +1,7 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
-    if (document.location.pathname.toLowerCase().includes('upsert')) {
-        loadUpsertList();
-    }
-    else {
-        loadList();
-    }
+    loadList();
 });
 
 function loadList() {
@@ -34,10 +29,9 @@ function loadList() {
         },
         responsive: { details: true },
         "ajax": {
-            "url": "/api/order/",
+            "url": "/api/order",
             "type": "GET",
-            "datatype": "json",
-            "data": { input: "n" }
+            "datatype": "json"
         },
         "columns": [
             {
@@ -71,7 +65,7 @@ function loadList() {
                             <a href="/purchaseorders/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 100px">
                                 <i class="far fa-edit"></i>
                             </a>
-                            <a class="btn btn-danger" style="cursor:pointer; width:100px;" onclick=Delete('/api/purchaseorders/'+${data})>
+                            <a class="btn btn-danger" style="cursor:pointer; width:100px;" onclick=Delete('/api/order/'+${data})>
                                 <i class="far fa-trash-alt"></i>
                             </a>
                         </div>`;

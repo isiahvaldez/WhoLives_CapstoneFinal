@@ -21,15 +21,21 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
         }
         [BindProperty]
         public PurchaseOrderVM PurchaseOrderVM { get; set; }
+        [BindProperty]
+        public OrderItem TempOrderItem { get; set; }
         public IActionResult OnGet(int? id)
         {
+            TempOrderItem = new OrderItem();
             PurchaseOrderVM = new PurchaseOrderVM
             {
-                OrderInfo = new PurchaseOrder(),
+                OrderInfo = new PurchaseOrder {
+                    DateOrdered = DateTime.Now,
+                    StatusChangeDate = DateTime.Now,
+                    StatusID = _uow.Statuses.GetFirstOrDefault(s => s.Name == "Pending").StatusId,
+                },
                 ItemList = _uow.InventoryItems.GetNonAssemblyItemListForDropDown(),
                 VendorList = _uow.Vendors.GetVendorListForDropDown(),
-                StatusList = _uow.Statuses.GetStatusListForDropDown(),
-                tempOrderItem = new OrderItem()
+                StatusList = _uow.Statuses.GetStatusListForDropDown()
             };
             if (id != null)
             {

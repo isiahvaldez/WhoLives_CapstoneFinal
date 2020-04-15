@@ -30,11 +30,7 @@ namespace WhoLives_CapstoneFinal
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMvc(options => options.EnableEndpointRouting = false)
-                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0)
-                .AddRazorPagesOptions(options =>
-                {
-                    options.Conventions.AddPageRoute("/PurchaseOrders/Upsert", "po");
-                });
+                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

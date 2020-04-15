@@ -16,9 +16,22 @@ namespace WhoLives.DataAccess.Data.Repository
             _appContext = context;
         }
 
-        public void Remove(PurchaseOrder entity)
+        public new void Remove(PurchaseOrder entity)
         {
-            throw new NotImplementedException();
+            //Get all the order items associated
+            var orderItems = _appContext.OrderItems.Where(o => o.PurchaseOrderID == entity.PurchaseOrderID).ToList();
+            foreach(var o in orderItems)
+            {
+                ////Remove any vendoritems that no longer have any purchase orders with the item
+                //var PurchaseOrders = _appContext.PurchaseOrders.Where(v => v.VendorID == entity.VendorID && v. == o.ItemID).ToList();
+                
+                //_appContext.SaveChanges();
+                _appContext.OrderItems.Remove(o);
+            }
+            _appContext.SaveChanges();
+            //Remove the purchase order
+            dbSet.Remove(entity);
+            _appContext.SaveChanges();
         }
 
         public void update(PurchaseOrder purchaseOrder)
@@ -28,6 +41,9 @@ namespace WhoLives.DataAccess.Data.Repository
             PO.StatusChangeDate = PO.StatusID == purchaseOrder.StatusID ? purchaseOrder.StatusChangeDate : DateTime.Now;
             PO.StatusID = purchaseOrder.StatusID;
             PO.PO = purchaseOrder.PO;
+
+            //Find total cost of purchase order
+            //PO.TotalPrice = 
             PO.DateOrdered = purchaseOrder.DateOrdered;
             PO.LastModifiedBy = purchaseOrder.LastModifiedBy;
             PO.LastModifiedDate = DateTime.Now;

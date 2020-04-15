@@ -27,6 +27,8 @@ namespace WhoLives.DataAccess.Data.Repository
             OI.LastModifiedBy = orderItem.LastModifiedBy;
             OI.LastModifiedDate = DateTime.Now;
 
+            //Find wholesale cost of item
+
             _appContext.SaveChanges();
         }
     }
