@@ -83,7 +83,7 @@
                                 <td>@i.QuantityOrdered</td>
                                 <td>@i.Price</td>
                                 <td>@i.QuantityReceived</td>
-                                <td>
+                                <td><div hidden>@i.OrderItemID</div>
                                     <a class="btn" onclick="RemoveItemFromTable(this)"><i class="far fa-trash-alt"></i></a>
                                     <a class="btn" onclick="Edit(this)"><i class="far fa-edit"></i></a>
                                 </td>
@@ -316,7 +316,8 @@
                 QuantityOrdered:parseInt( myTable.rows[i].cells[1].innerHTML,10),
                 Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
                 QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
-                PurchaseOrderID: parseInt(document.getElementById("poid").value,10)
+                PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
+                OrderItemID: parseInt(myTable.rows[i].cells[4].textContent,10)
             }
             componentList.push(Component);
         }

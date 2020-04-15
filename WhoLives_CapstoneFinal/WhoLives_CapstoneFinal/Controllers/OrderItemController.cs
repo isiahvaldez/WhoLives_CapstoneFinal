@@ -69,12 +69,12 @@ namespace WhoLives_CapstoneFinal.Controllers
                 {
                     foreach (var o in component.orderItems)
                     {
-                        if (DBItems.Contains(o))
+                        if (DBItems.Where(d => d.OrderItemID == o.OrderItemID).Count() > 0)
                         {
                             // Update o in DB
                             _uow.OrderItems.update(o);
                             // Remove o from DBItems list
-                            DBItems.Remove(o);
+                            DBItems.Remove(DBItems.Where(d => d.OrderItemID == o.OrderItemID).FirstOrDefault());
                         }
                         else
                         {
