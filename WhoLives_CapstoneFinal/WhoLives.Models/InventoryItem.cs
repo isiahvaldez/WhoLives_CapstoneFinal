@@ -38,6 +38,10 @@ namespace WhoLives.Models
         public double ListRetailCost { get; set; }
         // public decimal ListRetailCost { get; set; }
 
+            [Display(Name="Whole Sale")]
+        [Range(0, int.MaxValue, ErrorMessage = "Cost can not be less then 0.00")]
+        public double WholeSaleCost { get; set; }
+
         //Minimum number of parts to have available
         [Display(Name = "Reorder Quantity")]
         public int ReorderQty { get; set; }
