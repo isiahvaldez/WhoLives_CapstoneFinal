@@ -81,6 +81,17 @@ namespace WhoLives_CapstoneFinal.Controllers
                             // Add o to DB
                             _uow.OrderItems.Add(o);
                         }
+                        // Update vendorItem table
+                        if (_uow.VendorItems.GetAll(v =>
+                             v.VendorID == component.purchaseOrderDetails.VendorID &&
+                             v.InventoryItemID == o.ItemID).ToList().Count() == 0)
+                        {
+                            _uow.VendorItems.Add(new VendorItem
+                            {
+                                VendorID = component.purchaseOrderDetails.VendorID,
+                                InventoryItemID = o.ItemID
+                            });
+                        }
                     }
                 }
                 if (DBItems.Count > 0)
@@ -89,10 +100,12 @@ namespace WhoLives_CapstoneFinal.Controllers
                     {
                         // Delete i from DB
                         _uow.OrderItems.Remove(i.OrderItemID);
+                        // Update vendorItems table
                     }
                 }
                 _uow.Save();
             }
+            RedirectToPage("../PurchaseOrders/Index");
             return Json(new { msg = "success" });
         }
     }

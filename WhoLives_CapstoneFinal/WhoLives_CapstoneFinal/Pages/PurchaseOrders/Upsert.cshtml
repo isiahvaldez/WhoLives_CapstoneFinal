@@ -1,67 +1,68 @@
 ﻿@page
 @model WhoLives_CapstoneFinal.Pages.PurchaseOrders.UpsertModel
 
+<div class="container">
+    <br />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @if (Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0)
+    {
+        <input id="poid" type="hidden" asp-for="PurchaseOrderVM.OrderInfo.PurchaseOrderID" />
+    }
     <div class="container">
-        <br />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0)
-        {
-            <input id="poid" type="hidden" asp-for="PurchaseOrderVM.OrderInfo.PurchaseOrderID" />
-        }
-        <div class="container">
-            <h1>@(Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0 ? "Update" : "Create") Order</h1>
-            <div class="form-group row">
-                <div class="col-6 px-3 border py-2">
-                    <!--Status Dropdown-->
-                    <div class="px-3">
-                        <label asp-for="PurchaseOrderVM.OrderInfo.StatusID"></label><br />
-                        @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.StatusID,
-                           Model.PurchaseOrderVM.StatusList,
-                           "-Select Status-",
-                           new { @class = "form-control" })
-                        <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.Status" />
-                    </div>
-                    <div class="px-3 py-2 form-group">
-                        <label asp-for="PurchaseOrderVM.OrderInfo.VendorID"></label>
-                        <i class="fa fa-plus-circle btn"></i>
-                        @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.VendorID,
-                           Model.PurchaseOrderVM.VendorList,
-                           "-Select Vendor-",
-                           new { @class = "form-control" })
-                        <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.VendorID" />
-                    </div>
+        <h1>@(Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0 ? "Update" : "Create") Order</h1>
+        <div class="form-group row">
+            <div class="col-6 px-3 border py-2">
+                <!--Status Dropdown-->
+                <div class="px-3">
+                    <label asp-for="PurchaseOrderVM.OrderInfo.StatusID"></label><br />
+                    @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.StatusID,
+                       Model.PurchaseOrderVM.StatusList,
+                       "-Select Status-",
+                       new { @class = "form-control" })
+                    <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.Status" />
                 </div>
-                <div class="col-6 px-3 border py-2">
-                    <!--Date group-->
-                    <div class="form-group">
-                        <label asp-for="PurchaseOrderVM.OrderInfo.DateOrdered"></label>
-                        <input name="DateOrdered" asp-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="form-control" />
-                        <span asp-validation-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="text-danger"></span>
-                    </div>
-                    <label asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate"></label>
-                    <input asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="form-control" readonly />
-                    <span asp-validation-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="text-danger"></span>
+                <div class="px-3 py-2 form-group">
+                    <label asp-for="PurchaseOrderVM.OrderInfo.VendorID"></label>
+                    <i class="fa fa-plus-circle btn"></i>
+                    @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.VendorID,
+                       Model.PurchaseOrderVM.VendorList,
+                       "-Select Vendor-",
+                       new { @class = "form-control" })
+                    <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.VendorID" />
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6 border">
-                    <!--PO #-->
-                    <div class="px-3 form-group">
-                        <label asp-for="PurchaseOrderVM.OrderInfo.PO"></label>
-                        <input asp-for="PurchaseOrderVM.OrderInfo.PO" class="form-control" />
-                        <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
-                    </div>
+            <div class="col-6 px-3 border py-2">
+                <!--Date group-->
+                <div class="form-group">
+                    <label asp-for="PurchaseOrderVM.OrderInfo.DateOrdered"></label>
+                    <input name="DateOrdered" asp-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="form-control" />
+                    <span asp-validation-for="PurchaseOrderVM.OrderInfo.DateOrdered" class="text-danger"></span>
                 </div>
-                <div class="col-4 px-3 py-2 text-left border">
-                    <label class="control-label">Export: </label>
-                    <a class="btn" onclick="exportTableToCSV()" style="cursor:pointer; width: 100px"><i class="far fa-file-excel"></i></a>
-                    <a class="btn" onclick="exportTableToPDF()" style="cursor:pointer; width: 100px"><i class="far fa-file-pdf"></i></a>
-                </div>
-                <div class="col-2 text-right">
-                    <a class="btn btn-primary text-light" id="add"><i class="fas fa-plus"></i>&nbsp;Add Item</a>
+                <label asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate"></label>
+                <input asp-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="form-control" readonly />
+                <span asp-validation-for="PurchaseOrderVM.OrderInfo.StatusChangeDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 border">
+                <!--PO #-->
+                <div class="px-3 form-group">
+                    <label asp-for="PurchaseOrderVM.OrderInfo.PO"></label>
+                    <input asp-for="PurchaseOrderVM.OrderInfo.PO" class="form-control" />
+                    <span asp-validation-for="PurchaseOrderVM.OrderInfo.PO" class="text-danger"></span>
                 </div>
             </div>
-            <table id="iTable" class="table table-striped table-bordered" style="width:100%">
+            <div class="col-4 px-3 py-2 text-center align-bottom">
+                <label class="control-label">Export: </label>
+                <a class="btn" onclick="exportTableToCSV()" style="cursor:pointer; width: 100px"><i class="far fa-file-excel fa-2x"></i></a>
+                <a class="btn" onclick="exportTableToPDF()" style="cursor:pointer; width: 100px"><i class="far fa-file-pdf fa-2x"></i></a>
+            </div>
+            <div class="col-2 text-right">
+                <a class="btn btn-primary text-light" id="add"><i class="fas fa-plus"></i>&nbsp;Add Item</a>
+            </div>
+        </div>
+        <div class="row form-group py-4">
+            <table id="iTable" class="table table-striped table-bordered col-12" style="width:100%">
                 <thead>
                     <tr>
                         <th>Item</th>
@@ -74,7 +75,7 @@
                 <tbody id="table">
                     @if (Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0 && Model.PurchaseOrderVM.OrderInfo.OrderItems.Count() > 0)
                     {
-                        
+
                         @foreach (var i in Model.PurchaseOrderVM.OrderInfo.OrderItems)
                         {
                             var itemId = @i.ItemID;
@@ -83,7 +84,8 @@
                                 <td>@i.QuantityOrdered</td>
                                 <td>@i.Price</td>
                                 <td>@i.QuantityReceived</td>
-                                <td><div hidden>@i.OrderItemID</div>
+                                <td>
+                                    <div hidden>@i.OrderItemID</div>
                                     <a class="btn" onclick="RemoveItemFromTable(this)"><i class="far fa-trash-alt"></i></a>
                                     <a class="btn" onclick="Edit(this)"><i class="far fa-edit"></i></a>
                                 </td>
@@ -94,265 +96,214 @@
 
 
             </table>
-
         </div>
-        <!--Price-->
-        @*<div class="col-2 px-3 row form-group align-content-center">
-            <label class="control-label" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice">Total Price:</label>
-                <input name="totalprice" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" readonly />
-                <span asp-validation-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="text-danger"></span>
-            </div>*@
+    </div>
+    <!--Price-->
+    @*<div class="col-2 px-3 row form-group align-content-center">
+        <label class="control-label" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice">Total Price:</label>
+            <input name="totalprice" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" readonly />
+            <span asp-validation-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="text-danger"></span>
+        </div>*@
 
-        <div class="form-group row">
-            <div class="col-9 offset-2">
-                <div class="row">
-                    <div class="col-6">
-                            <button onclick="AddToDatabase()" id="btnSave" class="btn btn-primary form-control">@(Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0 ? "Update" : "Create")</button>
-                    </div>
-                    <div class="col-6">
-                        <a asp-page="./Index" class="btn btn-warning form-control">Go Back</a>
-                    </div>
+    <div class="form-group row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6">
+                    <button onclick="AddToDatabase()" id="btnSave" class="btn btn-primary form-control">@(Model.PurchaseOrderVM.OrderInfo.PurchaseOrderID != 0 ? "Update" : "Create")</button>
+                </div>
+                <div class="col-6">
+                    <a asp-page="./Index" class="btn btn-warning form-control">Go Back</a>
                 </div>
             </div>
         </div>
     </div>
-<div id="itemdialog" title="Add new order item">
-    <label asp-for="TempOrderItem.Item.Name"></label>
-    @Html.DropDownListFor(m =>
-        m.TempOrderItem.ItemID,
-        Model.PurchaseOrderVM.ItemList,
-        "-Select Item-",
-        new { @class = "form-control" })
-    <div class="form-group">
-        <label asp-for="TempOrderItem.QuantityOrdered"></label>
-        <input name="QuantityOrdered" asp-for="TempOrderItem.QuantityOrdered" class="form-control" />
-        <span asp-validation-for="TempOrderItem.QuantityOrdered" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="TempOrderItem.Price"></label>
-        <input name="Price" asp-for="TempOrderItem.Price" class="form-control" />
-        <span asp-validation-for="TempOrderItem.Price" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="TempOrderItem.QuantityReceived"></label>
-        <input name="QuantityReceived" asp-for="TempOrderItem.QuantityReceived" class="form-control" />
-        <span asp-validation-for="TempOrderItem.QuantityReceived" class="text-danger"></span>
-    </div>
-    <button type="button" class="btn btn-primary" onclick="AddItemToTable()" id="save">Save</button>
 </div>
+    <div id="itemdialog" title="Add new order item">
+        <label asp-for="TempOrderItem.Item.Name"></label>
+        @Html.DropDownListFor(m =>
+                    m.TempOrderItem.ItemID,
+                    Model.PurchaseOrderVM.ItemList,
+                    "-Select Item-",
+                    new { @class = "form-control" })
+        <div class="form-group">
+            <label asp-for="TempOrderItem.QuantityOrdered"></label>
+            <input name="QuantityOrdered" asp-for="TempOrderItem.QuantityOrdered" class="form-control" />
+            <span asp-validation-for="TempOrderItem.QuantityOrdered" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TempOrderItem.Price"></label>
+            <input name="Price" asp-for="TempOrderItem.Price" class="form-control" />
+            <span asp-validation-for="TempOrderItem.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TempOrderItem.QuantityReceived"></label>
+            <input name="QuantityReceived" asp-for="TempOrderItem.QuantityReceived" class="form-control" />
+            <span asp-validation-for="TempOrderItem.QuantityReceived" class="text-danger"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="AddItemToTable()" id="save">Save</button>
+    </div>
+
 @section Scripts{
     <script src="~/js/order-items.js"></script>
-<script>
-    //var datatable;
-    //dataTable = $('#DT_load').DataTable({
-    //    //responsive: { details: true },
-    //    "ajax": {
-    //        "url": "/api/order/",
-    //        "data": function (data) {
-    //            data.forEach(d => {
+    <script>
 
-    //            });
-    //            },
-    //        "type": "GET",
-    //        "datatype": "json"
-    //    },
-    //    "columns": [
-    //        {
-    //            "data": "item.name",
-    //            "width": "25%"
-    //        },
-    //        {
-    //            "data": "quantityOrdered",
-    //            "width": "20%"
-    //        },
-    //        {
-    //            "data": "price",
-    //            "width": "25%"
-    //        },
-    //        {
-    //            "data": "quantityReceived",
-    //            "width": "20%"
-    //        },
-    //        {
-    //            "data": "orderItemID",
-    //            "render": function (data) {
-    //                return ` <div class="text-center">
-    //                            <button type="button" class="btn btn-primary" style="cursor:pointer; width: 40px" onclick=Edit(${data})>
-    //                                <i class="far fa-edit"></i>
-    //                            </button>
-    //                            <a class="btn btn-danger text-white" style="cursor:pointer; width:40px;" onclick=Delete('/api/order/item?='+${data})>
-    //                                <i class="far fa-trash-alt"></i>
-    //                            </a>
-    //                         </div>`
-    //            },
-    //            "width": "10%"
-    //        }
-    //    ],
-    //    "language": {
-    //        "emptyTable": "no data found."
-    //    },
-    //    "width": "100%"
-    //});
+        // CSV code from https://www.codexworld.com/export-html-table-data-to-csv-using-javascript/
+        function exportTableToCSV() {
+            var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
+            var filename = 'order' +
+                (po ? '-' + po : '') +
+                '.csv';
 
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
 
-    
-// CSV code from https://www.codexworld.com/export-html-table-data-to-csv-using-javascript/
-    function exportTableToCSV() {
-        var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
-        var csv = [];
-        var rows = document.querySelectorAll("table tr");
-        var filename = 'order' +
-            (po ? '-' + po : '') +
-            '.csv';
+                for (var j = 0; j < cols.length; j++)
+                    row.push(cols[j].innerText);
 
-        for (var i = 0; i < rows.length; i++) {
-            var row = [], cols = rows[i].querySelectorAll("td, th");
+                csv.push(row.join(","));
+            }
 
-            for (var j = 0; j < cols.length; j++)
-                row.push(cols[j].innerText);
+            // Download CSV file
+            downloadCSV(csv.join("\n"), filename);
+        }
+        function downloadCSV(csv, filename) {
+            var csvFile;
+            var downloadLink;
 
-            csv.push(row.join(","));
+            // CSV file
+            csvFile = new Blob([csv], { type: "text/csv" });
+
+            // Download link
+            downloadLink = document.createElement("a");
+
+            // File name
+            downloadLink.download = filename;
+
+            // Create a link to the file
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+
+            // Hide download link
+            downloadLink.style.display = "none";
+
+            // Add the link to DOM
+            document.body.appendChild(downloadLink);
+
+            // Click download link
+            downloadLink.click();
+        }
+        // PDF code obtained + revised from https://www.encodedna.com/javascript/convert-html-table-to-pdf-using-javascript-without-a-plugin.htm
+        function exportTableToPDF() {
+            var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+            var rows = document.querySelectorAll("table tr");
+            var sTable = document.getElementById('iTable').innerHTML;
+
+            var style = "<style>" +
+                "table {width: 100%;font: 17px Calibri;}" +
+                "table, th, td {border: solid 1px #DDD; border-collapse: collapse;" +
+                "padding: 2px 3px;text-align: center;}" +
+                "</style>";
+
+            // CREATE A WINDOW OBJECT.
+            var win = window.open('', '', 'height=700,width=700');
+
+            win.document.write('<html><head>');
+            win.document.write('<title>Order' +
+                (po ? ' for PO ' + po : '') +
+                '</title>');   // <title> FOR PDF HEADER.
+            win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+            win.document.write('</head>');
+            win.document.write('<body>');
+            win.document.write('<table>');
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                win.document.write('<tr>');
+                if (i == 0) {
+                    for (var j = 0; j < cols.length; j++) {
+                        win.document.write('<th>');
+                        win.document.write(cols[j].innerText);
+                        win.document.write('</th>');
+                    }
+                }
+                else {
+                    for (var j = 0; j < cols.length; j++) {
+                        win.document.write('<td>');
+                        win.document.write(cols[j].innerText);
+                        win.document.write('</td>');
+                    }
+                }
+
+                //csv.push(row.join(","));
+                //win.document.write(row);
+                win.document.write('</tr>');
+            }
+            //win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+            win.document.write('</table></body></html>');
+
+            win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+
+            win.print();    // PRINT THE CONTENTS.
         }
 
-        // Download CSV file
-        downloadCSV(csv.join("\n"), filename);
-    }
-    function downloadCSV(csv, filename) {
-        var csvFile;
-        var downloadLink;
-
-        // CSV file
-        csvFile = new Blob([csv], { type: "text/csv" });
-
-        // Download link
-        downloadLink = document.createElement("a");
-
-        // File name
-        downloadLink.download = filename;
-
-        // Create a link to the file
-        downloadLink.href = window.URL.createObjectURL(csvFile);
-
-        // Hide download link
-        downloadLink.style.display = "none";
-
-        // Add the link to DOM
-        document.body.appendChild(downloadLink);
-
-        // Click download link
-        downloadLink.click();
-    }
-    // PDF code obtained + revised from https://www.encodedna.com/javascript/convert-html-table-to-pdf-using-javascript-without-a-plugin.htm
-    function exportTableToPDF() {
-        var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
-        var rows = document.querySelectorAll("table tr");
-        var sTable = document.getElementById('iTable').innerHTML;
-
-        var style = "<style>" +
-            "table {width: 100%;font: 17px Calibri;}" +
-            "table, th, td {border: solid 1px #DDD; border-collapse: collapse;" +
-            "padding: 2px 3px;text-align: center;}" +
-            "</style>";
-
-        // CREATE A WINDOW OBJECT.
-        var win = window.open('', '', 'height=700,width=700');
-
-        win.document.write('<html><head>');
-        win.document.write('<title>Order' +
-            (po ? ' for PO ' + po : '') +
-            '</title>');   // <title> FOR PDF HEADER.
-        win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
-        win.document.write('</head>');
-        win.document.write('<body>');
-        win.document.write('<table>');
-        for (var i = 0; i < rows.length; i++) {
-            var row = [], cols = rows[i].querySelectorAll("td, th");
-            win.document.write('<tr>');
-            if (i == 0) {
-                for (var j = 0; j < cols.length; j++) {
-                    win.document.write('<th>');
-                    win.document.write(cols[j].innerText);
-                    win.document.write('</th>');
+        // Code courtesy of Isiah Valdez
+        function AddToDatabase() {
+            //var urlParams = new URLSearchParams(window.location.search);
+            var id = document.getElementById("poid").value;
+            var PO = {
+                PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
+                StatusID: parseInt(document.getElementById("PurchaseOrderVM_OrderInfo_StatusID").value, 10),
+                VendorID: parseInt(document.getElementById("PurchaseOrderVM_OrderInfo_VendorID").value, 10),
+                DateOrdered: document.getElementById("PurchaseOrderVM_OrderInfo_DateOrdered").value,
+                PO: document.getElementById("PurchaseOrderVM_OrderInfo_PO").value
+            };
+            var componentList = [];
+            var myTable = document.getElementById("iTable");
+            // get table row data
+            // don't read data from the table header
+            for (var i = 1; i < myTable.rows.length; i++) {
+                var Component = {
+                    ItemName: myTable.rows[i].cells[0].innerHTML,
+                    QuantityOrdered: parseInt(myTable.rows[i].cells[1].innerHTML, 10),
+                    Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
+                    QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
+                    PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
+                    OrderItemID: parseInt(myTable.rows[i].cells[4].textContent, 10)
                 }
+                componentList.push(Component);
+            }
+
+            if (componentList.length == 0) {
+                $.ajax({
+                    url: "../api/orderItem/id/" + id,
+                    dataType: "json",
+                    data: JSON.stringify(PO),
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        alert("success");
+                    },
+                    error: function (xhr) {
+                        alert("error");
+                    }
+                })
             }
             else {
-                for (var j = 0; j < cols.length; j++) {
-                    win.document.write('<td>');
-                    win.document.write(cols[j].innerText);
-                    win.document.write('</td>');
-                }
+                $.ajax({
+                    url: "../api/orderItem/list/" /*+ JSON.stringify(PO)*/,
+                    dataType: "json",
+                    data: JSON.stringify({ 'orderItems': componentList, 'purchaseOrderDetails': PO }),
+                    //data: JSON.stringify(componentList),
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        alert("success");
+                    },
+                    error: function (xhr) {
+                        alert("error");
+                    }
+                })
             }
-
-            //csv.push(row.join(","));
-            //win.document.write(row);
-            win.document.write('</tr>');
         }
-        //win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
-        win.document.write('</table></body></html>');
-
-        win.document.close(); 	// CLOSE THE CURRENT WINDOW.
-
-        win.print();    // PRINT THE CONTENTS.
-    }
-    
-// Code courtesy of Isiah Valdez
-    function AddToDatabase() {
-        //var urlParams = new URLSearchParams(window.location.search);
-        var id = document.getElementById("poid").value;
-        var PO = {
-            PurchaseOrderID: parseInt(document.getElementById("poid").value,10),
-            StatusID: parseInt(document.getElementById("PurchaseOrderVM_OrderInfo_StatusID").value,10),
-            VendorID: parseInt(document.getElementById("PurchaseOrderVM_OrderInfo_VendorID").value,10),
-            DateOrdered: document.getElementById("PurchaseOrderVM_OrderInfo_DateOrdered").value,
-            PO: document.getElementById("PurchaseOrderVM_OrderInfo_PO").value
-        };
-        var componentList = [];
-        var myTable = document.getElementById("iTable");
-        // get table row data
-        // don't read data from the table header
-        for (var i = 1; i < myTable.rows.length; i++) {
-            var Component = {
-                ItemName: myTable.rows[i].cells[0].innerHTML,
-                QuantityOrdered:parseInt( myTable.rows[i].cells[1].innerHTML,10),
-                Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
-                QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
-                PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
-                OrderItemID: parseInt(myTable.rows[i].cells[4].textContent,10)
-            }
-            componentList.push(Component);
-        }
-
-        if (componentList.length == 0) {
-            $.ajax({
-                url: "../api/orderItem/id/" + id,
-                dataType: "json",
-                data: JSON.stringify(PO),
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    alert("success");
-                },
-                error: function (xhr) {
-                    alert("error");
-                }
-            })
-        }
-        else {
-            $.ajax({
-                url: "../api/orderItem/list/" /*+ JSON.stringify(PO)*/,
-                dataType: "json",
-                data: JSON.stringify({ 'orderItems': componentList, 'purchaseOrderDetails': PO }),
-                //data: JSON.stringify(componentList),
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    alert("success");
-                },
-                error: function (xhr) {
-                    alert("error");
-                }
-            })
-        }
-    }
-</script>
+    </script>
 }

@@ -89,10 +89,20 @@ $("#add").click(function (e) {
     $("#itemdialog").dialog("open");
 });
 
-function Edit(itemid, qtyreceived, qtyordered, price) {
+function Edit(btn) {
+    $("#itemdialog").dialog('option','title','Edit order item');
     var id = document.getElementById("poid").value;
+    var row = btn.parentNode.parentNode.rowIndex - 1;
+    var currTable = $("#iTable > TBODY")[0];
+    var itemid = currTable.rows[row].cells[0].innerHTML;
+    var qtyordered = currTable.rows[row].cells[1].innerHTML;
+    var price = currTable.rows[row].cells[2].innerHTML;
+    var qtyreceived = currTable.rows[row].cells[3].innerHTML;
     //document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value = id.toString();
-    document.getElementById("TempOrderItem_ItemID").value = itemid;
+    $("#TempOrderItem_ItemID").replaceWith('<input id="TempOrderItem_ItemID" value="' +
+        itemid.replace('"', '&quot;') +
+        '" class="form-control" readonly />');
+    //document.getElementById("TempOrderItem_ItemID").value = itemid;
     document.getElementById("TempOrderItem_QuantityReceived").value = qtyreceived;
     document.getElementById("TempOrderItem_QuantityOrdered").value = qtyordered;
     document.getElementById("TempOrderItem_Price").value = price;
