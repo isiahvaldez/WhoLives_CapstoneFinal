@@ -41,6 +41,7 @@ namespace WhoLives.DataAccess.Data.Repository
             objFromDb.LastModifiedBy = item.LastModifiedBy;
             objFromDb.LastModifiedDate = item.LastModifiedDate;
             objFromDb.ListRetailCost = item.ListRetailCost;
+            objFromDb.WholeSaleCost += item.WholeSaleCost;
             objFromDb.Measure = item.Measure;
             objFromDb.MeasureAmnt = item.MeasureAmnt;
             objFromDb.MeasuresID = item.MeasuresID;
