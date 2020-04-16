@@ -53,7 +53,7 @@
                     @Html.DropDownListFor(i => i.InventoryItemVM.InventoryItemObj.MeasuresID,
                     Model.InventoryItemVM.MeasureInfo,
                     "-Please select a Measurement Type",
-                    new { @class = "form-control" })
+                    new { @class = "form-control", @readonly = "true", @disabled = "true" })
                     <span class="text-danger" asp-validation-for="InventoryItemVM.InventoryItemObj.InventoryItemID"></span>
                 </div>
             </div>
