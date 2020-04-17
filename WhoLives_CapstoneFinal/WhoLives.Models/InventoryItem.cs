@@ -16,6 +16,9 @@ namespace WhoLives.Models
         //Identifier if the part is an assembly
         public bool IsAssembly { get; set; }
 
+        //Identifier for deleting/hiding the part from the user
+        public bool isActive = true;
+
         //Part name
         [Required]
         [StringLength(255)]
@@ -54,7 +57,6 @@ namespace WhoLives.Models
         [Display(Name = "Weight")]
         [Range(1, int.MaxValue, ErrorMessage = "Weight should be greater then 0.00")]
         public double MeasureAmnt { get; set; }
-        //public decimal MeasureAmnt { get; set; }
         
         //Used to log the username of a modified record
         [Display(Name = "Last Modified By")]
@@ -64,8 +66,6 @@ namespace WhoLives.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime LastModifiedDate { get; set; }
-
-        
 
         //NAVIGATION PROPERTIES
         public virtual ICollection<VendorItem> VendorItems { get; set; }

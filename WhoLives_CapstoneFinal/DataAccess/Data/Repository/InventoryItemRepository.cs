@@ -52,5 +52,13 @@ namespace WhoLives.DataAccess.Data.Repository
 
             _db.SaveChanges();
         }
+
+        public void Delete(InventoryItem item)
+        {
+            var objFromDb = _db.InventoryItems.FirstOrDefault(v => v.InventoryItemID == item.InventoryItemID);
+
+            objFromDb.isActive = false;
+            _db.SaveChanges();
+        }
     }
 }

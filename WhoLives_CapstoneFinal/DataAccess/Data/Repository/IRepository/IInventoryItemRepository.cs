@@ -12,5 +12,7 @@ namespace WhoLives.DataAccess.Data.Repository.IRepository
 
         IEnumerable<SelectListItem> GetNonAssemblyItemListForDropDown();
         void Update(InventoryItem item);
+
+        public void Delete(InventoryItem item);
     }
 }
