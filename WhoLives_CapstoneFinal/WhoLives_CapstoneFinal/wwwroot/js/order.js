@@ -65,7 +65,7 @@ function loadList() {
                             <a href="/purchaseorders/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 100px">
                                 <i class="far fa-edit"></i>
                             </a>
-                            <a class="btn btn-danger" style="cursor:pointer; width:100px;" onclick=Delete('/api/order/'+${data})>
+                            <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/order/'+${data})>
                                 <i class="far fa-trash-alt"></i>
                             </a>
                         </div>`;
@@ -80,47 +80,28 @@ function loadList() {
     });
 }
 
-//function loadUpsertList() {
-//    dataTable = $('#DT_load').dataTable({
-//        "ajax": {
-//            "url": "/api/order",
-//            "data": { input: "upsert" },
-//            "type": "GET",
-//            "datatype": "json"
-//        },
-//        "columns": [
-//            {
-//                "data": "item",
-//                "width": "35%"
-//            },
-//            {
-//                "data": "quantityOrdered",
-//                "width": "15%"
-//            },
-//            {
-//                "data": "status",
-//                "width": "35%",
-//                //"render": function (data, type, row, meta) {
-//                //    var index = data.indexOf(row);
-//                //    var select = $("<select id='" + index + "'>" +
-//                //        "<option value='backorder'>Backorder</option>" +
-//                //        "<option value='ordered'>Ordered</option>" +
-//                //        "<option value='shipping'>Shipping</option>" +
-//                //        "<option value='received'>Received</option>" +
-//                //        "<option value='partiallyreceived'>Partially Received</option>" +
-//                //        "<option value='overdue'>Overdue</option>" +
-//                //        "<option value='pending'>Pending</option>" +
-//                //        "</select>");
-//                //}
-//            },
-//            {
-//                "data": "quantityReceived",
-//                "width": "15%"
-//            }
-//        ],
-//        "language": {
-//            "emptyTable": "No order items to display."
-//        },
-//        "width": "100%"
-//    });
-//}
+function Delete(url) {
+    swal({
+        title: "Are you sure you want to Delete?",
+        text: "You will not be able to restore the data!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        window.location.href = '../PurchaseOrders/Index'
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        }
+    });
+}

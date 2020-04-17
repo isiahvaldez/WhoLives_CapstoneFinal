@@ -23,7 +23,6 @@
                 </div>
                 <div class="px-3 py-2 form-group">
                     <label asp-for="PurchaseOrderVM.OrderInfo.VendorID"></label>
-                    <i class="fa fa-plus-circle btn"></i>
                     @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.VendorID,
                        Model.PurchaseOrderVM.VendorList,
                        "-Select Vendor-",
@@ -196,6 +195,7 @@
         // PDF code obtained + revised from https://www.encodedna.com/javascript/convert-html-table-to-pdf-using-javascript-without-a-plugin.htm
         function exportTableToPDF() {
             var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+            var vendor = document.getElementById("PurchaseOrderVM_OrderInfo_VendorID").options[document.getElementById("PurchaseOrderVM_OrderInfo_VendorID").selectedIndex].text;
             var rows = document.querySelectorAll("table tr");
             var sTable = document.getElementById('iTable').innerHTML;
 
@@ -211,6 +211,7 @@
             win.document.write('<html><head>');
             win.document.write('<title>Order' +
                 (po ? ' for PO ' + po : '') +
+                (vendor ? ' vendor ' + vendor : '') +
                 '</title>');   // <title> FOR PDF HEADER.
             win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
             win.document.write('</head>');
@@ -247,7 +248,7 @@
         }
 
         // Code courtesy of Isiah Valdez
-        function AddToDatabase() {
+        async function AddToDatabase() {
             //var urlParams = new URLSearchParams(window.location.search);
             var id = document.getElementById("poid").value;
             var PO = {
@@ -257,53 +258,94 @@
                 DateOrdered: document.getElementById("PurchaseOrderVM_OrderInfo_DateOrdered").value,
                 PO: document.getElementById("PurchaseOrderVM_OrderInfo_PO").value
             };
-            var componentList = [];
-            var myTable = document.getElementById("iTable");
-            // get table row data
-            // don't read data from the table header
-            for (var i = 1; i < myTable.rows.length; i++) {
-                var Component = {
-                    ItemName: myTable.rows[i].cells[0].innerHTML,
-                    QuantityOrdered: parseInt(myTable.rows[i].cells[1].innerHTML, 10),
-                    Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
-                    QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
-                    PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
-                    OrderItemID: parseInt(myTable.rows[i].cells[4].textContent, 10)
+            var willContinue = await checkStatus(PO.StatusID);
+            if (willContinue) {
+                var componentList = [];
+                var myTable = document.getElementById("iTable");
+                // get table row data
+                // don't read data from the table header
+                for (var i = 1; i < myTable.rows.length; i++) {
+                    var Component = {
+                        ItemName: myTable.rows[i].cells[0].innerHTML,
+                        QuantityOrdered: parseInt(myTable.rows[i].cells[1].innerHTML, 10),
+                        Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
+                        QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
+                        PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
+                        OrderItemID: parseInt(myTable.rows[i].cells[4].textContent, 10)
+                    }
+                    componentList.push(Component);
                 }
-                componentList.push(Component);
-            }
 
-            if (componentList.length == 0) {
-                $.ajax({
-                    url: "../api/orderItem/id/" + id,
-                    dataType: "json",
-                    data: JSON.stringify(PO),
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        alert("success");
-                    },
-                    error: function (xhr) {
-                        alert("error");
-                    }
-                })
-            }
-            else {
-                $.ajax({
-                    url: "../api/orderItem/list/" /*+ JSON.stringify(PO)*/,
-                    dataType: "json",
-                    data: JSON.stringify({ 'orderItems': componentList, 'purchaseOrderDetails': PO }),
-                    //data: JSON.stringify(componentList),
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        alert("success");
-                    },
-                    error: function (xhr) {
-                        alert("error");
-                    }
-                })
+                if (componentList.length == 0) {
+                    $.ajax({
+                        url: "../api/orderItem/id/" + id,
+                        dataType: "json",
+                        data: JSON.stringify(PO),
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            window.location.href = '../PurchaseOrders/upsert?id=' + PO.PurchaseOrderID;
+                        },
+                        error: function (xhr) {
+                            alert("error");
+                        }
+                    })
+                }
+                else {
+                    $.ajax({
+                        url: "../api/orderItem/list/" /*+ JSON.stringify(PO)*/,
+                        dataType: "json",
+                        data: JSON.stringify({ 'orderItems': componentList, 'purchaseOrderDetails': PO }),
+                        //data: JSON.stringify(componentList),
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            window.location.href = '../PurchaseOrders/upsert?id=' + PO.PurchaseOrderID;
+                        },
+                        error: function (xhr) {
+                            alert("error");
+                        }
+                    })
+                }
             }
         }
+        async function checkStatus(statusId) {
+            if (statusId == 3) {
+                return swal({
+                    title: "Status Received Selection Alert!",
+                    text: "All items with ordered quantities will be added to the inventory.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                });
+            }
+            else if (statusId == 4) {
+                return swal({
+                    title: "Status Partially Received Selection Alert!",
+                    text: "All items with updated received quantities will be added to the inventory.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                });
+            }
+            else {
+                return true;
+            }
+        }
+        AddMissingEvents();
     </script>
 }

@@ -67,8 +67,14 @@ namespace WhoLives_CapstoneFinal.Controllers
 
                 if (component.orderItems.Count() > 0)
                 {
+                    decimal newTotal = 0.00M;
                     foreach (var o in component.orderItems)
                     {
+                        if(component.purchaseOrderDetails.StatusID == _uow.Statuses.GetFirstOrDefault(s => s.Name == "Received").StatusId)
+                        {
+                            o.QuantityReceived = o.QuantityOrdered;
+                        }
+                        newTotal += (o.Price * o.QuantityOrdered);
                         if (DBItems.Where(d => d.OrderItemID == o.OrderItemID).Count() > 0)
                         {
                             // Update o in DB
@@ -93,6 +99,8 @@ namespace WhoLives_CapstoneFinal.Controllers
                             });
                         }
                     }
+                    component.purchaseOrderDetails.TotalPrice = newTotal;
+                    _uow.PurchaseOrders.update(component.purchaseOrderDetails);
                 }
                 if (DBItems.Count > 0)
                 {
@@ -105,7 +113,6 @@ namespace WhoLives_CapstoneFinal.Controllers
                 }
                 _uow.Save();
             }
-            RedirectToPage("../PurchaseOrders/Index");
             return Json(new { msg = "success" });
         }
     }
