@@ -104,7 +104,6 @@ namespace WhoLives_CapstoneFinal.Controllers
 
             // TODO: change this to give the info we need - IV 4/15/2020
             string json = JsonConvert.SerializeObject(itemList);
-            var result = JsonConvert.DeserializeObject(json);
 
             return Content(json);
             //return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true) });

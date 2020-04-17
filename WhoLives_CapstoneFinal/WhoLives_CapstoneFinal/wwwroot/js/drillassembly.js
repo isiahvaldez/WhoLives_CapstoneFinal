@@ -10,7 +10,8 @@ function loadInventoryList() {
             "url": "/api/drillAssembly/",
             "type": "GET",
             "datatype": "json",
-            "contentType": "application/json; charset=utf-8"
+            "contentType": "application/json; charset=utf-8",
+            "dataSrc": ""
         },
         "columns": [
             { "data": "name", "width": "25%", "defaultContent": "<i>Not set</i>"},
