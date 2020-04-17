@@ -26,6 +26,7 @@ namespace WhoLives.Models
         [Display(Name = "Description")]
         public string Description { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Cost should be greater than or equal to zero")]
         //Number of loose items available that are not used in an assembly
         [Display(Name = "Loose Quantity")]
         public int TotalLooseQty { get; set; }
