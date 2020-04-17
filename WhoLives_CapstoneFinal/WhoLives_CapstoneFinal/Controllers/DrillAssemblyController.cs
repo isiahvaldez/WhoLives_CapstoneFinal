@@ -15,13 +15,6 @@ using WhoLives.Models.ViewModels;
 
 namespace WhoLives_CapstoneFinal.Controllers
 {
-    public class ItemsRequired
-    {
-        public List<InventoryItem> itemList;
-        public List<int> requiredQty;
-        public List<int> totalQty;
-    }
-
     public class ItemWithCounts
     {
         public int id;
@@ -29,6 +22,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         public int looseQty;
         public int requiredQty;
         public int totalQty;
+        public int ratio;
     }
 
     [Route("api/[controller]")]
@@ -39,7 +33,6 @@ namespace WhoLives_CapstoneFinal.Controllers
 
         InventoryItem drill; 
         int drillID = 104; // this is hardcoded and will need to be changed if the item is deleted and readded - IV 4/15/2020
-        ItemsRequired itemsRequired = new ItemsRequired();
         List<ItemWithCounts> itemList = new List<ItemWithCounts>();
 
         [BindProperty]
@@ -66,17 +59,19 @@ namespace WhoLives_CapstoneFinal.Controllers
             drill = _unitOfWork.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == drillID);
             // Initialize the drill's list of items and number required for the drill
             // start with items with 0 required
-            itemsRequired = new ItemsRequired()
-            {
-                itemList = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true).ToList(),
-                requiredQty = new List<int>(),
-                totalQty = new List<int>()
-            };
+            List<InventoryItem> tempList = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true).ToList();
 
-            foreach (var item in itemsRequired.itemList)
+            foreach (var item in tempList)
             {
-                itemsRequired.requiredQty.Add(0);
-                itemsRequired.totalQty.Add(item.TotalLooseQty);
+                itemList.Add(new ItemWithCounts()
+                {
+                    id = item.InventoryItemID,
+                    name = item.Name,
+                    looseQty = item.TotalLooseQty,
+                    requiredQty = 0,
+                    totalQty = item.TotalLooseQty, // start with the loose amount and add to it
+                    ratio = 0
+                });
             }
             CountAssemblyComponents(drillID, 1); // this is counting the items required for the drill per its recipe
 
@@ -84,30 +79,22 @@ namespace WhoLives_CapstoneFinal.Controllers
             {
                 if(item.IsAssembly)
                 {
-                    CountChildItems(item.InventoryItemID, item.TotalLooseQty);
+                    CountChildItems(item.InventoryItemID, item.TotalLooseQty); // counting each assembly and item
                 }
             }
 
-            // convert list to an object better structured for JSON
-
-            for(int i = 0; i < itemsRequired.itemList.Count; i++)
+            // calculate ratio for drill
+            foreach(var item in itemList)
             {
-                itemList.Add(new ItemWithCounts()
+                if(item.requiredQty > 0 && item.totalQty > 0)
                 {
-                    id = itemsRequired.itemList[i].InventoryItemID,
-                    name = itemsRequired.itemList[i].Name,
-                    looseQty = itemsRequired.itemList[i].TotalLooseQty,
-                    requiredQty = itemsRequired.requiredQty[i],
-                    totalQty = itemsRequired.totalQty[i]
-                });
+                    item.ratio = item.totalQty / item.requiredQty;
+                }
             }
 
-            // TODO: change this to give the info we need - IV 4/15/2020
             string json = JsonConvert.SerializeObject(itemList);
 
             return Content(json);
-            //return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true) });
-
         }
 
         /// <summary>
@@ -136,14 +123,14 @@ namespace WhoLives_CapstoneFinal.Controllers
                 }
                 else
                 {
-                    int index = itemsRequired.itemList.FindIndex(i => i.InventoryItemID == assembly.InventoryItemID);
-                    itemsRequired.requiredQty[index] += requiredQty * assembly.ItemQty;
+                    int index = itemList.FindIndex(i => i.id == assembly.InventoryItemID);
+                    itemList[index].requiredQty += requiredQty * assembly.ItemQty;
                 }
             }
         }
 
         /// <summary>
-        /// Counts the items needed for an assembly, adds the results tp itemsRequired.totalQty
+        /// Counts the items needed for an assembly, adds the results to itemsRequired.totalQty
         /// </summary>
         /// <param name="itemID"></param>
         /// <param name="itemQty"></param>
@@ -168,8 +155,8 @@ namespace WhoLives_CapstoneFinal.Controllers
                 }
                 else
                 {
-                    int index = itemsRequired.itemList.FindIndex(i => i.InventoryItemID == assembly.InventoryItemID);
-                    itemsRequired.totalQty[index] += itemQty * assembly.ItemQty;
+                    int index = itemList.FindIndex(i => i.id == assembly.InventoryItemID);
+                    itemList[index].totalQty += itemQty * assembly.ItemQty;
                 }
             }
         }
