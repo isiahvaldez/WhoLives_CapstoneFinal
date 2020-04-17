@@ -83,12 +83,27 @@ namespace WhoLives_CapstoneFinal.Controllers
                 }
             }
 
+            // remove items not needed for the drill
+            List<int> itemsToRemove = new List<int>();
+            foreach(var item in itemList)
+            {
+                if(item.requiredQty <= 0)
+                {
+                    itemsToRemove.Add(itemList.IndexOf(item));
+                }
+            }
+
+            for(int i = itemsToRemove.Count - 1; i > -1; i--)
+            {
+                itemList.RemoveAt(itemsToRemove[i]);
+            }
+
             // calculate ratio for drill
             foreach(var item in itemList)
             {
-                if(item.requiredQty > 0 && item.totalQty > 0)
+                if (item.requiredQty > 0)
                 {
-                    item.ratio = item.totalQty / item.requiredQty;
+                    item.ratio = item.totalQty / item.requiredQty; // this will still give negatives if the total count is negative
                 }
             }
 

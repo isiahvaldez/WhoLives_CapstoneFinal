@@ -14,11 +14,18 @@ function loadInventoryList() {
             "dataSrc": ""
         },
         "columns": [
-            { "data": "name", "width": "20%", "defaultContent": "<i>Not set</i>"},
-            { "data": "looseQty", "width": "20%", "defaultContent": "<i>Not set</i>" },
-            { "data": "totalQty", "width": "20%", "defaultContent": "<i>Not set</i>" },  
-            { "data": "requiredQty", "width": "20%", "defaultContent": "<i>Not set</i>" },
-            { "data": "ratio", "width": "20%", "defaultContent": "<i>Not set</i>"}
+            { "data": "ratio", "width": "20%", "defaultContent": "<i>Not set</i>" },
+            {
+                "data": { "id": "id", "name": "name"},
+                "render": function (data) {
+                    return `<a href=/Inventory/Upsert?id=${data.id} style = "cursor:pointer"> 
+                            ${data.name}
+                    </a> `
+                }, "width": "35%", "defaultContent": "<i>Not set</i>"},
+            { "data": "looseQty", "width": "15%", "defaultContent": "<i>Not set</i>" },
+            { "data": "totalQty", "width": "15%", "defaultContent": "<i>Not set</i>" },  
+            { "data": "requiredQty", "width": "15%", "defaultContent": "<i>Not set</i>" }
+            
         ],
         "language": {
             "emptyTable": "no data found."
