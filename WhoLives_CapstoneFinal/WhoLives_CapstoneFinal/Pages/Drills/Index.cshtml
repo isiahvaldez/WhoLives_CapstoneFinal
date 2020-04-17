@@ -14,7 +14,7 @@
         <br />
         <div class="row">
             <div class="col-6">
-                <h4 class="text-primary">Drills in inventory: 0</h4>
+                <h4 class="text-primary">Drills in inventory: @(Model.drill.TotalLooseQty)</h4>
             </div>
             <div class="col-6 text-right">
                 <a asp-page="" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;Assemble Drill</a>
@@ -22,44 +22,18 @@
         </div>
         <br />
         <div class="row">
-            <div class="col-12">
-                <nav>
-                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-items-tab" data-toggle="tab" href="#nav-items" role="tab" aria-controls="nav-items" aria-selected="true">Items</a>
-                        <a class="nav-item nav-link" id="nav-assemblies-tab" data-toggle="tab" href="#nav-assemblies" role="tab" aria-controls="nav-assemblies" aria-selected="false">Assemblies</a>
-                    </div>
-                </nav>
-            </div>
-            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-items" role="tabpanel" aria-labelledby="nav-items-tab">
-                    <!-- Until we have an algorithm for counting the items inside assemblies, the total will be the same as the loose count - IV 4/1/2020-->
-                    <table id="DT_load_inventory" class="table table-striped table-bordered" style="table-layout:fixed; width:100%">
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Loose</th>
-                                <th>Total</th>
-                                <th>Needed</th>
-                            </tr>
-                        </thead>
-                    </table>
-               </div>
-               <div class="tab-pane fade" id="nav-assemblies" role="tabpanel" aria-labelledby="nav-assemblies-tab">
-                    <table id="DT_load_assembly" class="table table-striped table-bordered" style="table-layout:fixed; width:100%">
-                        <thead>
-                            <tr>
-                                <th>Assembly</th>
-                                <th>Total</th>
-                                <th>Needed</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
+            <table id="DT_load_inventory" class="table table-striped table-bordered" style="table-layout:fixed; width:100%">
+                <thead>
+                    <tr>
+                        <th>Complete Drill</th> <!-- Ratio of total item count to number needed-->
+                        <th>Item</th>
+                        <th>On Hand</th>
+                        <th>Total</th> <!-- Loose items + items in assemblies - IV 4/15/2020-->
+                        <th>Needed</th> <!-- Also calculate how many are needed from the drill's build assembly list - IV 4/15/2020-->
+                    </tr>
+                </thead>
+            </table>
         </div>
-
-
-
     </div>
 
 @section Scripts {
