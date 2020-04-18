@@ -7,7 +7,7 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext        
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -23,6 +23,7 @@ namespace WhoLives.DataAccess
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<VendorItem> VendorItems{ get; set; }
-        
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
     }
 }

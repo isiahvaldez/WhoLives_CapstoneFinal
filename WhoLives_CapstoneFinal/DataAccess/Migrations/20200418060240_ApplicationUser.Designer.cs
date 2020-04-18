@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WhoLives.DataAccess;
 
 namespace WhoLives.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200418060240_ApplicationUser")]
+    partial class ApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,12 +304,6 @@ namespace WhoLives.DataAccess.Migrations
                     b.Property<int>("TotalLooseQty")
                         .HasColumnType("int");
 
-                    b.Property<double>("WholeSaleCost")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("isActive")
-                        .HasColumnType("bit");
-
                     b.HasKey("InventoryItemID");
 
                     b.HasIndex("MeasuresID");
@@ -449,9 +445,6 @@ namespace WhoLives.DataAccess.Migrations
 
                     b.Property<string>("VendorWebsite")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isActive")
-                        .HasColumnType("bit");
 
                     b.HasKey("VendorID");
 
