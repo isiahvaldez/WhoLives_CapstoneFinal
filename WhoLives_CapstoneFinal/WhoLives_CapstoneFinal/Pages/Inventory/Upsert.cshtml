@@ -24,19 +24,19 @@
                     }
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="InventoryItemVM.InventoryItemObj.isActive" class="control-label mr-3">Status:</label>
-                <div class="form-inline col-12">
-                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
-                    {
-                        <input asp-for="InventoryItemVM.InventoryItemObj.isActive" type="text" value="@Model.InventoryItemVM.InventoryItemObj.isActive" class="form-control" readonly required id="isActive" />
-                    }
-                    @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
-                    {
-                        <input asp-for="InventoryItemVM.InventoryItemObj.isActive" type="text" value="@Model.InventoryItemVM.InventoryItemObj.isActive" class="form-control" required id="isActive" />
-                    }
-                </div>
+            @*<div class="form-group">
+            <label asp-for="InventoryItemVM.InventoryItemObj.isActive" class="control-label mr-3">Status:</label>
+            <div class="form-inline col-12">
+                @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
+                {
+                    <input asp-for="InventoryItemVM.InventoryItemObj.isActive" type="text" value="@Model.InventoryItemVM.InventoryItemObj.isActive" class="form-control" readonly required id="isActive" />
+                }
+                @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
+                {
+                    <input asp-for="InventoryItemVM.InventoryItemObj.isActive" type="text" value="@Model.InventoryItemVM.InventoryItemObj.isActive" class="form-control" required id="isActive" />
+                }
             </div>
+        </div>*@
             <div class="form-group">
                 <label asp-for="InventoryItemVM.InventoryItemObj.Description" class="control-label mr-3">Description:</label>
                 <div class="form-inline col-12">
@@ -66,7 +66,7 @@
             <div class="form-group">
                 <label class="control-label mr-3">Wholesale Cost:</label>
                 <div class="form-inline col-12">
-                    <input type="text" value="Calculated Value" class="form-control" readonly />
+                    <input asp-for="InventoryItemVM.InventoryItemObj.WholeSaleCost" type="number" step="1" min="0" value="@Model.InventoryItemVM.InventoryItemObj.WholeSaleCost" class="form-control" readonly required id="wholesale" />
                 </div>
             </div>
             <div class="form-group">
@@ -142,7 +142,7 @@
                     {
                         <input type="button" value="Edit Part" style="width:auto;" class="btn btn-success" id="editButton" />
                         <input type="submit" value="Save" style="width:auto; display:none;" class="btn btn-success" id="saveButton" />
-                        <input type="submit" value="Delete" style="width:auto; display:none;" class="btn btn-success" id="deleteButton" />
+                        <input type="button" value="Delete" style="width:auto; display:none;" class="btn btn-success" id="deleteButton" onclick="Delete('/api/inventoryItem/'+@Model.InventoryItemVM.InventoryItemObj.InventoryItemID)" />
                         <script>
                             window.addEventListener("load", function (e) {
                                 var editButton = this.document.getElementById("editButton");
@@ -170,7 +170,35 @@
                                     measureType.removeAttribute("disabled");
                                     measure.removeAttribute("readonly");
                                 });
+
                             })
+
+                            function Delete(url) {
+                                swal({
+                                    title: "Are you sure you want to delete?",
+                                    text: "You will not be able to restore the data!",
+                                    icon: "warning",
+                                    buttons: true,
+                                    dangerMode: true
+                                }).then((willDelete) => {
+                                    if (willDelete) {
+                                        $.ajax({
+                                            type: 'DELETE',
+                                            url: url,
+                                            success: function (data) {
+                                                if (data.success) {
+                                                    toastr.success(data.message);
+                                                    //location.reload();
+                                                    window.location.href = "./Index";
+                                                }
+                                                else {
+                                                    toastr.error(data.message);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                         </script>
                     }
 

@@ -50,6 +50,7 @@ namespace WhoLives.DataAccess.Data.Repository
             objFromDb.ReorderQty = item.ReorderQty;
             objFromDb.TotalLooseQty = item.TotalLooseQty;
             objFromDb.VendorItems = item.VendorItems;
+            objFromDb.isActive = item.isActive;
 
             _db.SaveChanges();
         }

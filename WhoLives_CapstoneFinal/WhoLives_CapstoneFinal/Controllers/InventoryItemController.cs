@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WhoLives.DataAccess.Data.Repository.IRepository;
@@ -30,7 +31,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             // The data is a Inpur value from the Ajax call 
             if (input.Equals("ALL"))
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll() });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll(i => i.isActive == true) });
             }
             else if (input.Equals("ORDER"))
             {
@@ -157,7 +158,20 @@ namespace WhoLives_CapstoneFinal.Controllers
 
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var item = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
+            if (item == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            item.isActive = false;
+            _unitOfWork.InventoryItems.Update(item);
+            //_unitOfWork.Save();
+            return Json(new { success = true, message = "Delete successful" });
+            //return RedirectToPage("./Pages/Inventory/Index");
+        }
 
-    
     }
 }

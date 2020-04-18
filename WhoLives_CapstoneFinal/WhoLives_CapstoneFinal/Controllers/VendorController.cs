@@ -23,10 +23,10 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(new { data = _unitOfWork.Vendors.GetAll() });
+            return Json(new { data = _unitOfWork.Vendors.GetAll(i => i.isActive == true) });
         }
 
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var objFromDb = _unitOfWork.Vendors.GetFirstOrDefault(v => v.VendorID == id);
@@ -39,6 +39,21 @@ namespace WhoLives_CapstoneFinal.Controllers
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful" });
 
+        }*/
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var vendor = _unitOfWork.Vendors.GetFirstOrDefault(u => u.VendorID == id);
+            if (vendor == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            vendor.isActive = false;
+            _unitOfWork.Vendors.Update(vendor);
+            //_unitOfWork.Save();
+            return Json(new { success = true, message = "Delete successful" });
+            //return RedirectToPage("./Pages/Inventory/Index");
         }
     }
 }

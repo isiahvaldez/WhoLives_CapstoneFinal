@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -17,7 +19,7 @@ namespace WhoLives.Models
         public bool IsAssembly { get; set; }
 
         //Identifier for deleting/hiding the part from the user
-        public bool isActive = true;
+        public bool isActive { get; set; } = true;
 
         //Part name
         [Required]

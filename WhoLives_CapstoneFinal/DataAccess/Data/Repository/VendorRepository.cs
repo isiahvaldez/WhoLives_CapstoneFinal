@@ -35,6 +35,7 @@ namespace WhoLives.DataAccess.Data.Repository
             objFromDb.PhoneNumber = vendor.PhoneNumber;
             vendor.LastModifiedDate = DateTime.Now;
             objFromDb.LastModifiedDate = DateTime.Now;
+            objFromDb.isActive = vendor.isActive;
 
             _db.SaveChanges();
         }
