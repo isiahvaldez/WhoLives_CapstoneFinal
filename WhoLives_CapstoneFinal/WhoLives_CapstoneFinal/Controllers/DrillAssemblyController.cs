@@ -134,7 +134,7 @@ namespace WhoLives_CapstoneFinal.Controllers
                     InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
                     if (currItem.IsAssembly)
                     {
-                        CountAssemblyComponents(currItem.InventoryItemID, assembly.ItemQty);
+                        CountAssemblyComponents(currItem.InventoryItemID, requiredQty * assembly.ItemQty);
                     }
                     else
                     {
@@ -170,7 +170,7 @@ namespace WhoLives_CapstoneFinal.Controllers
                     InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
                     if (currItem.IsAssembly)
                     {
-                        CountChildItems(currItem.InventoryItemID, assembly.ItemQty);
+                        CountChildItems(currItem.InventoryItemID, itemQty * assembly.ItemQty);
                     }
                     else
                     {
