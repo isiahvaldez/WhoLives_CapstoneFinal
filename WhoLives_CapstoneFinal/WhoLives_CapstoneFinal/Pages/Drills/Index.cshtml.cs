@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -11,10 +12,7 @@ using WhoLives.Models.ViewModels;
 
 namespace WhoLives_CapstoneFinal.Pages.Drills
 {
-    
-
-    
-
+    [Authorize]
     public class IndexModel : PageModel
     {
         
