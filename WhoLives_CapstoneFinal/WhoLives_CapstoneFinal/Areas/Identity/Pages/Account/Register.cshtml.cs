@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using WhoLives.Models;
 using WhoLives.Utility;
 
 namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
@@ -49,10 +50,15 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            //[Required]
+            //[DataType(DataType.Text)]
+            //[Display(Name = "User Name")]
+            //public string UserName { get; set; }
+
             [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "User Name")]
-            public string UserName { get; set; }
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -78,7 +84,7 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.UserName };
+                var user = new ApplicationUser { UserName = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (!await _roleManager.RoleExistsAsync(SD.AdminRole))
@@ -87,6 +93,7 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
                 }
                 if (result.Succeeded)
                 {
+                    // Add the Role
                     await _userManager.AddToRoleAsync(user, SD.AdminRole);
 
                     _logger.LogInformation("User created a new account with password.");
@@ -104,7 +111,7 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.UserName });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
                     }
                     else
                     {

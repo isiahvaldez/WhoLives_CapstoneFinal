@@ -34,11 +34,11 @@ namespace WhoLives_CapstoneFinal
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            _ = services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddMvc(options => options.EnableEndpointRouting = false)
-                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+
+            
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             
