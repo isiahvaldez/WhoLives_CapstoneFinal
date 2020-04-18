@@ -7,7 +7,7 @@ using WhoLives.Models;
 
 namespace WhoLives.DataAccess
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext        
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

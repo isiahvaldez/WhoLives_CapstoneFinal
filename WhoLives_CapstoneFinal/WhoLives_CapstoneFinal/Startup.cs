@@ -61,9 +61,10 @@ namespace WhoLives_CapstoneFinal
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseMvc();
+            
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMvc();
 
             app.UseEndpoints(endpoints =>
             {
