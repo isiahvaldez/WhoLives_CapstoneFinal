@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using static WhoLives_CapstoneFinal.Controllers.OrderController;
 
 namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
 {
+    [Authorize]
     public class UpsertModel : PageModel
     {
         private readonly IUnitOfWork _uow;
