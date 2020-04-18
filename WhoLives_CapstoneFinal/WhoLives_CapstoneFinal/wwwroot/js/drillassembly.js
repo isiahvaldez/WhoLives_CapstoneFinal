@@ -23,7 +23,7 @@ function loadInventoryList() {
                     </a> `
                 }, "width": "35%", "defaultContent": "<i>Not set</i>"},
             { "data": "looseQty", "width": "15%", "defaultContent": "<i>Not set</i>" },
-            { "data": "totalQty", "width": "15%", "defaultContent": "<i>Not set</i>" },  
+            { "data": "assembledQty", "width": "15%", "defaultContent": "<i>Not set</i>" },  
             { "data": "requiredQty", "width": "15%", "defaultContent": "<i>Not set</i>" }
             
         ],

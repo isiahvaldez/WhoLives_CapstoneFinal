@@ -21,7 +21,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         public string name;
         public int looseQty;
         public int requiredQty;
-        public int totalQty;
+        public int assembledQty;
         public int ratio;
     }
 
@@ -31,7 +31,6 @@ namespace WhoLives_CapstoneFinal.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        InventoryItem drill; 
         int drillID = 104; // this is hardcoded and will need to be changed if the item is deleted and readded - IV 4/15/2020
         List<ItemWithCounts> itemList = new List<ItemWithCounts>();
 
@@ -46,8 +45,6 @@ namespace WhoLives_CapstoneFinal.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            drill = _unitOfWork.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == drillID);
-
             // used for general information without needing to query the DB again
             buildAssemblyVM = new BuildAssemblyVM()
             {
@@ -56,7 +53,6 @@ namespace WhoLives_CapstoneFinal.Controllers
                 Assemblies = _unitOfWork.Assemblies.GetAll()
             };
 
-            drill = _unitOfWork.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == drillID);
             // Initialize the drill's list of items and number required for the drill
             // start with items with 0 required
             List<InventoryItem> tempList = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true).ToList();
@@ -69,15 +65,17 @@ namespace WhoLives_CapstoneFinal.Controllers
                     name = item.Name,
                     looseQty = item.TotalLooseQty,
                     requiredQty = 0,
-                    totalQty = item.TotalLooseQty, // start with the loose amount and add to it
+                    assembledQty = 0, 
                     ratio = 0
                 });
             }
+
             CountAssemblyComponents(drillID, 1); // this is counting the items required for the drill per its recipe
 
             foreach(var item in buildAssemblyVM.InventoryItems)
             {
-                if(item.IsAssembly)
+                // skip the drill -- we don't want to factor it into the item counts
+                if(item.IsAssembly && item.InventoryItemID != drillID)
                 {
                     CountChildItems(item.InventoryItemID, item.TotalLooseQty); // counting each assembly and item
                 }
@@ -103,12 +101,11 @@ namespace WhoLives_CapstoneFinal.Controllers
             {
                 if (item.requiredQty > 0)
                 {
-                    item.ratio = item.totalQty / item.requiredQty; // this will still give negatives if the total count is negative
+                    item.ratio = (item.looseQty + item.assembledQty) / item.requiredQty; // this will still give negatives if the total count is negative
                 }
             }
 
             string json = JsonConvert.SerializeObject(itemList);
-
             return Content(json);
         }
 
@@ -119,59 +116,67 @@ namespace WhoLives_CapstoneFinal.Controllers
         /// <param name="requiredQty"></param>
         private void CountAssemblyComponents(int itemID, int requiredQty)
         {
-            // build list for this item
-            List<BuildAssembly> buildAssemblies =
-                _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == itemID).ToList();
-            // get assemblies these builds reference
-            List<Assembly> assemblyList = new List<Assembly>();
-            foreach (var build in buildAssemblies)
+            // this can be time consuming, so skip unnecessary iterations
+            if (requiredQty != 0)
             {
-                assemblyList.Add(_unitOfWork.Assemblies.GetFirstOrDefault(i => i.AssemblyID == build.AssemblyID));
-            }
-            // go through each assembly
-            foreach (var assembly in assemblyList)
-            {
-                InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
-                if (currItem.IsAssembly)
+                // build list for this item
+                List<BuildAssembly> buildAssemblies =
+                    _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == itemID).ToList();
+
+                // get assemblies these builds reference
+                List<Assembly> assemblyList = new List<Assembly>();
+                foreach (var build in buildAssemblies)
                 {
-                    CountAssemblyComponents(currItem.InventoryItemID, assembly.ItemQty);
+                    assemblyList.Add(_unitOfWork.Assemblies.GetFirstOrDefault(i => i.AssemblyID == build.AssemblyID));
                 }
-                else
+                foreach (var assembly in assemblyList)
                 {
-                    int index = itemList.FindIndex(i => i.id == assembly.InventoryItemID);
-                    itemList[index].requiredQty += requiredQty * assembly.ItemQty;
+                    InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
+                    if (currItem.IsAssembly)
+                    {
+                        CountAssemblyComponents(currItem.InventoryItemID, assembly.ItemQty);
+                    }
+                    else
+                    {
+                        int index = itemList.FindIndex(i => i.id == assembly.InventoryItemID);
+                        itemList[index].requiredQty += requiredQty * assembly.ItemQty;
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Counts the items needed for an assembly, adds the results to itemsRequired.totalQty
+        /// Counts the items needed for an assembly, adds the results to itemsRequired.assembledQty
         /// </summary>
         /// <param name="itemID"></param>
         /// <param name="itemQty"></param>
         private void CountChildItems(int itemID, int itemQty)
         {
-            // build list for this item
-            List<BuildAssembly> buildAssemblies =
-                _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == itemID).ToList();
-            // get assemblies these builds reference
-            List<Assembly> assemblyList = new List<Assembly>();
-            foreach (var build in buildAssemblies)
+            // this can be time consuming, so skip unnecessary iterations
+            if (itemQty != 0)
             {
-                assemblyList.Add(_unitOfWork.Assemblies.GetFirstOrDefault(i => i.AssemblyID == build.AssemblyID));
-            }
-            // go through each assembly
-            foreach (var assembly in assemblyList)
-            {
-                InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
-                if (currItem.IsAssembly)
+                // build list for this item
+                List<BuildAssembly> buildAssemblies =
+                    _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == itemID).ToList();
+
+                // get assemblies these builds reference
+                List<Assembly> assemblyList = new List<Assembly>();
+                foreach (var build in buildAssemblies)
                 {
-                    CountChildItems(currItem.InventoryItemID, assembly.ItemQty);
+                    assemblyList.Add(_unitOfWork.Assemblies.GetFirstOrDefault(i => i.AssemblyID == build.AssemblyID));
                 }
-                else
+                foreach (var assembly in assemblyList)
                 {
-                    int index = itemList.FindIndex(i => i.id == assembly.InventoryItemID);
-                    itemList[index].totalQty += itemQty * assembly.ItemQty;
+                    InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
+                    if (currItem.IsAssembly)
+                    {
+                        CountChildItems(currItem.InventoryItemID, assembly.ItemQty);
+                    }
+                    else
+                    {
+                        int index = itemList.FindIndex(i => i.id == assembly.InventoryItemID);
+                        itemList[index].assembledQty += itemQty * assembly.ItemQty;
+                    }
                 }
             }
         }
