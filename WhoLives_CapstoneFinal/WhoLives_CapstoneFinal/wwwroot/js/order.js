@@ -83,10 +83,11 @@ function loadList() {
 function Delete(url) {
     swal({
         title: "Are you sure you want to Delete?",
-        text: "You will not be able to restore the data!",
+        text: "You will not be able to restore the data! Any items marked received will remain in the inventory.",
         icon: "warning",
         buttons: true,
-        dangerMode: true
+        dangerMode: true,
+        confirmButtonColor: '#428bca'
     }).then((willDelete) => {
         if (willDelete) {
             $.ajax({

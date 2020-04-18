@@ -140,7 +140,10 @@
             <span asp-validation-for="TempOrderItem.QuantityReceived" class="text-danger"></span>
         </div>
         <button type="button" class="btn btn-primary" onclick="AddItemToTable()" id="save">Save</button>
+        <label id="error"></label>
     </div>
+
+
 
 @section Scripts{
     <script src="~/js/order-items.js"></script>
@@ -271,7 +274,7 @@
                         Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
                         QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
                         PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
-                        OrderItemID: parseInt(myTable.rows[i].cells[4].textContent, 10)
+                        OrderItemID: myTable.rows[i].cells[4].textContent != "" ? parseInt(myTable.rows[i].cells[4].textContent, 10) : 0
                     }
                     componentList.push(Component);
                 }
@@ -346,6 +349,14 @@
                 return true;
             }
         }
+
         AddMissingEvents();
+    </script>
+    <script id="ListTemplate" type="text/template">
+        @Html.DropDownListFor(m =>
+                     m.TempOrderItem.ItemID,
+                     Model.PurchaseOrderVM.ItemList,
+                     "-Select Item-",
+                     new { @class = "form-control" })
     </script>
 }
