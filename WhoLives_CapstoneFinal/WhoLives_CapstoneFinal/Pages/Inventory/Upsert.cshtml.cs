@@ -28,7 +28,6 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
         [BindProperty]
         public InventoryItemVM InventoryItemVM { get; set; }
 
-        //[HttpGet("{id}")]
         public IActionResult OnGet(int? id)
         {
             InventoryItemVM = new InventoryItemVM
@@ -99,34 +98,6 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
             }
             _unitOfWork.Save();
             return RedirectToPage("./Index");
-            //return RedirectToPage(new { id=InventoryItemVM.InventoryItemObj.InventoryItemID, isEditable = true});
         }
-        /*
-        [HttpGet("{id,isEditable}")]
-        public IActionResult OnGet(int? id, bool isEditable)
-        {
-            InventoryItemVM = new InventoryItemVM
-            {
-                OrderInfo = new PurchaseOrder(),
-                ItemList = _unitOfWork.InventoryItems.GetItemListForDropDown(),
-                MeasureInfo = _unitOfWork.Measures.GetMeasureListForDropDown(),
-                BuildInfo = new BuildAssembly(),
-                AssemblyInfo = new Assembly(),
-                InventoryItemObj = new InventoryItem()
-            };
-
-            isEditable = this.isEditable;
-
-            if (id != null)
-            {
-                InventoryItemVM.InventoryItemObj = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == id);
-                if (InventoryItemVM.InventoryItemObj == null)
-                {
-                    return NotFound();
-                }
-            }
-            return Page();
-
-        }*/
     }
 }
