@@ -23,7 +23,7 @@ namespace WhoLives.DataAccess
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<VendorItem> VendorItems{ get; set; }
-        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+       
 
     }
 }
