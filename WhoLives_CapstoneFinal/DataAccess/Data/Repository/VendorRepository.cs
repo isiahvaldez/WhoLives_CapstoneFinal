@@ -20,6 +20,15 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IEnumerable<SelectListItem> GetVendorListForDropDown()
         {
+            return _db.Vendors.Select(i => new SelectListItem()
+            {
+                Text = i.VendorName,
+                Value = i.VendorID.ToString()
+            });
+        }
+
+        public IEnumerable<SelectListItem> GetActiveVendorListForDropDown()
+        {
             return _db.Vendors.Where(i => i.isActive == true).Select(i => new SelectListItem()
             {
                 Text = i.VendorName,
