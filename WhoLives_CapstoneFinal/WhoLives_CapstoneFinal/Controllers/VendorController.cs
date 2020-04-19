@@ -26,21 +26,6 @@ namespace WhoLives_CapstoneFinal.Controllers
             return Json(new { data = _unitOfWork.Vendors.GetAll(i => i.isActive == true) });
         }
 
-        /*[HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var objFromDb = _unitOfWork.Vendors.GetFirstOrDefault(v => v.VendorID == id);
-            if (objFromDb == null)
-            {
-                return Json(new { success = false, message = "Error while deleting" });
-            }
-
-            _unitOfWork.Vendors.Remove(objFromDb);
-            _unitOfWork.Save();
-            return Json(new { success = true, message = "Delete successful" });
-
-        }*/
-
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

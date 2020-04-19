@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using WhoLives.Models;
+using WhoLives.Utility;
 
 namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
 {
@@ -22,18 +24,21 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+       // private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+           // IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+           // _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -45,6 +50,11 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            //[Required]
+            //[DataType(DataType.Text)]
+            //[Display(Name = "User Name")]
+            //public string UserName { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -74,10 +84,18 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new IdentityUser { UserName = Input.Email, Email= Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                if (!await _roleManager.RoleExistsAsync(SD.AdminRole))
+                {
+                    _roleManager.CreateAsync(new IdentityRole(SD.AdminRole)).GetAwaiter().GetResult();
+                }
                 if (result.Succeeded)
                 {
+                    // Add the Role
+                    await _userManager.AddToRoleAsync(user, SD.AdminRole);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -88,8 +106,8 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -98,6 +116,7 @@ namespace WhoLives_CapstoneFinal.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _userManager.ConfirmEmailAsync(user, code);
                         return LocalRedirect(returnUrl);
                     }
                 }

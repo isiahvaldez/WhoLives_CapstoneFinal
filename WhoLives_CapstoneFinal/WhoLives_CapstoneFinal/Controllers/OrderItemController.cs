@@ -26,15 +26,23 @@ namespace WhoLives_CapstoneFinal.Controllers
         [ActionName("id")]
         public IActionResult ID(int id, PurchaseOrder purchaseOrderDetails)
         {
+            //Update the purchase order as necessary
+            if (purchaseOrderDetails.PurchaseOrderID == 0)
+            {
+                _uow.PurchaseOrders.Add(purchaseOrderDetails);
+            }
+            else
+            {
+                _uow.PurchaseOrders.update(purchaseOrderDetails);
+            }
+            _uow.Save();
             // delete all order items for the current purchase order id if any exist
             var ItemList = _uow.OrderItems.GetAll().Where(a => a.PurchaseOrderID == id);
             foreach (var orderItem in ItemList)
             {
                 _uow.OrderItems.Remove(orderItem);
             }
-            //Update the purchase order as necessary
             _uow.Save();
-
             return Json(new { msg = "success" });
         }
         public class ComponentObject

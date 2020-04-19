@@ -35,19 +35,21 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
             else if (input.Equals("ORDER"))
             {
-                var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty);
+                var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty && r.isActive == true);
                 var venditem = _unitOfWork.VendorItems.GetAll();
-                var vend = _unitOfWork.Vendors.GetAll();
+                var vend = _unitOfWork.Vendors.GetAll(i => i.isActive == true);
+                
 
                 //return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
                 return Json(new { data = 
                     items.Join(venditem, i => i.InventoryItemID, v => v.InventoryItemID, 
                     (i, v)=> new {i.InventoryItemID, i.Name,i.TotalLooseQty,i.ReorderQty, v.VendorItemId, v.VendorID}).Join(
-                        vend, s=>s.VendorID, q=>q.VendorID,(s,q)=>new { s.InventoryItemID, s.Name, s.TotalLooseQty, s.ReorderQty, q.VendorName }) });
+                        vend, s=>s.VendorID, q=>q.VendorID,(s,q)=>new { s.InventoryItemID, s.Name, s.TotalLooseQty, s.ReorderQty, q.VendorName })
+                });
             }
             else
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true && r.isActive == true) });
             }
         }
 

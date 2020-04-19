@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -11,6 +12,7 @@ using WhoLives.Models.ViewModels;
 
 namespace WhoLives_CapstoneFinal
 {
+    [Authorize]
     public class AssemblyModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -29,7 +31,7 @@ namespace WhoLives_CapstoneFinal
         //public IEnumerable<Assembly> AssemblyList { get; set; }
         public IActionResult OnGet(int? id)
         {
-            InventoryItemVM = new InventoryItemVM
+            InventoryItemVM = new InventoryItemVM()
             {
                 PurchaseOrderInfo = _unitOfWork.PurchaseOrders.GetAll().ToList(),
                 ItemList = _unitOfWork.InventoryItems.GetItemListForDropDown().OrderBy(i => i.Text),
@@ -41,7 +43,7 @@ namespace WhoLives_CapstoneFinal
 
             BuildAssemblyVM = new BuildAssemblyVM
             {
-                InventoryItems = _unitOfWork.InventoryItems.GetAll(),
+                InventoryItems = _unitOfWork.InventoryItems.GetAll(i => i.isActive == true),
                 BuildAssemblies = _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == id),
                 InventoryItem = _unitOfWork.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == id),
                 Assemblies = _unitOfWork.Assemblies.GetAll()

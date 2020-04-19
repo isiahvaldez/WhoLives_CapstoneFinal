@@ -48,14 +48,14 @@ namespace WhoLives_CapstoneFinal.Controllers
             // used for general information without needing to query the DB again
             buildAssemblyVM = new BuildAssemblyVM()
             {
-                InventoryItems = _unitOfWork.InventoryItems.GetAll(),
+                InventoryItems = _unitOfWork.InventoryItems.GetAll().Where(i => i.isActive == true),
                 BuildAssemblies = _unitOfWork.BuildAssemblies.GetAll(),
                 Assemblies = _unitOfWork.Assemblies.GetAll()
             };
 
             // Initialize the drill's list of items and number required for the drill
             // start with items with 0 required
-            List<InventoryItem> tempList = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true).ToList();
+            List<InventoryItem> tempList = _unitOfWork.InventoryItems.GetAll().Where(i => i.IsAssembly != true && i.isActive == true).ToList();
 
             foreach (var item in tempList)
             {
@@ -134,7 +134,7 @@ namespace WhoLives_CapstoneFinal.Controllers
                     InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
                     if (currItem.IsAssembly)
                     {
-                        CountAssemblyComponents(currItem.InventoryItemID, assembly.ItemQty);
+                        CountAssemblyComponents(currItem.InventoryItemID, requiredQty * assembly.ItemQty);
                     }
                     else
                     {
@@ -170,7 +170,7 @@ namespace WhoLives_CapstoneFinal.Controllers
                     InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
                     if (currItem.IsAssembly)
                     {
-                        CountChildItems(currItem.InventoryItemID, assembly.ItemQty);
+                        CountChildItems(currItem.InventoryItemID, itemQty * assembly.ItemQty);
                     }
                     else
                     {

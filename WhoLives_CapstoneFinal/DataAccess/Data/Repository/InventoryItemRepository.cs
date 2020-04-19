@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,10 @@ namespace WhoLives.DataAccess.Data.Repository
         {
             _db = db;
         }
+
         public IEnumerable<SelectListItem> GetItemListForDropDown()
         {
-            return _db.InventoryItems.Select(item => new SelectListItem()
+            return _db.InventoryItems.Where(i => i.isActive == true).Select(item => new SelectListItem()
             {
                 Text = item.Name,
                 Value = item.InventoryItemID.ToString()
@@ -27,7 +29,7 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IEnumerable<SelectListItem> GetNonAssemblyItemListForDropDown()
         {
-            return _db.InventoryItems.Where(i => i.IsAssembly != true).Select(item => new SelectListItem()
+            return _db.InventoryItems.Where(i => i.IsAssembly != true && i.isActive == true).Select(item => new SelectListItem()
             {
                 Text = item.Name,
                 Value = item.InventoryItemID.ToString()
