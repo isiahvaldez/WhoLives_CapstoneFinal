@@ -98,11 +98,10 @@
         </div>
     </div>
     <!--Price-->
-    @*<div class="col-2 px-3 row form-group align-content-center">
+    <div class="col-2 px-3 row form-group offset-10">
         <label class="control-label" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice">Total Price:</label>
             <input name="totalprice" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" readonly />
-            <span asp-validation-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="text-danger"></span>
-        </div>*@
+        </div>
 
     <div class="form-group row">
         <div class="col-12">
@@ -198,6 +197,7 @@
         // PDF code obtained + revised from https://www.encodedna.com/javascript/convert-html-table-to-pdf-using-javascript-without-a-plugin.htm
         function exportTableToPDF() {
             var po = document.getElementById("PurchaseOrderVM_OrderInfo_PO").value;
+            var total = document.getElementById("PurchaseOrderVM_OrderInfo_TotalPrice").value
             var vendor = document.getElementById("PurchaseOrderVM_OrderInfo_VendorID").options[document.getElementById("PurchaseOrderVM_OrderInfo_VendorID").selectedIndex].text;
             var rows = document.querySelectorAll("table tr");
             var sTable = document.getElementById('iTable').innerHTML;
@@ -243,8 +243,9 @@
                 win.document.write('</tr>');
             }
             //win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
-            win.document.write('</table></body></html>');
-
+            win.document.write('</table><br>');
+            win.document.write('<label><b>Total Cost:</b> $' + total + '</label>');
+            win.document.write('</body></html>');
             win.document.close(); 	// CLOSE THE CURRENT WINDOW.
 
             win.print();    // PRINT THE CONTENTS.
