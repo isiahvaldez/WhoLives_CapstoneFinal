@@ -31,5 +31,20 @@ namespace WhoLives_CapstoneFinal.Controllers
                 return Json(new { } ); // a null ID will be handled in the upsert cshtml - IV 4/3/2020
             }
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var vendor = _unitOfWork.Vendors.GetFirstOrDefault(u => u.VendorID == id);
+            if (vendor== null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            vendor.isActive = false;
+            _unitOfWork.Vendors.Update(vendor);
+            //_unitOfWork.Save();
+            return Json(new { success = true, message = "Delete successful" });
+            //return RedirectToPage("./Pages/Inventory/Index");
+        }
     }
 }

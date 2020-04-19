@@ -33,14 +33,14 @@ namespace WhoLives.Models
 
         [Range(0, int.MaxValue, ErrorMessage = "Cost should be greater than or equal to zero")]
         //Number of loose items available that are not used in an assembly
-        [Display(Name = "Loose Quantity")]
+        [Display(Name = "On Hand Qty")]
         public int TotalLooseQty { get; set; }
 
         //Cost to WhoLives to purchase the item
         [Display(Name = "Retail Cost")]
        //[DataType(DataType.Currency)]
         //[Column(TypeName = "money")]
-        [Range(1, int.MaxValue, ErrorMessage = "Cost should be greater then 0.00")]
+        [Range(0, int.MaxValue, ErrorMessage = "Cost should be greater then 0.00")]
         public double ListRetailCost { get; set; }
         // public decimal ListRetailCost { get; set; }
 
@@ -49,7 +49,7 @@ namespace WhoLives.Models
         public double WholeSaleCost { get; set; }
 
         //Minimum number of parts to have available
-        [Display(Name = "Reorder Quantity")]
+        [Display(Name = "Reorder Qty")]
         public int ReorderQty { get; set; }
 
         [Display(Name = "Measure Id")]

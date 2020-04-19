@@ -28,7 +28,7 @@ namespace WhoLives_CapstoneFinal.Pages.Inventory
         {
             ItemAssemblyVendor = new ItemAssembleVM()
             {
-                VendorList = _unitOfWork.Vendors.GetVendorListForDropDown(),
+                VendorList = _unitOfWork.Vendors.GetActiveVendorListForDropDown(),
                 VendorItemList = _unitOfWork.VendorItems.GetVendorListForDropDown(),
                 Items = _unitOfWork.InventoryItems.GetItemListForDropDown()
 
