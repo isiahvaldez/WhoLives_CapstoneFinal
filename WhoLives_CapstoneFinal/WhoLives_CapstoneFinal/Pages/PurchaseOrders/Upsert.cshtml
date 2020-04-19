@@ -254,9 +254,9 @@
         // Code courtesy of Isiah Valdez
         async function AddToDatabase() {
             //var urlParams = new URLSearchParams(window.location.search);
-            var id = document.getElementById("poid").value;
+            var id = document.getElementById("poid") != null ? document.getElementById("poid").value : 0;
             var PO = {
-                PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
+                PurchaseOrderID: parseInt(id, 10),
                 StatusID: parseInt(document.getElementById("PurchaseOrderVM_OrderInfo_StatusID").value, 10),
                 VendorID: parseInt(document.getElementById("PurchaseOrderVM_OrderInfo_VendorID").value, 10),
                 DateOrdered: document.getElementById("PurchaseOrderVM_OrderInfo_DateOrdered").value,
@@ -274,7 +274,7 @@
                         QuantityOrdered: parseInt(myTable.rows[i].cells[1].innerHTML, 10),
                         Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
                         QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
-                        PurchaseOrderID: parseInt(document.getElementById("poid").value, 10),
+                        PurchaseOrderID: parseInt(id, 10),
                         OrderItemID: myTable.rows[i].cells[4].textContent != "" ? parseInt(myTable.rows[i].cells[4].textContent, 10) : 0
                     }
                     componentList.push(Component);
@@ -288,7 +288,7 @@
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         success: function (result) {
-                            window.location.href = '../PurchaseOrders/upsert?id=' + PO.PurchaseOrderID;
+                            window.location.href = '../PurchaseOrders/Index';
                         },
                         error: function (xhr) {
                             alert("error");
@@ -304,7 +304,7 @@
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         success: function (result) {
-                            window.location.href = '../PurchaseOrders/upsert?id=' + PO.PurchaseOrderID;
+                            window.location.href = '../PurchaseOrders/Index';
                         },
                         error: function (xhr) {
                             alert("error");
