@@ -33,7 +33,7 @@ namespace WhoLives.Models
 
         [Range(0, int.MaxValue, ErrorMessage = "Cost should be greater than or equal to zero")]
         //Number of loose items available that are not used in an assembly
-        [Display(Name = "Loose Quantity")]
+        [Display(Name = "On Hand Qty")]
         public int TotalLooseQty { get; set; }
 
         //Cost to WhoLives to purchase the item
@@ -49,7 +49,7 @@ namespace WhoLives.Models
         public double WholeSaleCost { get; set; }
 
         //Minimum number of parts to have available
-        [Display(Name = "Reorder Quantity")]
+        [Display(Name = "Reorder Qty")]
         public int ReorderQty { get; set; }
 
         [Display(Name = "Measure Id")]

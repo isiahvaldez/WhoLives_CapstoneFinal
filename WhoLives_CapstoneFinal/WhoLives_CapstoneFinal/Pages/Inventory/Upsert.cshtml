@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="InventoryItemVM.InventoryItemObj.TotalLooseQty" class="control-label mr-3">Total Loose Quantity:</label>
+                <label asp-for="InventoryItemVM.InventoryItemObj.TotalLooseQty" class="control-label mr-3"></label>
                 <div class="form-inline col-12">
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                     {
@@ -72,7 +72,7 @@
                 <label hidden id="warningLabel" class="control-label mr-3 text-danger" >Warning: Changing this quantity does not affect the related quantities.</label>
             </div>
             <div class="form-group">
-                <label asp-for="InventoryItemVM.InventoryItemObj.ReorderQty" class="control-label mr-3">Reorder Quantity:</label>
+                <label asp-for="InventoryItemVM.InventoryItemObj.ReorderQty" class="control-label mr-3"></label>
                 <div class="form-inline col-12">
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                     {
@@ -129,9 +129,9 @@
                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                     {
-                        <input type="button" value="Edit Part" style="width:auto;" class="btn btn-success" id="editButton" />
-                        <input type="submit" value="Save" style="width:auto; display:none;" class="btn btn-success" id="saveButton" />
-                        <input type="button" value="Delete" style="width:auto; display:none;" class="btn btn-success" id="deleteButton" onclick="Delete('/api/inventoryItem/'+@Model.InventoryItemVM.InventoryItemObj.InventoryItemID)" />
+                        <input type="button" value="Edit Part" style="width:auto;" class="btn btn-primary" id="editButton" />
+                        <input type="submit" value="Save" style="width:auto; display:none;" class="btn btn-primary" id="saveButton" />
+                        <input type="button" value="Delete" style="width:auto; display:none;" class="btn btn-danger" id="deleteButton" onclick="Delete('/api/inventoryItem/'+@Model.InventoryItemVM.InventoryItemObj.InventoryItemID)" />
                         <script>
                             window.addEventListener("load", function (e) {
                                 var editButton = this.document.getElementById("editButton");
@@ -202,11 +202,11 @@
 
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
                     {
-                        <input type="submit" value="Save" style="width:auto;" class="btn btn-success" id="saveButton" />
+                        <input type="submit" value="Save" style="width:auto;" class="btn btn-primary" id="saveButton" />
                     }
                 </div>
                 <div class="col-6">
-                    <a class="btn btn-info" style="width:auto;" asp-page="./Index">Back to List</a>
+                    <a class="btn btn-warning" style="width:auto;" asp-page="./Index">Back to List</a>
                 </div>
             </div>
         </form>
@@ -261,11 +261,11 @@
                                     <input type="hidden" asp-for="InventoryItemVM.InventoryItemObj.InventoryItemID" />
                                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                                     {
-                                        <a class="btn btn-info" style="width:auto;" href="/Inventory/Assembly?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID">Edit Assembly Components</a>
+                                        <a class="btn btn-primary" style="width:auto;" href="/Inventory/Assembly?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID">Edit Assembly Components</a>
                                     }
                                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
                                     {
-                                        <input type="submit" value="Save" style="width:auto;" class="btn btn-success" />
+                                        <input type="submit" value="Save" style="width:auto;" class="btn btn-primary" />
                                     }
                                 </div>
                             </div>
