@@ -31,7 +31,7 @@ namespace WhoLives_CapstoneFinal
         //public IEnumerable<Assembly> AssemblyList { get; set; }
         public IActionResult OnGet(int? id)
         {
-            InventoryItemVM = new InventoryItemVM
+            InventoryItemVM = new InventoryItemVM()
             {
                 PurchaseOrderInfo = _unitOfWork.PurchaseOrders.GetAll().ToList(),
                 ItemList = _unitOfWork.InventoryItems.GetItemListForDropDown().OrderBy(i => i.Text),
@@ -43,7 +43,7 @@ namespace WhoLives_CapstoneFinal
 
             BuildAssemblyVM = new BuildAssemblyVM
             {
-                InventoryItems = _unitOfWork.InventoryItems.GetAll(),
+                InventoryItems = _unitOfWork.InventoryItems.GetAll(i => i.isActive == true),
                 BuildAssemblies = _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == id),
                 InventoryItem = _unitOfWork.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == id),
                 Assemblies = _unitOfWork.Assemblies.GetAll()

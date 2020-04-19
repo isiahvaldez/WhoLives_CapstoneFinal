@@ -35,9 +35,9 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
             else if (input.Equals("ORDER"))
             {
-                var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty);
+                var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty && r.isActive == true);
                 var venditem = _unitOfWork.VendorItems.GetAll();
-                var vend = _unitOfWork.Vendors.GetAll();
+                var vend = _unitOfWork.Vendors.GetAll(i => i.isActive == true);
                 
 
                 //return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
@@ -49,7 +49,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
             else
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true) });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true && r.isActive == true) });
             }
         }
 
