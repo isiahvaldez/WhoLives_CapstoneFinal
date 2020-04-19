@@ -40,7 +40,7 @@ namespace WhoLives.Models
         [Display(Name = "Retail Cost")]
        //[DataType(DataType.Currency)]
         //[Column(TypeName = "money")]
-        [Range(1, int.MaxValue, ErrorMessage = "Cost should be greater then 0.00")]
+        [Range(0, int.MaxValue, ErrorMessage = "Cost should be greater then 0.00")]
         public double ListRetailCost { get; set; }
         // public decimal ListRetailCost { get; set; }
 
