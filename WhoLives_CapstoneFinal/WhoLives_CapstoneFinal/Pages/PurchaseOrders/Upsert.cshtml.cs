@@ -35,7 +35,7 @@ namespace WhoLives_CapstoneFinal.Pages.PurchaseOrders
                     StatusChangeDate = DateTime.Now,
                     StatusID = _uow.Statuses.GetFirstOrDefault(s => s.Name == "Pending").StatusId,
                 },
-                ItemList = _uow.InventoryItems.GetNonAssemblyItemListForDropDown(),
+                ItemList = _uow.InventoryItems.GetNonAssemblyItemListForDropDown().OrderBy(i => i.Text),
                 VendorList = _uow.Vendors.GetVendorListForDropDown(),
                 StatusList = _uow.Statuses.GetStatusListForDropDown()
             };

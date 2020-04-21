@@ -78,6 +78,10 @@ namespace WhoLives_CapstoneFinal.Controllers
                     decimal newTotal = 0.00M;
                     foreach (var o in component.orderItems)
                     {
+                        if(o.PurchaseOrderID == 0)
+                        {
+                            o.PurchaseOrderID = component.purchaseOrderDetails.PurchaseOrderID;
+                        }
                         if(component.purchaseOrderDetails.StatusID == _uow.Statuses.GetFirstOrDefault(s => s.Name == "Received").StatusId)
                         {
                             o.QuantityReceived = o.QuantityOrdered;
