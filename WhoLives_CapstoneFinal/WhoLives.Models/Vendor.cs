@@ -18,7 +18,7 @@ namespace WhoLives.Models
         public string LastModifiedBy { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LastModifiedDate { get; set; }
 
         public bool isActive { get; set; } = true;

@@ -20,30 +20,41 @@ function loadList() {
         "columns": [
             {
                 "data": "po",
-                "width": "20%"
+                "width": "18%"
             },
             {
                 "data": "dateOrdered",
-                "width": "20%"
+                "render": function (data) {
+                    var dateString = new Date(data);
+                    var month = ("0" + (dateString.getMonth() + 1)).slice(-2);
+                    var day = ("0" + (dateString.getDate())).slice(-2);
+                    var year = dateString.getFullYear();
+                    //var newDate = Date(month, day, year);
+                    return `<div class="text-center">` + month + `/` + day + `/` + year + `</div>`
+                },
+                "width": "25%"
             },
             {
-                "data": "statusChangeDate",
+                "data": "status.name",
                 "width": "20%"
             },
             {
                 "data": "totalPrice",
-                "width": "20%"
+                "render": function (data) {
+                    return `<div class="text-center">\$${data}</div>`;
+                },
+                "width": "18%"
             },
             {
                 "data": "purchaseOrderID",
                 "render": function (data) {
                     return `<div class="text-center">
-                            <a href="/purchaseorders/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 75px">
-                                Details
+                            <a href="/purchaseorders/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 40px">
+                                <i class="far fa-edit"></i>
                             </a>
                         </div>`;
                 },
-                "width": "20%"
+                "width": "19%"
             }
         ],
         "language": {
