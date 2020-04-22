@@ -44,7 +44,10 @@ function AddItemToTable() {
     var qtyordered = document.getElementById("TempOrderItem_QuantityOrdered").value;
     var price = parseFloat(document.getElementById("TempOrderItem_Price").value).toFixed(2);
     if (parseInt(qtyreceived,10) > parseInt(qtyordered,10)) {
-        document.getElementById("error").innerHTML = "Received quantity cannot be greater than ordered quantity.";
+        document.getElementById("error").innerHTML = "Received quantity cannot be greater than ordered quantity. ";
+    }
+    if (price == "NaN") {
+        document.getElementById("error").innerHTML += "Price must be a decimal value.";
     }
     else {
         $("#itemdialog").dialog("close");
