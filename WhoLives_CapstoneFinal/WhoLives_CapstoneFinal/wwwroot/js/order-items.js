@@ -9,6 +9,8 @@ $("#add").click(function (e) {
     document.getElementById("TempOrderItem_QuantityOrdered").value = 0;
     document.getElementById("TempOrderItem_Price").value = 0.00;
     $("#itemdialog").dialog("open");
+    $(".js-example-basic-single").select2();
+    //$("#itemdialog").val(null).trigger("change");
 });
 
 function Edit(node) {
@@ -24,13 +26,15 @@ function Edit(node) {
     //document.getElementById("PurchaseOrderVM_tempOrderItem_ItemID").value = id.toString();
     $("#TempOrderItem_ItemID").replaceWith('<input id="TempOrderItem_ItemID" value="' +
         itemid.replace('"', '&quot;') +
-        '" class="form-control" readonly />');
+        '" class="form-control js-example-basic-single" readonly />');
     //document.getElementById("TempOrderItem_ItemID").value = itemid;
     document.getElementById("TempOrderItem_QuantityReceived").value = qtyreceived;
     document.getElementById("TempOrderItem_QuantityOrdered").value = qtyordered;
     document.getElementById("TempOrderItem_Price").value = parseFloat(price).toFixed(2);
+    
 
     $("#itemdialog").dialog("open");
+    $(".js-example-basic-single").select2();
 }
 
 
