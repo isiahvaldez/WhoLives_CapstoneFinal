@@ -18,7 +18,7 @@
                     @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.StatusID,
                        Model.PurchaseOrderVM.StatusList,
                        "-Select Status-",
-                       new { @class = "form-control" })
+                       new { @class = "form-control js-example-basic-single" })
                     <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.Status" />
                 </div>
                 <div class="px-3 py-2 form-group">
@@ -26,7 +26,7 @@
                     @Html.DropDownListFor(m => m.PurchaseOrderVM.OrderInfo.VendorID,
                        Model.PurchaseOrderVM.VendorList,
                        "-Select Vendor-",
-                       new { @class = "form-control" })
+                       new { @class = "form-control js-example-basic-single" })
                     <span class="text-danger" asp-validation-for="PurchaseOrderVM.OrderInfo.VendorID" />
                 </div>
             </div>
@@ -117,12 +117,14 @@
     </div>
 </div>
     <div id="itemdialog" title="Add new order item">
-        <label asp-for="TempOrderItem.Item.Name"></label>
-        @Html.DropDownListFor(m =>
-                    m.TempOrderItem.ItemID,
-                    Model.PurchaseOrderVM.ItemList,
-                    "-Select Item-",
-                    new { @class = "form-control" })
+        <div class="form-group">
+            <label asp-for="TempOrderItem.Item.Name"></label>
+            @Html.DropDownListFor(m =>
+                        m.TempOrderItem.ItemID,
+                        Model.PurchaseOrderVM.ItemList,
+                        "-Select Item-",
+                        new { @class = "form-control js-example-basic-single" })
+        </div>
         <div class="form-group">
             <label asp-for="TempOrderItem.QuantityOrdered"></label>
             <input name="QuantityOrdered" asp-for="TempOrderItem.QuantityOrdered" class="form-control" />
@@ -352,12 +354,16 @@
         }
 
         AddMissingEvents();
+
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
     </script>
     <script id="ListTemplate" type="text/template">
         @Html.DropDownListFor(m =>
                      m.TempOrderItem.ItemID,
                      Model.PurchaseOrderVM.ItemList,
                      "-Select Item-",
-                     new { @class = "form-control" })
+                     new { @class = "form-control js-example-basic-single" })
     </script>
 }
