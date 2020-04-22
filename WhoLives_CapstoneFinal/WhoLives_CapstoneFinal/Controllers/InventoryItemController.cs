@@ -31,11 +31,11 @@ namespace WhoLives_CapstoneFinal.Controllers
             // The data is a Inpur value from the Ajax call 
             if (input.Equals("ALL"))
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll(i => i.isActive == true) });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll(i => i.IsActive == true) });
             }
             else if (input.Equals("ORDER"))
             {
-                var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty && r.isActive == true);
+                var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty && r.IsActive == true);
                 var venditem = _unitOfWork.VendorItems.GetAll();
                 var vend = _unitOfWork.Vendors.GetAll(i => i.isActive == true);
                 
@@ -49,7 +49,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
             else
             {
-                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true && r.isActive == true) });
+                return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly == true && r.IsActive == true) });
             }
         }
 
@@ -171,7 +171,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
-            item.isActive = false;
+            item.IsActive = false;
             _unitOfWork.InventoryItems.Update(item);
             //_unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful" });

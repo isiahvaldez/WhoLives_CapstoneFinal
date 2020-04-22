@@ -43,7 +43,7 @@ namespace WhoLives_CapstoneFinal
 
             BuildAssemblyVM = new BuildAssemblyVM
             {
-                InventoryItems = _unitOfWork.InventoryItems.GetAll(i => i.isActive == true),
+                InventoryItems = _unitOfWork.InventoryItems.GetAll(i => i.IsActive == true),
                 BuildAssemblies = _unitOfWork.BuildAssemblies.GetAll().Where(i => i.InventoryItemID == id),
                 InventoryItem = _unitOfWork.InventoryItems.GetFirstOrDefault(i => i.InventoryItemID == id),
                 Assemblies = _unitOfWork.Assemblies.GetAll()

@@ -20,7 +20,7 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IEnumerable<SelectListItem> GetItemListForDropDown()
         {
-            return _db.InventoryItems.Where(i => i.isActive == true).Select(item => new SelectListItem()
+            return _db.InventoryItems.Where(i => i.IsActive == true).Select(item => new SelectListItem()
             {
                 Text = item.Name,
                 Value = item.InventoryItemID.ToString()
@@ -29,7 +29,7 @@ namespace WhoLives.DataAccess.Data.Repository
 
         public IEnumerable<SelectListItem> GetNonAssemblyItemListForDropDown()
         {
-            return _db.InventoryItems.Where(i => i.IsAssembly != true && i.isActive == true).Select(item => new SelectListItem()
+            return _db.InventoryItems.Where(i => i.IsAssembly != true && i.IsActive == true).Select(item => new SelectListItem()
             {
                 Text = item.Name,
                 Value = item.InventoryItemID.ToString()
@@ -52,7 +52,7 @@ namespace WhoLives.DataAccess.Data.Repository
             objFromDb.ReorderQty = item.ReorderQty;
             objFromDb.TotalLooseQty = item.TotalLooseQty;
             objFromDb.VendorItems = item.VendorItems;
-            objFromDb.isActive = item.isActive;
+            objFromDb.IsActive = item.IsActive;
 
             _db.SaveChanges();
         }
@@ -61,7 +61,7 @@ namespace WhoLives.DataAccess.Data.Repository
         {
             var objFromDb = _db.InventoryItems.FirstOrDefault(v => v.InventoryItemID == item.InventoryItemID);
 
-            objFromDb.isActive = false;
+            objFromDb.IsActive = false;
             _db.SaveChanges();
         }
     }
