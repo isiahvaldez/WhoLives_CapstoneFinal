@@ -65,10 +65,10 @@ namespace WhoLives_CapstoneFinal.Controllers
                 qtyAssembled = Int32.Parse(QTY);
             }
             bool check = false;
-            // ASSEMBLE is a way to seperate Disassemble and Asemble functionality. 
+            // ASSEMBLE is a way to seperate Disassemble and Assemble functionality. 
             if (qtyAssembled >0 )
             {
-                // pull the recipe fo the assembly 
+                // pull the recipe for the assembly 
                 // Check the Qty required to make it and VS the qty on hand 
                 // Return the result based on if it can be made 
 
@@ -99,21 +99,24 @@ namespace WhoLives_CapstoneFinal.Controllers
 
                 if (assemblyItemFromDb == null)
                 {
-                    return Json(new { error = true, message = "Error While Assemling" });
+                    return Json(new { error = true, message = "Error While Assembling" });
                 }
                 assemblyItemFromDb.TotalLooseQty += qtyAssembled;
 
                 _unitOfWork.Save();
 
-                if (check)
-                {
-                    return Json(new { success = false, message = "ALERT!!!! Inventory did not meet recipe for a Item(s)" });
-                }
-                else
-                {
-                    return Json(new { success = true, message = "Suceessfully Added " + qtyAssembled + " Assembly to the inventory" });
+                //No longer need. SWAL handles
+                //if (check)
+                //{
+                //    return Json(new { success = false, message = "ALERT!!!! Inventory did not meet recipe for a Item(s)" });
+                //}
+                //else
+                //{
+                //    return Json(new { success = true, message = "Suceessfully Added " + qtyAssembled + " Assembly to the inventory" });
 
-                }
+                //}
+
+                return Json(new { success = true, message = "Suceessfully Added " + qtyAssembled + " Assembly to the inventory" });
             }
             else
             {
@@ -147,14 +150,14 @@ namespace WhoLives_CapstoneFinal.Controllers
 
                 if (assemblyItemFromDb == null)
                 {
-                    return Json(new { error = true, message = "Error While Assemling" });
+                    return Json(new { error = true, message = "Error While Assembling" });
                 }
                 assemblyItemFromDb.TotalLooseQty -= qtyAssembled;
 
                 _unitOfWork.Save();
 
 
-                return Json(new { success = true, message = "Suceessfully Disassembled " + qtyAssembled + " assembly to the inventory" });
+                return Json(new { success = true, message = "Successfully Disassembled " + qtyAssembled + " assembly to the inventory" });
 
             }
 

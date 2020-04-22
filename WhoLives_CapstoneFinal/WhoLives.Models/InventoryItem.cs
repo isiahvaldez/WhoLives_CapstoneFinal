@@ -19,7 +19,7 @@ namespace WhoLives.Models
         public bool IsAssembly { get; set; }
 
         //Identifier for deleting/hiding the part from the user
-        public bool isActive { get; set; } = true;
+        public bool IsActive { get; set; } = true;
 
         //Part name
         [Required]

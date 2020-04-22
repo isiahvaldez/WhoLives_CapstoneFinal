@@ -42,11 +42,11 @@
                 <div class="form-inline col-12">
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID != 0)
                     {
-                        <input asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" type="number" step="1" min="0" value="@Model.InventoryItemVM.InventoryItemObj.ListRetailCost" class="form-control" readonly required id="retailInput" />
+                        <input asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" type="number" step="0.01" min="0" value="@Model.InventoryItemVM.InventoryItemObj.ListRetailCost" class="form-control" readonly required id="retailInput" />
                     }
                     @if (Model.InventoryItemVM.InventoryItemObj.InventoryItemID == 0)
                     {
-                        <input asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" type="number" step="1" min="0" value="@Model.InventoryItemVM.InventoryItemObj.ListRetailCost" class="form-control" required id="retailInput" />
+                        <input asp-for="InventoryItemVM.InventoryItemObj.ListRetailCost" type="number" step="0.01" min="0" value="@Model.InventoryItemVM.InventoryItemObj.ListRetailCost" class="form-control" required id="retailInput" />
                     }
                 </div>
             </div>
@@ -289,7 +289,7 @@
                                         {
                                             <tr>
                                                 <td>@PO.Vendor.VendorName</td>
-                                                <td><a href="/PurchaseOrders/Upsert?id=@Model.InventoryItemVM.InventoryItemObj.InventoryItemID" style="cursor:pointer">@PO.PurchaseOrderID</a></td>
+                                                <td><a href="/PurchaseOrders/Upsert?id=@PO.PurchaseOrderID" style="cursor:pointer">@PO.PurchaseOrderID</a></td>
                                                 <td>@PO.DateOrdered</td>
                                                 <td>@PO.OrderItems.ElementAt(0).Price</td>
                                             </tr>
