@@ -61,14 +61,14 @@
             </div>
         </div>
         <div class="row form-group py-4">
-            <table id="iTable" class="table table-striped table-bordered col-12" style="width:100%">
+            <table id="iTable" class="table table-striped table-bordered col-12 px-0" style="width:100%; border-collapse: separate; border-spacing: 0;">
                 <thead>
                     <tr>
-                        <th>Item</th>
-                        <th>Order Quantity</th>
-                        <th>Price per unit</th>
-                        <th>Received Quantity</th>
-                        <th></th>
+                        <th style="border-bottom: 1px solid;">Item</th>
+                        <th style="border-bottom: 1px solid;">Order Quantity</th>
+                        <th style="border-bottom: 1px solid;">Price per unit</th>
+                        <th style="border-bottom: 1px solid;">Received Quantity</th>
+                        <th style="border-bottom: 1px solid;"></th>
                     </tr>
                 </thead>
                 <tbody id="table">
@@ -100,7 +100,7 @@
     <!--Price-->
     <div class="col-2 px-3 row form-group offset-10">
         <label class="control-label" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice">Total Price:</label>
-            <input name="totalprice" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" readonly />
+            <input name="totalprice" asp-for="PurchaseOrderVM.OrderInfo.TotalPrice" class="form-control" readonly style="min-width: 100px;"/>
         </div>
 
     <div class="form-group row">

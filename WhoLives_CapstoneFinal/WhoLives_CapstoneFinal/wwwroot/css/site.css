@@ -74,3 +74,9 @@ body {
 td {
     word-break: break-word; /* td text breaks, stops from scrolling */
 }
+
+th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+}

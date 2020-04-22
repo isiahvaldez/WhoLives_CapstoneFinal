@@ -62,10 +62,10 @@ function loadList() {
                 "data": "purchaseOrderID",
                 "render": function (data) {
                     return `<div class="text-center">
-                            <a href="/purchaseorders/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 100px">
+                            <a href="/purchaseorders/upsert?id=${data}" class="btn btn-primary" style="cursor:pointer; width: 40px">
                                 <i class="far fa-edit"></i>
                             </a>
-                            <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=Delete('/api/order/'+${data})>
+                            <a class="btn btn-danger text-white" style="cursor:pointer; width:40px;" onclick=Delete('/api/order/'+${data})>
                                 <i class="far fa-trash-alt"></i>
                             </a>
                         </div>`;

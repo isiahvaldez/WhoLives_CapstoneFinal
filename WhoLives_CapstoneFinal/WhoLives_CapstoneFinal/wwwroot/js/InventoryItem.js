@@ -133,8 +133,8 @@ function loadAssemblyList() {
 
                 "render": function (data) {
                     return ` <div class="text-center">
-                               <input type="number" style="width:15%;" id ="asse${data}"/> <a class="btn btn-primary text-white" style="cursor:pointer; width:50%;" onClick="assemble(${data})">
-                                    <i class="far fa-edit">Assemble / Disassemble</i>
+                               <input type="number" style="width:60px;" id ="asse${data}"/> <a class="btn btn-primary text-white" style="cursor:pointer; width:40px;" onClick="assemble(${data})">
+                                    <i class="fas fa-wrench"></i>
                                 </a>
                             </div>`
                 },
@@ -282,17 +282,22 @@ function PassSelection() {
     var select = document.getElementById('ItemAssemblyVendor_Vendor_VendorID');
     var selectedValue = select.options[select.selectedIndex].value;
 
-    var data = { Vendor: selectedValue, Items: SelectedId };
-    $.ajax({
-        url: '/api/order/',
-        type: 'POST',
-        data: JSON.stringify({ "Vendor": selectedValue, "Items": SelectedId }),
-        contentType: 'application/json',
-        success: function (data) {
-            //bad hard-code, find a html helper
-            window.location.href = '../PurchaseOrders/Upsert?id=' + data;
-        }
-    });
-
+    if (select.selectedIndex > 0) {
+        var data = { Vendor: selectedValue, Items: SelectedId };
+        $.ajax({
+            url: '/api/order/',
+            type: 'POST',
+            data: JSON.stringify({ "Vendor": selectedValue, "Items": SelectedId }),
+            contentType: 'application/json',
+            success: function (data) {
+                //bad hard-code, find a html helper
+                window.location.href = '../PurchaseOrders/Upsert?id=' + data;
+            }
+        });
+    }
+    else {
+        var warning = document.getElementById("vendorWarning");
+        warning.innerHTML = "Select a vendor";
+    }
 
 }
