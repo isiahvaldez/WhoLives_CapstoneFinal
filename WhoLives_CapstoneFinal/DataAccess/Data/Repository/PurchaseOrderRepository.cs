@@ -38,7 +38,8 @@ namespace WhoLives.DataAccess.Data.Repository
         {
             var PO = _appContext.PurchaseOrders.FirstOrDefault(p => p.PurchaseOrderID == purchaseOrder.PurchaseOrderID);
             PO.VendorID = purchaseOrder.VendorID;
-            PO.StatusChangeDate = PO.StatusID == purchaseOrder.StatusID ? PO.StatusChangeDate : DateTime.Now;
+            PO.StatusChangeDate = PO.StatusID == purchaseOrder.StatusID ? 
+                (PO.StatusChangeDate >= PO.DateOrdered ? PO.StatusChangeDate : DateTime.Now) : DateTime.Now;
             PO.StatusID = purchaseOrder.StatusID;
             PO.PO = purchaseOrder.PO;
             PO.TotalPrice = purchaseOrder.TotalPrice;

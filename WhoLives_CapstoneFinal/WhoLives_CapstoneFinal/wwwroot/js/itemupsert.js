@@ -67,7 +67,9 @@
 //                    </a> `
 //                }, "width": "50%" },
 //            {
-//                "data": "dateOrdered","width": "20%"
+//                "data": "
+
+//Ordered","width": "20 % "
 //            },
 //            { "data": "price", "width": "20%" }  
 //        ], "language": {

@@ -13,8 +13,8 @@ $("#add").click(function (e) {
 
 function Edit(node) {
     document.getElementById("error").innerHTML = "";
-    $("#itemdialog").dialog('option','title','Edit order item');
-    var id = document.getElementById("poid").value;
+    $("#itemdialog").dialog('option', 'title', 'Edit order item');
+    var id = document.getElementById("poid") != null ? document.getElementById("poid").value : 0;
     var row = node.parentNode.parentNode.rowIndex - 1;
     var currTable = $("#iTable > TBODY")[0];
     var itemid = currTable.rows[row].cells[0].innerHTML;
@@ -28,7 +28,7 @@ function Edit(node) {
     //document.getElementById("TempOrderItem_ItemID").value = itemid;
     document.getElementById("TempOrderItem_QuantityReceived").value = qtyreceived;
     document.getElementById("TempOrderItem_QuantityOrdered").value = qtyordered;
-    document.getElementById("TempOrderItem_Price").value = price;
+    document.getElementById("TempOrderItem_Price").value = parseFloat(price).toFixed(2);
 
     $("#itemdialog").dialog("open");
 }
@@ -42,7 +42,7 @@ function AddItemToTable() {
          itemid : document.getElementById("TempOrderItem_ItemID").options[document.getElementById("TempOrderItem_ItemID").selectedIndex].text;
     var qtyreceived = document.getElementById("TempOrderItem_QuantityReceived").value;
     var qtyordered = document.getElementById("TempOrderItem_QuantityOrdered").value;
-    var price = document.getElementById("TempOrderItem_Price").value;
+    var price = parseFloat(document.getElementById("TempOrderItem_Price").value).toFixed(2);
     if (parseInt(qtyreceived,10) > parseInt(qtyordered,10)) {
         document.getElementById("error").innerHTML = "Received quantity cannot be greater than ordered quantity.";
     }
@@ -53,6 +53,7 @@ function AddItemToTable() {
                 currTable.rows[i].cells[1].innerHTML = qtyordered;
                 currTable.rows[i].cells[2].innerHTML = price;
                 currTable.rows[i].cells[3].innerHTML = qtyreceived;
+                updateTotalPrice();
                 return;
             }
         }
@@ -67,7 +68,8 @@ function AddItemToTable() {
             "<a style='width:40px' class='btn'><i class='far fa-edit'></i></a>" +
             "</td >";
         newRow.cells[4].firstChild.addEventListener("click", function () { RemoveItemFromTable(newRow.cells[4].children[0])}, false); // add listener to the button inside the cell
-        newRow.cells[4].children[1].addEventListener("click", function () { Edit(newRow.cells[4].children[1])}, false); // add listener to the button inside the cell
+        newRow.cells[4].children[1].addEventListener("click", function () { Edit(newRow.cells[4].children[1]) }, false); // add listener to the button inside the cell
+        updateTotalPrice();
     }
 }
 
@@ -75,6 +77,7 @@ function RemoveItemFromTable(node) {
     var nodeToDelete = node.parentNode; // cell
     var parent = nodeToDelete.parentNode;
     parent.parentNode.removeChild(parent);
+    updateTotalPrice();
 }
 
 function AddMissingEvents() {
@@ -83,4 +86,15 @@ function AddMissingEvents() {
         myTable.rows[i].cells[4].firstChild.addEventListener("click", function () { RemoveItemFromTable(myTable.rows[i].cells[4].children[0]) }, false);
         myTable.rows[i].cells[4].children[1].addEventListener("click", function () { Edit(myTable.rows[i].cells[4].children[1]) }, false);
     }
+}
+
+function updateTotalPrice() {
+    var myTable = $("#iTable > TBODY")[0];
+    var totalCost = 0;
+    for (var i = 0; i < myTable.rows.length; i++) {
+        var numItems = parseInt(myTable.rows[i].cells[1].innerHTML, 10);
+        var itemprice = parseFloat(myTable.rows[i].cells[2].innerHTML);
+        totalCost += (itemprice * numItems);
+    }
+    document.getElementById("PurchaseOrderVM_OrderInfo_TotalPrice").value = totalCost.toFixed(2);
 }

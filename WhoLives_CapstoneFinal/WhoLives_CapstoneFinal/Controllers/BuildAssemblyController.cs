@@ -164,7 +164,8 @@ namespace WhoLives_CapstoneFinal.Controllers
                     match = false;
                     foreach(var component in components)
                     {
-                        if(Int32.Parse(component.InventoryItemID) == (assemblyList.SingleOrDefault<Assembly>(a => a.AssemblyID == build.AssemblyID)).InventoryItemID)
+                        var assembly = assemblyList.SingleOrDefault<Assembly>(a => a.AssemblyID == build.AssemblyID);
+                        if (assembly == null || Int32.Parse(component.InventoryItemID) == assembly.InventoryItemID)
                         {
                             match = true;
                             break;

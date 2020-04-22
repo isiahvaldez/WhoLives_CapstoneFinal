@@ -24,9 +24,10 @@ namespace WhoLives.Models
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "money")]
+        [DisplayFormat(DataFormatString = "{0:#.##}")]
         public decimal Price { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Please order 1 or more items.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please order 0 or more items.")]
         public int QuantityOrdered { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Please enter a valid quantity.")]
         public int QuantityReceived { get; set; }

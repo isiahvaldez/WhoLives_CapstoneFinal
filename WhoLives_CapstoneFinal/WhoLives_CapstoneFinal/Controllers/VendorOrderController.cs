@@ -24,7 +24,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         {
             if (vendorID != null)
             {
-                return Json(new { data = _unitOfWork.PurchaseOrders.GetAll().Where(o => o.VendorID == vendorID) });
+                return Json(new { data = _unitOfWork.PurchaseOrders.GetAll(null, null, "Vendor,Status").Where(i => i.VendorID == vendorID) });
             }
             else
             {
