@@ -183,6 +183,8 @@ function assemble(id) {
                         if (data.success) {
                             swal(data.message, {
                                 icon: "success"
+                            }).then(function () {
+                                location.reload();
                             });
                             //dataTable.ajax.reload();
                         } else {
@@ -190,6 +192,7 @@ function assemble(id) {
                                 icon: "error"
                             });
                         }
+                        //datatable.ajax.reload();
                     }
                 });
             }
@@ -223,19 +226,21 @@ function assemble(id) {
                         if (data.success) {
                             swal(data.message, {
                                 icon: "success"
+                            }).then(function () {
+                                location.reload();
                             });
-                            //dataTable.ajax.reload();
                         } else {
                             swal(data.message, {
                                 icon: "error"
                             });
                         }
-                    }
+                       //datatable.ajax.reload();
+                    } 
+                    
                 });
             }
         });
     }
-    
 }
 // Used when there was seperate Dis assemble button 
 function disassemble(id) {
