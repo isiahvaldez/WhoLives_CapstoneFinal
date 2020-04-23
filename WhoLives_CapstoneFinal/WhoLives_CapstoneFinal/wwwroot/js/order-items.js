@@ -71,8 +71,8 @@ function AddItemToTable() {
             "<td class='px-3'>" + price + "</td>" +
             "<td class='px-3'>" + qtyreceived + "</td>" +
             "<td class='text-center'>" +
-            "<a style='width:40px' class='btn'><i class='far fa-trash-alt'></i></a>" +
-            "<a style='width:40px' class='btn'><i class='far fa-edit'></i></a>" +
+            "<a style='width:40px' class='btn btn-primary text-white'><i class='far fa-edit'></i></a>" +
+            "<a style='width:40px' class='btn btn-danger twxt-white'><i class='far fa-trash-alt'></i></a>" +
             "</td >";
         newRow.cells[4].firstChild.addEventListener("click", function () { RemoveItemFromTable(newRow.cells[4].children[0])}, false); // add listener to the button inside the cell
         newRow.cells[4].children[1].addEventListener("click", function () { Edit(newRow.cells[4].children[1]) }, false); // add listener to the button inside the cell

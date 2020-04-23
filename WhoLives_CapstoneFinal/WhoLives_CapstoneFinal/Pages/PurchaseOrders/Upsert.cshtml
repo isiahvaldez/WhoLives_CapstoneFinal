@@ -68,7 +68,7 @@
                         <th style="border-bottom: 1px solid;">Order Quantity</th>
                         <th style="border-bottom: 1px solid;">Price per unit</th>
                         <th style="border-bottom: 1px solid;">Received Quantity</th>
-                        <th style="border-bottom: 1px solid;"></th>
+                        <th style="border-bottom: 1px solid;">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="table">
@@ -85,8 +85,8 @@
                                 <td>@i.QuantityReceived</td>
                                 <td>
                                     <div hidden>@i.OrderItemID</div>
-                                    <a class="btn" onclick="RemoveItemFromTable(this)"><i class="far fa-trash-alt"></i></a>
-                                    <a class="btn" onclick="Edit(this)"><i class="far fa-edit"></i></a>
+                                    <a class="btn btn-primary text-white" onclick="Edit(this)"><i class="far fa-edit"></i></a>
+                                    <a class="btn btn-danger twxt-white" onclick="RemoveItemFromTable(this)"><i class="far fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         }
