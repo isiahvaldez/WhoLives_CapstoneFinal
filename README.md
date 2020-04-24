@@ -1,3 +1,7 @@
+####IMPORTANT##### 
+Before the system goes live there is a SQL script needed to run which will scrub the database. IT IS HIGHLY RECOMMENEDED the client goes through and verifies the reciepes. Only thing that client should need to update is the total Loose qty for ALL Items. 
+
+
 # WhoLives_CapstoneFinal
 
 Team Name - Who Be Drillin
