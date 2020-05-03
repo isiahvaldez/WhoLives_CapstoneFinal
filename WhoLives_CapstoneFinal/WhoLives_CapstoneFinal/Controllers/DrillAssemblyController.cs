@@ -23,6 +23,7 @@ namespace WhoLives_CapstoneFinal.Controllers
         public int requiredQty;
         public int assembledQty;
         public int ratio;
+
     }
 
     [Route("api/[controller]")]
@@ -30,6 +31,7 @@ namespace WhoLives_CapstoneFinal.Controllers
     public class DrillAssemblyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private List<InventoryItem> checkedAssembly = new List<InventoryItem>(); // This was added so that way we can check to see if assemblies were already broken out. JDW 5/20
 
         int drillID = 104; // this is hardcoded and will need to be changed if the item is deleted and readded - IV 4/15/2020
         List<ItemWithCounts> itemList = new List<ItemWithCounts>();
@@ -132,9 +134,16 @@ namespace WhoLives_CapstoneFinal.Controllers
                 foreach (var assembly in assemblyList)
                 {
                     InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
-                    if (currItem.IsAssembly)
+
+                    
+                        if (currItem.IsAssembly)
                     {
-                        CountAssemblyComponents(currItem.InventoryItemID, requiredQty * assembly.ItemQty);
+                        if (!checkedAssembly.Contains(currItem))
+                        {
+                            checkedAssembly.Add(currItem); 
+
+                            CountAssemblyComponents(currItem.InventoryItemID, requiredQty * assembly.ItemQty);
+                        }
                     }
                     else
                     {
@@ -170,7 +179,11 @@ namespace WhoLives_CapstoneFinal.Controllers
                     InventoryItem currItem = buildAssemblyVM.InventoryItems.ToList().Find(i => i.InventoryItemID == assembly.InventoryItemID);
                     if (currItem.IsAssembly)
                     {
-                        CountChildItems(currItem.InventoryItemID, itemQty * assembly.ItemQty);
+                        if (!checkedAssembly.Contains(currItem))
+                        {
+                            checkedAssembly.Add(currItem);
+                            CountChildItems(currItem.InventoryItemID, itemQty * assembly.ItemQty);
+                        }
                     }
                     else
                     {
