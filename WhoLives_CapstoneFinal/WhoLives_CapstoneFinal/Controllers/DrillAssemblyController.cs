@@ -32,7 +32,7 @@ namespace WhoLives_CapstoneFinal.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private List<InventoryItem> checkedAssembly = new List<InventoryItem>(); // This was added so that way we can check to see if assemblies were already broken out. JDW 5/20
-
+       // private List<InventoryItem> checkedItems = new List<InventoryItem>();
         int drillID = 104; // this is hardcoded and will need to be changed if the item is deleted and readded - IV 4/15/2020
         List<ItemWithCounts> itemList = new List<ItemWithCounts>();
 
@@ -73,6 +73,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
 
             CountAssemblyComponents(drillID, 1); // this is counting the items required for the drill per its recipe
+            checkedAssembly.Clear();
 
             foreach(var item in buildAssemblyVM.InventoryItems)
             {
@@ -140,7 +141,7 @@ namespace WhoLives_CapstoneFinal.Controllers
                     {
                         if (!checkedAssembly.Contains(currItem))
                         {
-                            checkedAssembly.Add(currItem); 
+                            checkedAssembly.Add(currItem);
 
                             CountAssemblyComponents(currItem.InventoryItemID, requiredQty * assembly.ItemQty);
                         }
