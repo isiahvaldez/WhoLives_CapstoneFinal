@@ -138,12 +138,12 @@ namespace WhoLives_CapstoneFinal.Controllers
                     
                         if (currItem.IsAssembly)
                     {
-                        if (!checkedAssembly.Contains(currItem))
-                        {
-                            checkedAssembly.Add(currItem); 
+                        //if (!checkedAssembly.Contains(currItem))
+                        //{
+                        //    checkedAssembly.Add(currItem); 
 
                             CountAssemblyComponents(currItem.InventoryItemID, requiredQty * assembly.ItemQty);
-                        }
+                        //}
                     }
                     else
                     {
