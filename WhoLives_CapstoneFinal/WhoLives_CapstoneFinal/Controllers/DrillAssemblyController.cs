@@ -73,7 +73,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
 
             CountAssemblyComponents(drillID, 1); // this is counting the items required for the drill per its recipe
-
+            checkedAssembly.Clear();
             foreach(var item in buildAssemblyVM.InventoryItems)
             {
                 // skip the drill -- we don't want to factor it into the item counts
