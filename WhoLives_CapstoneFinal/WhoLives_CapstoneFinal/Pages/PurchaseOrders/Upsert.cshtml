@@ -272,7 +272,7 @@
                 // don't read data from the table header
                 for (var i = 1; i < myTable.rows.length; i++) {
                     var Component = {
-                        ItemName: myTable.rows[i].cells[0].innerHTML,
+                        ItemName: myTable.rows[i].cells[0].textContent,
                         QuantityOrdered: parseInt(myTable.rows[i].cells[1].innerHTML, 10),
                         Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
                         QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
@@ -293,7 +293,7 @@
                             window.location.href = '../PurchaseOrders/Index';
                         },
                         error: function (xhr) {
-                            alert("error");
+                            alert("error adding purchase order with zero components");
                         }
                     })
                 }
@@ -309,7 +309,7 @@
                             window.location.href = '../PurchaseOrders/Index';
                         },
                         error: function (xhr) {
-                            alert("error");
+                            alert("error adding Componets and purchase Order");
                         }
                     })
                 }
