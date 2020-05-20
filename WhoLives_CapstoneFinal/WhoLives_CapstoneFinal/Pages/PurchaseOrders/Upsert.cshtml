@@ -271,8 +271,9 @@
                 // get table row data
                 // don't read data from the table header
                 for (var i = 1; i < myTable.rows.length; i++) {
+                    //JDW -05/20 Changed the ItemName fro InnerHTML to textContent becuase InnerHTML was rendering special character differently. 
                     var Component = {
-                        ItemName: myTable.rows[i].cells[0].textContent,
+                        ItemName: myTable.rows[i].cells[0].textContent, 
                         QuantityOrdered: parseInt(myTable.rows[i].cells[1].innerHTML, 10),
                         Price: parseFloat(myTable.rows[i].cells[2].innerHTML),
                         QuantityReceived: parseInt(myTable.rows[i].cells[3].innerHTML, 10),
