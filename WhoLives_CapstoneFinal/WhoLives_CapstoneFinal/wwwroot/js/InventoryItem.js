@@ -154,49 +154,85 @@ function assemble(id) {
     var qty = document.getElementById('asse' + id).value;
     // console.log("my Id is" + id + 'and I made ' + qty);
     Qty_ID = { QTY: qty, ITEMID: id, ASSEMBLE: true };
+    check = { ITEMID: id, QTY: qty };
     if (parseInt(qty) > 0) {
-        swal({
-            title: 'ALERT!!!!',
-            text: "Inventory did not meet recipe for a Item(s). Press confirm to override.",
-            icon: 'warning',
-            buttons: {
-                confirm: { text: "Confirm", value: false, visible: true, className: "", closeModal: true },
-                cancel: { text: "Cancel", value: true, visible: true, className: "", closeModal: true, }
-            },
-        }).then((result) => {
-            if (result) {
-                //Clicked Cancel
-                swal({
-                    title: 'Cancelled:',
-                    text: 'Nothing was changed.'
-                });
-            }
-            else {
-                //Clicked confirm
-                $.ajax({
-                    url: '/api/inventoryItem/assemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=true',
-                    type: 'POST',
-                    data: Qty_ID, //JSON.stringify(Qty_ID),
-                    // contentType: 'application/json; charset=utf-16',
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.success) {
-                            swal(data.message, {
-                                icon: "success"
-                            }).then(function () {
-                                location.reload();
-                            });
-                            //dataTable.ajax.reload();
-                        } else {
-                            swal(data.message, {
-                                icon: "error"
+        $.ajax({
+            url: '/api/inventoryItem/check' + '?ITEMID=' + id+'&QTY=' + qty  ,
+            type: 'POST',
+            data: check, //JSON.stringify(Qty_ID),
+            // contentType: 'application/json; charset=utf-16',
+            dataType: 'json',
+            success: function (data) {
+                if (data.success) {
+                    $.ajax({
+                        url: '/api/inventoryItem/assemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=true',
+                        type: 'POST',
+                        data: Qty_ID, //JSON.stringify(Qty_ID),
+                        // contentType: 'application/json; charset=utf-16',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.success) {
+                                swal(data.message, {
+                                    icon: "success"
+                                }).then(function () {
+                                    location.reload();
+                                });
+                                //dataTable.ajax.reload();
+                            } else {
+                                swal(data.message, {
+                                    icon: "error"
+                                });
+                            }
+                            //datatable.ajax.reload();
+                        }
+                    });
+                } else {
+                    swal({
+                        title: 'ALERT!!!!',
+                        text: "Inventory did not meet recipe for a Item(s). Press confirm to override.",
+                        icon: 'warning',
+                        buttons: {
+                            confirm: { text: "Confirm", value: false, visible: true, className: "", closeModal: true },
+                            cancel: { text: "Cancel", value: true, visible: true, className: "", closeModal: true, }
+                        },
+                    }).then((result) => {
+                        if (result) {
+                            //Clicked Cancel
+                            swal({
+                                title: 'Cancelled:',
+                                text: 'Nothing was changed.'
                             });
                         }
-                        //datatable.ajax.reload();
-                    }
-                });
+                        else {
+                            //Clicked confirm
+                            $.ajax({
+                                url: '/api/inventoryItem/assemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=true',
+                                type: 'POST',
+                                data: Qty_ID, //JSON.stringify(Qty_ID),
+                                // contentType: 'application/json; charset=utf-16',
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.success) {
+                                        swal(data.message, {
+                                            icon: "success"
+                                        }).then(function () {
+                                            location.reload();
+                                        });
+                                        //dataTable.ajax.reload();
+                                    } else {
+                                        swal(data.message, {
+                                            icon: "error"
+                                        });
+                                    }
+                                    //datatable.ajax.reload();
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
+        
     }
     else {
         swal({

@@ -53,6 +53,44 @@ namespace WhoLives_CapstoneFinal.Controllers
             }
         }
 
+        [HttpPost("{ITEMID,QTY}")]
+        [ActionName("check")]
+            public IActionResult Check(string? ITEMID, string? QTY)
+        {
+            int itemid = Int32.Parse(ITEMID);
+            int qtyNeeded = 0;
+            int qtyAssembled = 1;
+            if (QTY != null)
+            {
+                qtyAssembled = Int32.Parse(QTY);
+            }
+            bool check = false;
+            // Pull the assembly from the database 
+            List<BuildAssembly> assembleList = _unitOfWork.BuildAssemblies.GetAll(a => a.InventoryItemID == itemid).ToList();
+
+            // Loop For Error checking
+            foreach (BuildAssembly item in assembleList)
+            {
+                var assemblyFromDb = _unitOfWork.Assemblies.GetFirstOrDefault(r => r.AssemblyID == item.AssemblyID);
+                qtyNeeded = assemblyFromDb.ItemQty;
+
+                var objFromDb = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == assemblyFromDb.InventoryItemID);
+
+                if (qtyNeeded * qtyAssembled > objFromDb.TotalLooseQty && check != true)
+                {
+                    // There is not Enough return A notifcation that Not Enough 
+                    check = true;
+                    return Json(new { success = false, message = "Inventory did not meet recipe for a Item(s). Press confirm to override." });
+                }
+                objFromDb.TotalLooseQty -= qtyNeeded * qtyAssembled;
+
+                // Loop through the Assemblie recipe and check the qty required for the assembly 
+                // Then calculate the QTY needed to make it
+                // Check to the QTY needed and compare against 
+
+            }
+            return Json(new { success = true, message ="Success" });
+        }
         
 
         [HttpPost("{QTY,ITEMID,ASSEMBLE}")]
