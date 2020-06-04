@@ -38,13 +38,13 @@ namespace WhoLives_CapstoneFinal.Controllers
                 var items = _unitOfWork.InventoryItems.GetAll(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty && r.IsActive == true);
                 var venditem = _unitOfWork.VendorItems.GetAll();
                 var vend = _unitOfWork.Vendors.GetAll(i => i.isActive == true);
-                
+
 
                 //return Json(new { data = _unitOfWork.InventoryItems.GetAll().Where(r => r.IsAssembly != true && r.TotalLooseQty < r.ReorderQty) });
-                return Json(new { data = 
-                    items.Join(venditem, i => i.InventoryItemID, v => v.InventoryItemID, 
-                    (i, v)=> new {i.InventoryItemID, i.Name,i.TotalLooseQty,i.ReorderQty, v.VendorItemId, v.VendorID}).Join(
-                        vend, s=>s.VendorID, q=>q.VendorID,(s,q)=>new { s.InventoryItemID, s.Name, s.TotalLooseQty, s.ReorderQty, q.VendorName })
+                return Json(new { data =
+                    items.Join(venditem, i => i.InventoryItemID, v => v.InventoryItemID,
+                    (i, v) => new { i.InventoryItemID, i.Name, i.TotalLooseQty, i.ReorderQty, v.VendorItemId, v.VendorID }).Join(
+                        vend, s => s.VendorID, q => q.VendorID, (s, q) => new { s.InventoryItemID, s.Name, s.TotalLooseQty, s.ReorderQty, q.VendorName })
                 });
             }
             else
@@ -54,8 +54,8 @@ namespace WhoLives_CapstoneFinal.Controllers
         }
 
         [HttpPost("{ITEMID,QTY}")]
-        [ActionName("check")]
-            public IActionResult Check(string? ITEMID, string? QTY)
+        [ActionName("check")]        
+        public IActionResult check(string? ITEMID, string? QTY)
         {
             int itemid = Int32.Parse(ITEMID);
             int qtyNeeded = 0;
@@ -64,7 +64,7 @@ namespace WhoLives_CapstoneFinal.Controllers
             {
                 qtyAssembled = Int32.Parse(QTY);
             }
-            bool check = false;
+            bool checking = false;
             // Pull the assembly from the database 
             List<BuildAssembly> assembleList = _unitOfWork.BuildAssemblies.GetAll(a => a.InventoryItemID == itemid).ToList();
 
@@ -76,24 +76,31 @@ namespace WhoLives_CapstoneFinal.Controllers
 
                 var objFromDb = _unitOfWork.InventoryItems.GetFirstOrDefault(u => u.InventoryItemID == assemblyFromDb.InventoryItemID);
 
-                if (qtyNeeded * qtyAssembled > objFromDb.TotalLooseQty && check != true)
+                if (qtyNeeded * qtyAssembled > objFromDb.TotalLooseQty && checking != true)
                 {
                     // There is not Enough return A notifcation that Not Enough 
-                    check = true;
-                    return Json(new { success = false, message = "Inventory did not meet recipe for a Item(s). Press confirm to override." });
+                    checking = true;                   
                 }
-                objFromDb.TotalLooseQty -= qtyNeeded * qtyAssembled;
+                
 
                 // Loop through the Assemblie recipe and check the qty required for the assembly 
                 // Then calculate the QTY needed to make it
                 // Check to the QTY needed and compare against 
 
             }
-            return Json(new { success = true, message ="Success" });
+            if (checking) { 
+                return Json(new { success = false, message = "Inventory did not meet recipe for a Item(s). Press confirm to override." });
+            }
+            else
+            {
+                return Assemble(QTY, ITEMID, true);
+                //return Json(new { success = true, message = "Success" });
+            }
         }
         
 
-        [HttpPost("{QTY,ITEMID,ASSEMBLE}")]
+       [HttpPut("{QTY,ITEMID,ASSEMBLE}")]        
+        [ActionName("assemble")]
         public IActionResult Assemble(string? QTY, string? ITEMID, bool? ASSEMBLE)
         {
             int qtyNeeded = 0;

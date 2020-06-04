@@ -157,35 +157,40 @@ function assemble(id) {
     check = { ITEMID: id, QTY: qty };
     if (parseInt(qty) > 0) {
         $.ajax({
-            url: '/api/inventoryItem/check' + '?ITEMID=' + id+'&QTY=' + qty  ,
+            url: '/api/inventoryItem/Check' + '?ITEMID=' + id+'&QTY=' + qty  ,
             type: 'POST',
             data: check, //JSON.stringify(Qty_ID),
             // contentType: 'application/json; charset=utf-16',
             dataType: 'json',
             success: function (data) {
-                if (data.success) {
-                    $.ajax({
-                        url: '/api/inventoryItem/assemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=true',
-                        type: 'POST',
-                        data: Qty_ID, //JSON.stringify(Qty_ID),
-                        // contentType: 'application/json; charset=utf-16',
-                        dataType: 'json',
-                        success: function (data) {
-                            if (data.success) {
-                                swal(data.message, {
-                                    icon: "success"
-                                }).then(function () {
-                                    location.reload();
-                                });
-                                //dataTable.ajax.reload();
-                            } else {
-                                swal(data.message, {
-                                    icon: "error"
-                                });
-                            }
-                            //datatable.ajax.reload();
-                        }
-                    });
+                if (data.success) {                    
+                   swal(data.message, {
+                        icon: "success"
+                   }).then(function () {
+                        location.reload();
+                   });
+                    //$.ajax({
+                    //    url: '/api/inventoryItem/assemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=true',
+                    //    type: 'POST',
+                    //    data: Qty_ID, //JSON.stringify(Qty_ID),
+                    //    // contentType: 'application/json; charset=utf-16',
+                    //    dataType: 'json',
+                    //    success: function (data) {
+                    //        if (data.success) {
+                    //            swal(data.message, {
+                    //                icon: "success"
+                    //            }).then(function () {
+                    //                location.reload();
+                    //            });
+                    //            //dataTable.ajax.reload();
+                    //        } else {
+                    //            swal(data.message, {
+                    //                icon: "error"
+                    //            });
+                    //        }
+                    //        //datatable.ajax.reload();
+                    //    }
+                    //});
                 } else {
                     swal({
                         title: 'ALERT!!!!',
@@ -206,8 +211,8 @@ function assemble(id) {
                         else {
                             //Clicked confirm
                             $.ajax({
-                                url: '/api/inventoryItem/assemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=true',
-                                type: 'POST',
+                                url: '/api/inventoryItem/assemble'+ '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=true',
+                                type: 'PUT',
                                 data: Qty_ID, //JSON.stringify(Qty_ID),
                                 // contentType: 'application/json; charset=utf-16',
                                 dataType: 'json',
@@ -224,7 +229,6 @@ function assemble(id) {
                                             icon: "error"
                                         });
                                     }
-                                    //datatable.ajax.reload();
                                 }
                             });
                         }
@@ -254,7 +258,7 @@ function assemble(id) {
                 //Clicked confirm
                 $.ajax({
                     url: '/api/inventoryItem/assemble' + '?QTY=' + qty + '&ITEMID=' + id + '&ASSEMBLE=false',
-                    type: 'POST',
+                    type: 'PUT',
                     data: Qty_ID, //JSON.stringify(Qty_ID),
                     // contentType: 'application/json; charset=utf-16',
                     dataType: 'json',
