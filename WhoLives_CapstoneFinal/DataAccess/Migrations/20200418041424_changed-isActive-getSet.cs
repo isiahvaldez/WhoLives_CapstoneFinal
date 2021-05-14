@@ -6,9 +6,9 @@ namespace WhoLives.DataAccess.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            /*migrationBuilder.DropColumn(
                 name: "isActive",
-                table: "InventoryItems");
+                table: "InventoryItems");*/
 
             migrationBuilder.AddColumn<bool>(
                 name: "isActive",
@@ -19,11 +19,11 @@ namespace WhoLives.DataAccess.Migrations
             
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
+        /*protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
                 name: "isActive",
                 table: "InventoryItems");
-        }
+        }*/
     }
 }
