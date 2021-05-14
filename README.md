@@ -1,7 +1,3 @@
-####IMPORTANT##### 
-Before the system goes live there is a SQL script needed to run which will scrub the database. IT IS HIGHLY RECOMMENEDED the client goes through and verifies the reciepes. Only thing that client should need to update is the total Loose qty for ALL Items. 
-
-
 # WhoLives_CapstoneFinal
 
 Team Name - Who Be Drillin
@@ -26,3 +22,12 @@ Dev Team: Alex, John, Isiah
 
 # Managing Conflicts
 Code will be done in branches, and will joining back to master will be done with review. General conflicts will be addressed as soon as possible, and the majority's opinion will be followed. 
+
+# Screenshots
+|                                     |                                     |                                     |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| ![Landing page](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_LandingPage.PNG) | ![Inventory Page](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_Inventory.PNG) | ![Reorder Page](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_InventoryReorder.PNG) | 
+| ![Assemblies Inventory](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_InventoryAssemblies.PNG) | ![Part Information and Assembly Components](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_InventoryPartAndAssembly.PNG) | ![Purchase Orders](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_Orders.PNG) |
+| ![Purchase Order Create](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_OrderCreate.PNG) | ![Purchase Order Update](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_OrderUpdate.PNG) | ![Vendors Page](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_Vendors.PNG) | ![Vendor Update and Info](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_VendorUpdate.PNG) |
+| ![Drill Assembly Page](https://user-images.githubusercontent.com/46535347/118330503-ff046580-b4c4-11eb-9558-0ddef350ec3b.png) |
+
