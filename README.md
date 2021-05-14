@@ -1,5 +1,9 @@
 # WhoLives_CapstoneFinal
+This project is an inventory website built for The Village Drill by Weber State University students as a capstone project. The Village Drill supplies drills for the Who Lives charitable organization, helping communities access clean water around the world. 
 
+https://villagedrill.com/ | https://wholives.org/#
+
+# Our Team
 Team Name - Who Be Drillin
 
 Motto - We Be Drillin
@@ -20,10 +24,11 @@ Alex Cothran // alexandracothran@mail.weber.edu // Major Contributions: Orders P
 Scrum Master: Trevor
 Dev Team: Alex, John, Isiah
 
-# Managing Conflicts
+# Code Collaboration
 Code will be done in branches, and will joining back to master will be done with review. General conflicts will be addressed as soon as possible, and the majority's opinion will be followed. 
 
 # Screenshots
+Screenshots from a development build with sample data
 |                                     |                                     |                                     |
 | ----------------------------------- | ----------------------------------- | ----------------------------------- |
 | ![Landing page](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_LandingPage.PNG) | ![Inventory Page](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_Inventory.PNG) | ![Reorder Page](https://raw.githubusercontent.com/isiahvaldez/WhoLives_CapstoneFinal/master/WhoLives_CapstoneFinal/WhoLives_CapstoneFinal/Documents/Screenshots/WL_InventoryReorder.PNG) | 
